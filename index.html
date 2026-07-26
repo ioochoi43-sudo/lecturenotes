@@ -36,14 +36,14 @@
   --pad:20px;
   --tab-h:64px;
 
-  --f1:#8FBAFF; --f2:#2F6BFF; --fsh:47,107,255;
+  --f-back:#2E5FCB; --f-mid:#4C86F5; --fsh:46,95,203;
 }
-.c-blue   {--f1:#8FBAFF;--f2:#2F6BFF;--fsh:47,107,255}
-.c-violet {--f1:#B9A8FF;--f2:#6D4DF6;--fsh:109,77,246}
-.c-teal   {--f1:#7BD9CB;--f2:#0E9384;--fsh:14,147,132}
-.c-amber  {--f1:#FFD08A;--f2:#E8930C;--fsh:232,147,12}
-.c-rose   {--f1:#FFA8AC;--f2:#E5484D;--fsh:229,72,77}
-.c-slate  {--f1:#B6BEC9;--f2:#5B6472;--fsh:91,100,114}
+.c-blue   {--f-back:#2E5FCB;--f-mid:#4C86F5;--fsh:46,95,203}
+.c-violet {--f-back:#5334C6;--f-mid:#7A5AF0;--fsh:83,52,198}
+.c-teal   {--f-back:#0A7A6E;--f-mid:#14A896;--fsh:10,122,110}
+.c-amber  {--f-back:#C0760A;--f-mid:#EDA01A;--fsh:192,118,10}
+.c-rose   {--f-back:#C33A40;--f-mid:#E75B60;--fsh:195,58,64}
+.c-slate  {--f-back:#4A525E;--f-mid:#6E7885;--fsh:74,82,94}
 
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0;background:var(--bg)}
@@ -56,6 +56,7 @@ body{
 }
 button,input,textarea,select{font:inherit;color:inherit}
 button{background:none;border:0;padding:0;cursor:pointer}
+svg{width:20px;height:20px;flex:none}  /* 크기 규칙 누락 시 기본값 방지 */
 input,textarea{font-size:16px} /* iOS 자동 확대 방지 */
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
 
@@ -63,7 +64,7 @@ input,textarea{font-size:16px} /* iOS 자동 확대 방지 */
    레이아웃
    ============================================================ */
 .app{
-  max-width:880px;margin:0 auto;
+  max-width:960px;margin:0 auto;
   padding:0 var(--pad);
   padding-bottom:calc(var(--tab-h) + 28px + env(safe-area-inset-bottom));
 }
@@ -77,7 +78,7 @@ input,textarea{font-size:16px} /* iOS 자동 확대 방지 */
   transition:border-color .2s;
 }
 .topbar.stuck{border-bottom-color:var(--line)}
-.topbar-in{max-width:880px;margin:0 auto;padding:0 var(--pad);
+.topbar-in{max-width:960px;margin:0 auto;padding:0 var(--pad);
   display:flex;align-items:center;gap:10px;min-height:40px}
 .eyebrow{
   font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
@@ -123,40 +124,26 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
 /* ============================================================
    폴더 그리드
    ============================================================ */
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 14px}
-@media(min-width:620px){.grid{grid-template-columns:repeat(4,1fr)}}
-@media(min-width:820px){.grid{grid-template-columns:repeat(5,1fr)}}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:20px 14px}
+@media(min-width:560px){.grid{grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:22px 16px}}
 
 .tile{display:block;width:100%;text-align:left;transition:transform .12s}
 .tile:active{transform:scale(.955)}
 
-.folder{position:relative;width:100%;aspect-ratio:47/38;margin-bottom:9px}
-.folder .tab{
-  position:absolute;left:2%;top:0;width:44%;height:26%;
-  border-radius:7px 12px 0 0;background:var(--f2)
-}
-.folder .front{
-  position:absolute;left:0;right:0;top:15%;bottom:0;border-radius:11px;
-  background:linear-gradient(155deg,var(--f1) 0%,var(--f2) 92%);
-  box-shadow:0 10px 20px -12px rgba(var(--fsh),.55), inset 0 1px 0 rgba(255,255,255,.35);
-}
-.folder .bar{
-  position:absolute;left:11%;right:11%;bottom:15%;height:4px;border-radius:99px;
-  background:rgba(255,255,255,.32);overflow:hidden
-}
-.folder .bar i{display:block;height:100%;background:#fff;border-radius:99px;
-  transition:width .35s ease}
-.tile .name{font-size:14.5px;font-weight:650;letter-spacing:-.01em;line-height:1.3;
+.folder{margin-bottom:8px}
+.fsvg{display:block;width:100%;height:auto;
+  filter:drop-shadow(0 3px 7px rgba(var(--fsh),.26))}
+.f-back{fill:var(--f-back)}
+.f-front{fill:var(--f-mid)}
+.f-hi{fill:#fff;opacity:.14}
+.f-sheet{fill:#fff}
+.f-track{fill:#fff;opacity:.34}
+.f-fill{fill:#fff;transition:width .35s ease}
+.f-dash{fill:var(--accent-soft);stroke:#C6D3EA;stroke-width:1.6;stroke-dasharray:5 4}
+.f-plus{stroke:var(--accent);stroke-width:2.4;stroke-linecap:round;fill:none}
+.tile .name{font-size:13.5px;font-weight:650;letter-spacing:-.01em;line-height:1.32;
   display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tile .meta{font-size:12px;color:var(--muted);margin-top:2px;display:block}
-
-.tile.add .folder{display:grid;place-items:center}
-.tile.add .plus{
-  position:absolute;inset:15% 0 0;border-radius:11px;
-  border:1.5px dashed #C9D4E8;background:var(--accent-soft);
-  display:grid;place-items:center;color:var(--accent)
-}
-.tile.add .plus svg{width:22px;height:22px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round}
+.tile .meta{font-size:11.5px;color:var(--muted);margin-top:1px;display:block}
 
 /* ============================================================
    리스트 (최근 노트 / 회차)
@@ -196,7 +183,7 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
 .progress-top b{font-size:22px;font-weight:750;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .progress-top span{font-size:13px;color:var(--muted)}
 .track{height:6px;border-radius:99px;background:var(--surface-2);margin-top:12px;overflow:hidden}
-.track i{display:block;height:100%;background:var(--f2);border-radius:99px;transition:width .35s}
+.track i{display:block;height:100%;background:var(--f-mid);border-radius:99px;transition:width .35s}
 
 /* 회차 스트립 — 이 앱의 시그니처 */
 .strip{display:flex;flex-wrap:wrap;gap:4px;margin-top:14px}
@@ -280,7 +267,7 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
   border-top:1px solid var(--line);
   padding-bottom:env(safe-area-inset-bottom)
 }
-.tabbar-in{max-width:880px;margin:0 auto;display:flex;height:var(--tab-h)}
+.tabbar-in{max-width:960px;margin:0 auto;display:flex;height:var(--tab-h)}
 .tabbar button{
   flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
   color:var(--muted);font-size:10.5px;font-weight:600
@@ -331,7 +318,7 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
 }
 .chip[aria-pressed="true"]{background:var(--ink);color:#fff}
 .swatches{display:flex;gap:10px;margin-top:8px}
-.sw{width:34px;height:34px;border-radius:11px;background:var(--f2);position:relative}
+.sw{width:34px;height:34px;border-radius:11px;background:var(--f-mid);position:relative}
 .sw[aria-pressed="true"]::after{
   content:"";position:absolute;inset:-4px;border-radius:14px;border:2px solid var(--ink)
 }
@@ -373,11 +360,38 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
   display:flex;align-items:center;gap:12px;width:100%;text-align:left;
   padding:14px 14px;border-bottom:1px solid var(--line);font-size:15px;font-weight:550
 }
-.set-list :last-child{border-bottom:0}
+.set-list > :last-child{border-bottom:0}
 .set-list button:active{background:var(--surface)}
+.set-list svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.9;
+  stroke-linecap:round;stroke-linejoin:round;color:var(--muted)}
+.set-list .warn svg{color:var(--danger)}
 .set-list .val{margin-left:auto;font-size:13.5px;color:var(--muted);font-weight:500;
   font-variant-numeric:tabular-nums}
 .set-list .warn{color:var(--danger)}
+
+/* ============================================================
+   넓은 화면(아이패드) — 늘리지 않고 촘촘하게
+   ============================================================ */
+.narrow{max-width:660px;margin:0 auto}
+@media(min-width:700px){
+  :root{--pad:26px;--tab-h:56px}
+  h1{font-size:24px}
+  .eyebrow{font-size:10.5px}
+  .sec{margin-top:22px}
+  .sec-head h2{font-size:15.5px}
+  .search{height:42px}
+  .row{padding:10px 12px}
+  .row .t1{font-size:14px}
+  .row .t2{font-size:12px}
+  .row .num{width:29px;height:29px;font-size:12px}
+  .btn{height:38px;padding:0 14px;font-size:13.5px}
+  .set-list button,.set-list div.item{padding:12px 13px;font-size:14px}
+  .field{margin-top:18px}
+  .progress-card{padding:15px}
+  .progress-top b{font-size:20px}
+  .tabbar button{font-size:10px}
+  .tabbar button svg{width:21px;height:21px}
+}
 
 /* ============================================================
    인쇄 (PDF 내보내기)
@@ -439,8 +453,14 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
 /* ============================================================
    0. 버전
    ============================================================ */
-const APP_VERSION = "1.0.0";
+const APP_VERSION = "1.0.1";
 const CHANGELOG = [
+  { v:"1.0.1", date:"2026-07-26", notes:[
+    "설정 화면 아이콘이 지나치게 크게 표시되던 문제 수정",
+    "아이패드에서 폴더 크기와 목록 여백을 촘촘하게 조정",
+    "폴더 그래픽 교체 — 끼워진 종이는 작성한 노트 수, 아래 선은 완료율",
+    "노트 편집 글줄 폭 제한, 설정 화면 단 정리"
+  ]},
   { v:"1.0.0", date:"2026-07-26", notes:[
     "강의 폴더와 회차 노트 구조 추가",
     "실시간 자동저장, 저장 시각 표시",
@@ -636,12 +656,31 @@ function setTab(name){
   });
 }
 
+/* 폴더 그래픽 — 종이 장수는 작성한 노트 수, 아래 선은 완료율 */
 function folderHTML(c){
   const total = c.lessons.length, done = doneCount(c);
-  const pct = total ? Math.round(done/total*100) : 0;
+  const written = c.lessons.filter(hasText).length;
+  const pct = total ? done/total : 0;
+  const sheets =
+    (written > 2 ? `<rect class="f-sheet" x="21" y="17" width="78" height="17" rx="3" opacity=".5"/>` : "") +
+    (written > 0 ? `<rect class="f-sheet" x="14" y="21" width="92" height="17" rx="3" opacity=".92"/>` : "");
   return `<div class="folder c-${esc(c.color)}">
-    <div class="tab"></div>
-    <div class="front"><div class="bar"><i style="width:${pct}%"></i></div></div>
+    <svg class="fsvg" viewBox="0 0 120 92" aria-hidden="true">
+      <path class="f-back" d="M10 4h37a5 5 0 0 1 5 5v7h58a9 9 0 0 1 9 9v53a9 9 0 0 1-9 9H10a9 9 0 0 1-9-9V13a9 9 0 0 1 9-9z"/>
+      ${sheets}
+      <path class="f-front" d="M10 31h100a9 9 0 0 1 9 9v38a9 9 0 0 1-9 9H10a9 9 0 0 1-9-9V40a9 9 0 0 1 9-9z"/>
+      <path class="f-hi" d="M10 31h100a9 9 0 0 1 9 9v6H1v-6a9 9 0 0 1 9-9z"/>
+      ${total ? `<rect class="f-track" x="14" y="74" width="92" height="4" rx="2"/>
+        <rect class="f-fill" x="14" y="74" width="${(92*pct).toFixed(1)}" height="4" rx="2"/>` : ""}
+    </svg>
+  </div>`;
+}
+function addFolderHTML(){
+  return `<div class="folder">
+    <svg class="fsvg" viewBox="0 0 120 92" style="filter:none" aria-hidden="true">
+      <path class="f-dash" d="M10 5h37a5 5 0 0 1 5 5v6.5h58a9 9 0 0 1 9 9v52a9 9 0 0 1-9 9H10a9 9 0 0 1-9-9V14a9 9 0 0 1 9-9z"/>
+      <path class="f-plus" d="M60 44v18M51 53h18"/>
+    </svg>
   </div>`;
 }
 function courseTile(c){
@@ -675,7 +714,7 @@ function renderHome(){
         <span class="aside">${S.courses.length}개</span></div>
       <div class="grid">
         <button class="tile add" data-act="new-course">
-          <div class="folder"><div class="plus">${I.plus}</div></div>
+          ${addFolderHTML()}
           <span class="name">강의 추가</span>
           <span class="meta">새 폴더</span>
         </button>
@@ -851,6 +890,7 @@ function renderNote(c, l){
     <button class="icon-btn" data-act="note-menu" data-cid="${c.id}" data-lid="${l.id}" aria-label="더보기">${I.more}</button>`;
 
   view.innerHTML = `
+    <div class="narrow">
     <div style="margin-top:18px">
       <p class="eyebrow">${esc(c.title)}</p>
       <h1 style="font-size:24px">${esc(l.label)}</h1>
@@ -878,6 +918,7 @@ function renderNote(c, l){
         <div class="k">← 이전</div><div class="v">${prev?esc(prev.label):"없음"}</div></button>
       <button class="r" ${next?`data-act="open-note" data-cid="${c.id}" data-lid="${next.id}"`:"disabled"}>
         <div class="k">다음 →</div><div class="v">${next?esc(next.label):"없음"}</div></button>
+    </div>
     </div>`;
   paintSaveState();
 
@@ -913,6 +954,7 @@ function renderSettings(){
 
   view.innerHTML = `
     ${Store.ok ? "" : `<div class="banner">브라우저 저장이 차단된 환경입니다. 자동저장이 동작하지 않으니 백업 내보내기로 보관하세요.</div>`}
+    <div class="narrow">
     <div class="set-group">
       <h2>데이터</h2>
       <div class="set-list">
@@ -946,6 +988,7 @@ function renderSettings(){
       </div>
       <p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin:10px 2px 0">
         데이터는 이 브라우저 안에만 저장됩니다. 기기를 바꾸거나 사파리 데이터를 지우면 사라지니, 주 1회는 백업 내보내기를 권합니다.</p>
+    </div>
     </div>
     <div class="savebar" data-savestate><span class="dot"></span><span data-savetext></span></div>`;
   paintSaveState();
