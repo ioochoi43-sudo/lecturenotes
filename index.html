@@ -38,12 +38,6 @@
 
   --f-back:#2E5FCB; --f-mid:#4C86F5; --fsh:46,95,203;
 }
-.c-blue   {--f-back:#2E5FCB;--f-mid:#4C86F5;--fsh:46,95,203}
-.c-violet {--f-back:#5334C6;--f-mid:#7A5AF0;--fsh:83,52,198}
-.c-teal   {--f-back:#0A7A6E;--f-mid:#14A896;--fsh:10,122,110}
-.c-amber  {--f-back:#C0760A;--f-mid:#EDA01A;--fsh:192,118,10}
-.c-rose   {--f-back:#C33A40;--f-mid:#E75B60;--fsh:195,58,64}
-.c-slate  {--f-back:#4A525E;--f-mid:#6E7885;--fsh:74,82,94}
 
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0;background:var(--bg)}
@@ -317,11 +311,21 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
   font-size:13.5px;font-weight:600;color:var(--ink-2)
 }
 .chip[aria-pressed="true"]{background:var(--ink);color:#fff}
-.swatches{display:flex;gap:10px;margin-top:8px}
-.sw{width:34px;height:34px;border-radius:11px;background:var(--f-mid);position:relative}
+.swatches{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}
+.sw{width:34px;height:34px;border-radius:11px;position:relative;flex:none;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
 .sw[aria-pressed="true"]::after{
   content:"";position:absolute;inset:-4px;border-radius:14px;border:2px solid var(--ink)
 }
+.sw.custom{display:grid;place-items:center;overflow:hidden;cursor:pointer}
+.sw.custom::before{
+  content:"";width:15px;height:15px;border-radius:99px;
+  background:conic-gradient(#e5484d,#eda01a,#14a896,#4c86f5,#7a5af0,#e5484d);
+  box-shadow:0 0 0 2px rgba(255,255,255,.9)
+}
+.sw.custom input{position:absolute;inset:0;opacity:0;width:100%;height:100%;
+  border:0;padding:0;cursor:pointer}
+.folder-pv{width:96px;margin-top:14px}
 .preview{
   margin-top:10px;background:var(--surface);border-radius:12px;padding:11px 12px;
   font-size:12.5px;color:var(--ink-2);line-height:1.6;word-break:break-all
@@ -369,6 +373,90 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
   font-variant-numeric:tabular-nums}
 .set-list .warn{color:var(--danger)}
 
+.tpl-tag{display:inline-flex;align-items:center;gap:6px;margin-top:12px;
+  height:30px;padding:0 11px;border-radius:99px;background:var(--surface);
+  font-size:12.5px;font-weight:600;color:var(--ink-2);max-width:100%}
+.tpl-tag:active{background:var(--surface-2)}
+.tpl-tag.on{background:var(--accent-soft);color:var(--accent)}
+.tpl-tag svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* 노트 6칸 그리드 */
+.ncols{display:grid;gap:0 16px;align-items:start}
+.ncols.n2{grid-template-columns:1fr 1fr}
+.ncols.n3{grid-template-columns:1fr 1fr 1fr}
+.ncol{min-width:0}
+@media(max-width:480px){.ncols.n2,.ncols.n3{grid-template-columns:1fr}}
+
+/* 레이아웃 편집 */
+#layGrid .ncols{gap:0 14px}
+.lay{position:relative;min-width:0;margin-bottom:26px}
+.lay-t{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:7px;padding-right:56px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lay textarea{width:100%;border:1px solid var(--line);border-radius:var(--r-md);
+  padding:12px 13px;background:#fff;resize:none;outline:none;line-height:1.62;
+  pointer-events:none;display:block}
+.lay-size{position:absolute;right:2px;top:-1px;font-size:10.5px;color:var(--muted);
+  font-variant-numeric:tabular-nums}
+.rz{position:absolute;background:transparent;touch-action:none}
+.rz::after{content:"";position:absolute;border-radius:99px;background:#CBD4E0}
+.rz-y{left:6px;right:6px;bottom:-11px;height:22px;cursor:row-resize}
+.rz-y::after{top:9px;left:50%;margin-left:-14px;height:4px;width:28px}
+.rz:active::after{background:var(--accent)}
+
+.chip-lab{font-size:11.5px;font-weight:700;color:var(--muted);align-self:center;margin-right:2px}
+.chip-val{font-size:11.5px;color:var(--muted);align-self:center;margin-left:auto;
+  font-variant-numeric:tabular-nums}
+
+/* 목차 섹션 */
+.sec-row{display:flex;align-items:center;gap:10px;padding:16px 2px 8px}
+.sec-row:first-child{padding-top:2px}
+.sec-row-t{font-size:13px;font-weight:750;letter-spacing:.01em;flex:none;max-width:60%;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sec-row-n{font-size:11.5px;color:var(--muted);flex:none}
+.sec-row .line{flex:1;height:1px;background:var(--line);min-width:10px}
+.sec-row .mini{flex:none;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;color:var(--ink-2)}
+.sec-row .mini:active{background:var(--surface-2)}
+.sec-row .mini svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;
+  stroke-linecap:round;stroke-linejoin:round}
+.strip-g{margin-top:12px}
+.strip-g:first-child{margin-top:14px}
+.strip-name{display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.strip-g .strip{margin-top:0}
+.outline-pv{margin-top:8px;display:flex;flex-direction:column;gap:3px}
+.outline-pv span{font-size:12px;line-height:1.45}
+.ol-s{font-weight:750;color:var(--ink)}
+.ol-l{color:var(--ink-2);padding-left:14px}
+.ol-more{color:var(--muted)}
+
+/* 템플릿 편집 */
+.tfield{border:1px solid var(--line);border-radius:var(--r-md);padding:12px;margin-bottom:10px}
+.tfield-top{display:flex;align-items:center;gap:7px}
+.tfield-n{width:22px;height:22px;flex:none;border-radius:7px;background:var(--surface);
+  display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--ink-2);
+  font-variant-numeric:tabular-nums}
+.tfield input{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 10px;
+  background:#fff;outline:none}
+.tfield input:focus{border-color:#B9CCFF;box-shadow:0 0 0 3px var(--accent-soft)}
+.tfield input::placeholder{color:#BDC3CB}
+.tfield-top input{flex:1;min-width:0;font-weight:650}
+.tfield > input{margin-top:8px}
+.tfield .chips{margin-top:9px}
+.tfield .mini{flex:none;width:32px;height:32px;border-radius:9px;display:grid;place-items:center;
+  color:var(--ink-2)}
+.tfield .mini:active{background:var(--surface-2)}
+.tfield .mini svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.2;
+  stroke-linecap:round;stroke-linejoin:round}
+.mini:disabled{opacity:.3}
+.chip.sm{height:30px;padding:0 12px;font-size:12.5px}
+.pv{border:1px solid var(--line);border-radius:var(--r-md);padding:14px;background:var(--surface)}
+.pv textarea{pointer-events:none}
+.muted-note{font-size:12.5px;color:var(--muted);line-height:1.6;margin:12px 2px 0}
+.orphan{margin-top:28px;border-top:1px solid var(--line);padding-top:18px}
+.orphan textarea{background:var(--surface);color:var(--ink-2)}
+
 /* ============================================================
    넓은 화면(아이패드) — 늘리지 않고 촘촘하게
    ============================================================ */
@@ -409,6 +497,9 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
   .p-cover .sub{font-size:10pt;color:#444}
   .p-toc{border-top:1px solid #000;border-bottom:1px solid #000;padding:4mm 0;margin-bottom:10mm}
   .p-toc div{display:flex;justify-content:space-between;gap:6mm;font-size:9.5pt;padding:1mm 0}
+  .p-toc-s{font-weight:700;padding-top:2mm!important}
+  .p-sec{font-size:15pt;margin:10mm 0 4mm;padding-bottom:2mm;border-bottom:1.5px solid #000;
+    page-break-after:avoid;break-after:avoid}
   .p-toc span{color:#666}
   .p-note{page-break-inside:avoid;break-inside:avoid;margin-bottom:9mm;
     padding-bottom:6mm;border-bottom:1px solid #DDD}
@@ -453,8 +544,42 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
 /* ============================================================
    0. 버전
    ============================================================ */
-const APP_VERSION = "1.0.1";
+const APP_VERSION = "1.4.0";
 const CHANGELOG = [
+  { v:"1.4.0", date:"2026-07-27", notes:[
+    "노트마다 템플릿을 따로 지정할 수 있습니다 — 노트 제목 아래 템플릿 이름을 누르면 바로 바뀝니다",
+    "지정하지 않은 노트는 강의 기본 템플릿을 그대로 따릅니다",
+    "템플릿을 복제해도 칸이 유지되어 기존 노트 내용이 그대로 보입니다 (이전에는 밀려났습니다)",
+    "2단 → 1단 → 2단으로 되돌려도 단 배치가 유지됩니다",
+    "백업 내보내기가 안 되는 환경을 대비한 대체 경로를 넣었습니다"
+  ]},
+  { v:"1.3.0", date:"2026-07-27", notes:[
+    "노트를 세로 단(열)으로 나눌 수 있습니다 — 1단·2단·3단",
+    "칸마다 어느 단에 놓을지 지정하고, 각 단은 서로 독립적으로 쌓입니다",
+    "왼쪽 단에 긴 노트를 두어도 오른쪽 칸들이 밀려나지 않습니다",
+    "'가로 전체'로 지정한 칸은 모든 단을 가로질러 놓입니다",
+    "예전 1/2·1/3 너비 설정은 단 배치로 자동 변환됩니다"
+  ]},
+  { v:"1.2.1", date:"2026-07-27", notes:[
+    "화면이 좁아 한 줄로 합쳐지는 기준을 600px에서 480px로 낮췄습니다 — 아이패드 화면 분할(하프 스크린)에서도 칸이 나뉩니다",
+    "칸 너비를 CSS 변수 대신 직접 지정하도록 바꿔 브라우저별 차이를 없앴습니다",
+    "템플릿 편집에서 레이아웃을 칸 목록 위로 올려, 너비를 바꾸면 바로 보입니다",
+    "화면이 좁아 한 줄로 표시 중일 때 그 이유를 화면에 안내합니다"
+  ]},
+  { v:"1.2.0", date:"2026-07-27", notes:[
+    "노트 레이아웃을 6칸 그리드로 직접 구성 — 칸 너비를 절반·1/3로 나누고 높이를 줄 단위로 조절",
+    "레이아웃 편집에서 손잡이를 끌어 크기 조절 (아이패드 터치·펜슬 지원)",
+    "폴더 색을 원하는 색으로 직접 지정 (뒷면·그림자 색은 자동 계산)",
+    "목차에 섹션 도입 — Welcome 아래 1·2·3강처럼 묶어서 관리",
+    "목차를 들여쓰기 그대로 붙여넣으면 섹션과 회차를 자동으로 구분",
+    "회차 번호는 섹션을 건너뛰고 매겨지며, 진행률도 회차만 계산합니다"
+  ]},
+  { v:"1.1.0", date:"2026-07-27", notes:[
+    "노트 템플릿을 직접 만들고 고칠 수 있습니다 (칸 이름·안내 문구·크기·순서)",
+    "강의마다 다른 템플릿을 지정할 수 있습니다",
+    "템플릿을 바꿔도 이미 쓴 내용은 사라지지 않고 노트 아래에 남습니다",
+    "기존 데이터는 '기본 강의 노트' 템플릿으로 자동 전환됩니다"
+  ]},
   { v:"1.0.1", date:"2026-07-26", notes:[
     "설정 화면 아이콘이 지나치게 크게 표시되던 문제 수정",
     "아이패드에서 폴더 크기와 목록 여백을 촘촘하게 조정",
@@ -492,7 +617,8 @@ const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7
 const nowISO = () => new Date().toISOString();
 
 function blank(){
-  return { schema:1, courses:[], settings:{ lastSeenVersion:null, savedAt:null } };
+  return { schema:2, courses:[], templates:[],
+    settings:{ lastSeenVersion:null, savedAt:null, defaultTemplateId:null } };
 }
 let S = Store.read() || blank();
 if(!S.courses) S = blank();
@@ -556,28 +682,194 @@ function fmtRel(iso){
   if(d < 7) return d + "일 전";
   return fmtDate(iso);
 }
-const COLORS = ["blue","violet","teal","amber","rose","slate"];
+const COLOR_PRESETS = ["#4c86f5","#7a5af0","#14a896","#eda01a","#e75b60","#6e7885"];
+const LEGACY_COLORS = { blue:"#4c86f5", violet:"#7a5af0", teal:"#14a896",
+  amber:"#eda01a", rose:"#e75b60", slate:"#6e7885" };
+function normHex(v){
+  if(typeof v !== "string") return null;
+  let x = v.trim();
+  if(/^[0-9a-fA-F]{6}$/.test(x)) x = "#"+x;
+  if(/^#[0-9a-fA-F]{3}$/.test(x)) x = "#"+x[1]+x[1]+x[2]+x[2]+x[3]+x[3];
+  return /^#[0-9a-fA-F]{6}$/.test(x) ? x.toLowerCase() : null;
+}
+function shade(hex, amt){
+  const n = parseInt(hex.slice(1),16);
+  const c = [(n>>16)&255,(n>>8)&255,n&255].map(v=>Math.max(0,Math.min(255,Math.round(v*amt))));
+  return "#" + c.map(v=>v.toString(16).padStart(2,"0")).join("");
+}
+const rgbOf = hex => {
+  const n = parseInt(hex.slice(1),16);
+  return ((n>>16)&255)+","+((n>>8)&255)+","+(n&255);
+};
+/* 사용자가 고른 한 가지 색에서 폴더 뒷면·그림자 색을 자동 계산 */
+function colorVars(hex){
+  const h = normHex(hex) || COLOR_PRESETS[0];
+  const back = shade(h,.72);
+  return `--f-mid:${h};--f-back:${back};--fsh:${rgbOf(back)}`;
+}
 const STATUS = { todo:"안 봄", doing:"보는 중", done:"완료" };
 
-const NOTE_FIELDS = [
-  { k:"summary",   label:"핵심 요약",     hint:"3줄 이내",     rows:3,  ph:"이 회차에서 결국 무엇을 배웠는지 한두 문장으로." },
-  { k:"body",      label:"강의 노트",     hint:"본문",         big:true, ph:"들으면서 그대로 적어두는 곳. 시간(12:30)이나 슬라이드 번호를 함께 적으면 다시 찾기 쉽습니다." },
-  { k:"terms",     label:"키워드·용어",   hint:"줄바꿈으로 구분", rows:4, ph:"모르는 단어와 뜻" },
-  { k:"questions", label:"질문·확인할 것", hint:"",             rows:4, ph:"이해가 안 된 부분, 강사에게 물어볼 것" },
-  { k:"action",    label:"해야 할 일",     hint:"",            rows:3, ph:"실습, 복습, 과제" }
+/* 노트 템플릿 — 칸 구성은 사용자가 직접 정의한다.
+   각 칸의 내용은 lesson[칸키]에 그대로 저장되므로, 칸을 지워도 값은 남는다. */
+/* 칸은 6칸 그리드 위에 놓인다. w=6이면 한 줄 전체, w=3이면 절반, w=2면 1/3 */
+const LEGACY_SIZES = { s:2, m:4, l:10 };
+const COLCOUNTS = [{v:1,n:"1단"},{v:2,n:"2단"},{v:3,n:"3단"}];
+/* col = 0 이면 모든 단을 가로로 걸치고, 1~3 이면 해당 단에 세로로 쌓인다 */
+const colName = i => i===0 ? "가로 전체" : i+"단";
+const HEIGHTS = [{v:2,n:"짧게"},{v:4,n:"보통"},{v:10,n:"길게"}];
+const MAXROWS = 30;
+const DEFAULT_COLS = 2;
+const DEFAULT_FIELDS = [
+  { k:"summary",   label:"핵심 요약",      col:0, rows:2,  hint:"3줄 이내", ph:"이 회차에서 결국 무엇을 배웠는지 한두 문장으로." },
+  { k:"body",      label:"강의 노트",      col:1, rows:16, hint:"본문",     ph:"들으면서 그대로 적어두는 곳. 시간(12:30)이나 슬라이드 번호를 함께 적으면 다시 찾기 쉽습니다." },
+  { k:"terms",     label:"키워드·용어",    col:2, rows:5,  hint:"",        ph:"모르는 단어와 뜻" },
+  { k:"questions", label:"질문·확인할 것", col:2, rows:5,  hint:"",        ph:"이해가 안 된 부분, 강사에게 물어볼 것" },
+  { k:"action",    label:"해야 할 일",     col:2, rows:4,  hint:"",        ph:"실습, 복습, 과제" }
 ];
-
-function newLesson(label){
-  return { id:uid(), label:label, status:"todo",
-    summary:"", body:"", terms:"", questions:"", action:"",
+const clampInt = (v,lo,hi,dflt) =>
+  (typeof v==="number" && isFinite(v)) ? Math.max(lo,Math.min(hi,Math.round(v))) : dflt;
+/* 줄 수를 실제 높이로. 노트 화면과 레이아웃 편집기가 같은 식을 쓴다. */
+const boxHeight = rows => `calc(${rows} * 1.62em + 26px)`;
+function builtinTemplate(){
+  return { id:"tpl_default", name:"기본 강의 노트",
+    cols:DEFAULT_COLS, fields:DEFAULT_FIELDS.map(f=>Object.assign({},f)),
     createdAt:nowISO(), updatedAt:null };
 }
+const LESSON_META = { id:1, type:1, label:1, status:1, createdAt:1, updatedAt:1 };
+
+function migrate(){
+  if(!Array.isArray(S.templates) || !S.templates.length) S.templates = [builtinTemplate()];
+  S.templates.forEach(t=>{
+    t.id = t.id || uid();
+    t.name = typeof t.name==="string" ? t.name : "이름 없는 템플릿";
+    const orig = Array.isArray(t.fields) ? t.fields.slice() : [];
+    const hadNarrow = orig.some(f=>f.w && f.w < 6);
+    t.fields = orig.map(f=>({
+      k: f.k || ("f_"+uid()),
+      label: f.label || "칸",
+      hint: f.hint || "",
+      ph: f.ph || "",
+      col: clampInt(f.col, 0, 3, f.w>=6 ? 0 : (f.w ? 1 : 0)),
+      rows: clampInt(f.rows, 1, MAXROWS, LEGACY_SIZES[f.size] || (f.big ? 10 : 4))
+    }));
+    if(!t.fields.length) t.fields = [{ k:"f_"+uid(), label:"노트", hint:"", ph:"", col:0, rows:10 }];
+    /* 예전 너비(w) 설정이 있으면 단 배치로 한 번만 옮긴다 */
+    if(t.cols === undefined){
+      const minW = Math.min.apply(null, orig.map(f=>f.w || 6).concat([6]));
+      t.cols = hadNarrow ? (minW <= 2 ? 3 : 2) : 1;
+      if(hadNarrow){
+        let ci = 0;
+        t.fields.forEach((f,i)=>{
+          const w = orig[i] && orig[i].w ? orig[i].w : 6;
+          if(w >= 6){ f.col = 0; ci = 0; }
+          else { ci = (ci % t.cols) + 1; f.col = ci; }
+        });
+      }
+    }
+    t.cols = clampInt(t.cols, 1, 3, 1);
+    if(t.cols > 1) t.fields.forEach(f=>{ if(f.col > t.cols) f.col = t.cols; });
+  });
+  if(!S.settings.defaultTemplateId || !S.templates.some(t=>t.id===S.settings.defaultTemplateId))
+    S.settings.defaultTemplateId = S.templates[0].id;
+  S.courses.forEach(c=>{
+    if(!c.templateId || !S.templates.some(t=>t.id===c.templateId))
+      c.templateId = S.settings.defaultTemplateId;
+    c.color = normHex(c.color) || normHex(LEGACY_COLORS[c.color]) || COLOR_PRESETS[0];
+    (c.lessons||[]).forEach(x=>{ x.type = x.type==="section" ? "section" : "lesson"; });
+  });
+  S.schema = 2;
+  Store.write(S);   /* 마이그레이션 결과를 즉시 보존 (savedAt은 건드리지 않음) */
+}
+migrate();
+
 const findCourse = id => S.courses.find(c=>c.id===id);
 const findLesson = (c,id) => c && c.lessons.find(l=>l.id===id);
-const hasText = l => !!(l.summary||l.body||l.terms||l.questions||l.action);
-const doneCount = c => c.lessons.filter(l=>l.status==="done").length;
-function snippet(l, n){
-  const t = (l.summary || l.body || "").replace(/\s+/g," ").trim();
+const findTpl = id => S.templates.find(t=>t.id===id);
+const tplOf = c => findTpl(c.templateId) || S.templates[0];
+/* 회차에 templateId가 있으면 그 노트만 다른 템플릿을 쓴다 */
+const tplFor = (c,l) => (l && l.templateId && findTpl(l.templateId)) || tplOf(c);
+const fieldsOf = (c,l) => tplFor(c,l).fields;
+const isTplOverridden = (c,l) => !!(l && l.templateId && findTpl(l.templateId)
+  && l.templateId !== c.templateId);
+const rowsOf = f => clampInt(f.rows,1,MAXROWS,4);
+const colsOf = t => clampInt(t.cols,1,3,1);
+function layoutBlocks(fields, cols){
+  const blocks = [];
+  let cur = null;
+  fields.forEach(f=>{
+    if(cols === 1 || !f.col){
+      blocks.push({ full:f });
+      cur = null;
+    }else{
+      if(!cur){ cur = { cols:Array.from({length:cols},()=>[]) }; blocks.push(cur); }
+      cur.cols[Math.min(cols, Math.max(1, f.col)) - 1].push(f);
+    }
+  });
+  return blocks;
+}
+const renderBlocks = (fields, cols, one) => layoutBlocks(fields, cols).map(b =>
+  b.full ? one(b.full)
+    : `<div class="ncols n${cols}">${b.cols.map(list=>
+        `<div class="ncol">${list.map(one).join("")}</div>`).join("")}</div>`
+).join("");
+const tplName = t => (t.name||"").trim() || "이름 없는 템플릿";
+
+function newLesson(label){
+  return { id:uid(), type:"lesson", label:label, status:"todo",
+    createdAt:nowISO(), updatedAt:null };
+}
+function newSection(label){
+  return { id:uid(), type:"section", label:label, createdAt:nowISO(), updatedAt:null };
+}
+/* 목차는 섹션과 회차가 한 배열에 순서대로 들어간다.
+   섹션은 제목일 뿐이고 노트를 갖지 않으며, 번호는 회차에만 매긴다. */
+const isSection = x => x.type === "section";
+const lessonsOf = c => c.lessons.filter(x=>!isSection(x));
+const lessonNo = (c,l) => lessonsOf(c).indexOf(l) + 1;
+function sectionFor(c,l){
+  const i = c.lessons.indexOf(l);
+  for(let j=i-1;j>=0;j--) if(isSection(c.lessons[j])) return c.lessons[j];
+  return null;
+}
+function groupsOf(c){
+  const gs=[]; let cur={ sec:null, items:[] };
+  c.lessons.forEach(x=>{
+    if(isSection(x)){
+      if(cur.sec || cur.items.length) gs.push(cur);
+      cur = { sec:x, items:[] };
+    } else cur.items.push(x);
+  });
+  if(cur.sec || cur.items.length) gs.push(cur);
+  return gs;
+}
+/* 현재 템플릿에 없지만 값이 남아 있는 칸 */
+function orphanKeys(c,l){
+  const ks = {}; fieldsOf(c,l).forEach(f=>ks[f.k]=1);
+  return Object.keys(l).filter(k=>!LESSON_META[k] && !ks[k]
+    && typeof l[k]==="string" && l[k].trim() !== "");
+}
+function labelForKey(k){
+  for(const t of S.templates){
+    const f = t.fields.find(x=>x.k===k);
+    if(f) return f.label;
+  }
+  return "이전 내용";
+}
+function noteText(c,l){
+  return fieldsOf(c,l).map(f=>l[f.k]||"").concat(orphanKeys(c,l).map(k=>l[k])).join(" ");
+}
+function hasText(c,l){
+  return fieldsOf(c,l).some(f=>(l[f.k]||"").trim()!=="") || orphanKeys(c,l).length>0;
+}
+const doneCount = c => lessonsOf(c).filter(l=>l.status==="done").length;
+const writtenCount = c => lessonsOf(c).filter(l=>hasText(c,l)).length;
+function snippet(c, l, n){
+  let t = "";
+  for(const f of fieldsOf(c,l)){
+    const v = (l[f.k]||"").trim();
+    if(v){ t = v; break; }
+  }
+  t = t.replace(/\s+/g," ").trim();
   return t ? (t.length>n ? t.slice(0,n)+"…" : t) : "";
 }
 
@@ -613,6 +905,7 @@ function route(){
   if(!parts.length) return { name:"home" };
   if(parts[0]==="all") return { name:"all" };
   if(parts[0]==="settings") return { name:"settings" };
+  if(parts[0]==="t" && parts[1]) return { name:"template", tid:parts[1] };
   if(parts[0]==="c" && parts[1]){
     if(parts[2]==="l" && parts[3]) return { name:"note", cid:parts[1], lid:parts[3] };
     return { name:"course", cid:parts[1] };
@@ -637,6 +930,11 @@ function render(){
   if(r.name==="home") return renderHome();
   if(r.name==="all") return renderAll();
   if(r.name==="settings") return renderSettings();
+  if(r.name==="template"){
+    const t = findTpl(r.tid);
+    if(!t) return go("#/settings");
+    return renderTemplate(t);
+  }
   if(r.name==="course"){
     const c = findCourse(r.cid);
     if(!c) return go("#/");
@@ -645,6 +943,7 @@ function render(){
   if(r.name==="note"){
     const c = findCourse(r.cid), l = findLesson(c, r.lid);
     if(!c || !l) return go(c ? "#/c/"+c.id : "#/");
+    if(isSection(l)) return go("#/c/"+c.id);
     return renderNote(c, l);
   }
   renderHome();
@@ -658,13 +957,13 @@ function setTab(name){
 
 /* 폴더 그래픽 — 종이 장수는 작성한 노트 수, 아래 선은 완료율 */
 function folderHTML(c){
-  const total = c.lessons.length, done = doneCount(c);
-  const written = c.lessons.filter(hasText).length;
+  const total = lessonsOf(c).length, done = doneCount(c);
+  const written = writtenCount(c);
   const pct = total ? done/total : 0;
   const sheets =
     (written > 2 ? `<rect class="f-sheet" x="21" y="17" width="78" height="17" rx="3" opacity=".5"/>` : "") +
     (written > 0 ? `<rect class="f-sheet" x="14" y="21" width="92" height="17" rx="3" opacity=".92"/>` : "");
-  return `<div class="folder c-${esc(c.color)}">
+  return `<div class="folder" style="${colorVars(c.color)}">
     <svg class="fsvg" viewBox="0 0 120 92" aria-hidden="true">
       <path class="f-back" d="M10 4h37a5 5 0 0 1 5 5v7h58a9 9 0 0 1 9 9v53a9 9 0 0 1-9 9H10a9 9 0 0 1-9-9V13a9 9 0 0 1 9-9z"/>
       ${sheets}
@@ -687,7 +986,7 @@ function courseTile(c){
   return `<button class="tile" data-act="open-course" data-id="${c.id}">
     ${folderHTML(c)}
     <span class="name">${esc(c.title)}</span>
-    <span class="meta">${c.lessons.length}회차 · ${doneCount(c)} 완료</span>
+    <span class="meta">${lessonsOf(c).length}회차 · ${doneCount(c)} 완료</span>
   </button>`;
 }
 
@@ -699,7 +998,7 @@ function renderHome(){
     <button class="icon-btn" data-act="home-menu" aria-label="더보기">${I.more}</button>`;
 
   const recent = [];
-  S.courses.forEach(c=>c.lessons.forEach(l=>{ if(l.updatedAt) recent.push({c,l}); }));
+  S.courses.forEach(c=>lessonsOf(c).forEach(l=>{ if(l.updatedAt) recent.push({c,l}); }));
   recent.sort((a,b)=> b.l.updatedAt.localeCompare(a.l.updatedAt));
 
   view.innerHTML = `
@@ -756,8 +1055,8 @@ function searchHTML(){
   const hits = [];
   S.courses.forEach(c=>{
     const cHit = c.title.toLowerCase().includes(q);
-    c.lessons.forEach(l=>{
-      const hay = (l.label+" "+l.summary+" "+l.body+" "+l.terms+" "+l.questions+" "+l.action).toLowerCase();
+    lessonsOf(c).forEach(l=>{
+      const hay = (l.label+" "+noteText(c,l)).toLowerCase();
       if(cHit || hay.includes(q)) hits.push({c,l});
     });
   });
@@ -767,7 +1066,7 @@ function searchHTML(){
       <button class="row" data-act="open-note" data-cid="${c.id}" data-lid="${l.id}">
         <span class="num ${l.status}">${l.status==="done"?"✓":"·"}</span>
         <span class="txt"><span class="t1">${esc(l.label)}</span>
-        <span class="t2">${esc(c.title)}${snippet(l,40)?" · "+esc(snippet(l,40)):""}</span></span>
+        <span class="t2">${esc(c.title)}${snippet(c,l,40)?" · "+esc(snippet(c,l,40)):""}</span></span>
         ${I.chev}
       </button>`).join("")}</div>`
     : `<p style="font-size:13.5px;color:var(--muted);margin:0">일치하는 노트가 없습니다. 다른 낱말로 찾아보세요.</p>`}
@@ -783,7 +1082,7 @@ function renderAll(){
   view.innerHTML = list.length ? `
     <div class="sec"><div class="list">
       ${list.map(c=>{
-        const t = c.lessons.length, d = doneCount(c);
+        const t = lessonsOf(c).length, d = doneCount(c);
         return `<button class="row" data-act="open-course" data-id="${c.id}">
           <span style="flex:none;width:38px">${folderHTML(c)}</span>
           <span class="txt"><span class="t1">${esc(c.title)}</span>
@@ -806,14 +1105,16 @@ function renderCourse(c){
   topbarIn.innerHTML = `
     <button class="back" data-act="go-home">${I.back}<span>홈</span></button>
     <div class="h1-wrap" style="text-align:center">
-      <p class="eyebrow" style="margin:0">${c.lessons.length}회차</p>
+      <p class="eyebrow" style="margin:0">${lessonsOf(c).length}회차</p>
       <div style="font-size:15px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(c.title)}</div>
     </div>
     <button class="icon-btn" data-act="course-menu" data-id="${c.id}" aria-label="더보기">${I.more}</button>`;
 
-  const total = c.lessons.length, done = doneCount(c);
+  const total = lessonsOf(c).length, done = doneCount(c);
   const pct = total ? Math.round(done/total*100) : 0;
-  const written = c.lessons.filter(hasText).length;
+  const written = writtenCount(c);
+  const groups = groupsOf(c);
+  const secCount = c.lessons.filter(isSection).length;
 
   view.innerHTML = `
     <div class="sec" style="margin-top:18px">
@@ -821,15 +1122,19 @@ function renderCourse(c){
         <div><h1 style="font-size:24px">${esc(c.title)}</h1>
           ${c.source?`<p style="font-size:13.5px;color:var(--muted);margin:5px 0 0">${esc(c.source)}</p>`:""}</div>
       </div>
-      <div class="progress-card c-${esc(c.color)}">
+      <div class="progress-card" style="${colorVars(c.color)}">
         <div class="progress-top">
           <b>${done} / ${total}</b>
           <span>노트 작성 ${written}개 · ${pct}%</span>
         </div>
         <div class="track"><i style="width:${pct}%"></i></div>
-        ${total?`<div class="strip">${c.lessons.map((l,i)=>
-            `<button class="${l.status}" data-act="open-note" data-cid="${c.id}" data-lid="${l.id}"
-              title="${esc(l.label)}">${i+1}</button>`).join("")}</div>
+        ${total?`${groups.map(g=>`
+            <div class="strip-g">
+              ${g.sec?`<span class="strip-name">${esc(g.sec.label)}</span>`:""}
+              <div class="strip">${g.items.map(l=>
+                `<button class="${l.status}" data-act="open-note" data-cid="${c.id}" data-lid="${l.id}"
+                  title="${esc(l.label)}">${lessonNo(c,l)}</button>`).join("")}</div>
+            </div>`).join("")}
           <div class="strip-legend">
             <span class="l1"><i></i>안 봄</span>
             <span class="l2"><i></i>보는 중</span>
@@ -838,38 +1143,51 @@ function renderCourse(c){
       </div>
       <div class="btn-row">
         <button class="btn primary" data-act="add-lesson" data-id="${c.id}">${I.plus} 회차 추가</button>
-        <button class="btn" data-act="bulk-lesson" data-id="${c.id}">${I.list} 여러 회차 만들기</button>
+        <button class="btn" data-act="add-section" data-id="${c.id}">${I.folder} 섹션 추가</button>
+        <button class="btn" data-act="bulk-lesson" data-id="${c.id}">${I.list} 목차 한 번에 만들기</button>
         <button class="btn" data-act="pdf-course" data-id="${c.id}">${I.pdf} PDF</button>
       </div>
     </div>
 
     <div class="sec">
-      <div class="sec-head"><h2>회차</h2>
-        ${total?`<button class="link" data-act="toggle-order">${editOrder?"완료":"순서 변경"}</button>`:""}</div>
-      ${total ? `<div class="list">
-        ${c.lessons.map((l,i)=>`
-          <div class="row">
+      <div class="sec-head"><h2>목차</h2>
+        <span class="aside">${secCount?secCount+"개 섹션 · ":""}${total}회차</span></div>
+      ${c.lessons.length ? `
+        ${total||secCount?`<div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+          <button class="link" data-act="toggle-order">${editOrder?"완료":"순서 변경"}</button></div>`:""}
+        ${c.lessons.map((x,i)=>{
+          const ctl = editOrder ? `
+            <button class="mini" data-act="mv-up" data-cid="${c.id}" data-lid="${x.id}" ${i===0?"disabled":""} aria-label="위로">${I.arrowU}</button>
+            <button class="mini" data-act="mv-down" data-cid="${c.id}" data-lid="${x.id}" ${i===c.lessons.length-1?"disabled":""} aria-label="아래로">${I.arrowD}</button>
+            <button class="mini" data-act="ren-lesson" data-cid="${c.id}" data-lid="${x.id}" aria-label="이름 변경">${I.pen}</button>
+            <button class="mini" data-act="del-lesson" data-cid="${c.id}" data-lid="${x.id}" aria-label="삭제" style="color:var(--danger)">${I.trash}</button>` : "";
+          if(isSection(x)){
+            const n = (groups.find(g=>g.sec===x)||{items:[]}).items.length;
+            return `<div class="sec-row">
+              <span class="sec-row-t">${esc(x.label)}</span>
+              <span class="sec-row-n">${n}회차</span>
+              <span class="line"></span>
+              ${ctl}
+            </div>`;
+          }
+          return `<div class="row" style="margin-bottom:8px">
             <button style="display:flex;align-items:center;gap:12px;flex:1;min-width:0;text-align:left"
-              data-act="open-note" data-cid="${c.id}" data-lid="${l.id}">
-              <span class="num ${l.status}">${i+1}</span>
+              data-act="open-note" data-cid="${c.id}" data-lid="${x.id}">
+              <span class="num ${x.status}">${lessonNo(c,x)}</span>
               <span class="txt">
-                <span class="t1">${esc(l.label)}</span>
-                <span class="t2">${STATUS[l.status]}${l.updatedAt?" · "+fmtRel(l.updatedAt):" · 노트 없음"}${snippet(l,34)?" · "+esc(snippet(l,34)):""}</span>
+                <span class="t1">${esc(x.label)}</span>
+                <span class="t2">${STATUS[x.status]}${x.updatedAt?" · "+fmtRel(x.updatedAt):" · 노트 없음"}${snippet(c,x,34)?" · "+esc(snippet(c,x,34)):""}</span>
               </span>
             </button>
-            ${editOrder ? `
-              <button class="mini" data-act="mv-up" data-cid="${c.id}" data-lid="${l.id}" ${i===0?"disabled":""} aria-label="위로">${I.arrowU}</button>
-              <button class="mini" data-act="mv-down" data-cid="${c.id}" data-lid="${l.id}" ${i===total-1?"disabled":""} aria-label="아래로">${I.arrowD}</button>
-              <button class="mini" data-act="ren-lesson" data-cid="${c.id}" data-lid="${l.id}" aria-label="이름 변경">${I.pen}</button>
-              <button class="mini" data-act="del-lesson" data-cid="${c.id}" data-lid="${l.id}" aria-label="삭제" style="color:var(--danger)">${I.trash}</button>`
-            : I.chev}
-          </div>`).join("")}
-      </div>` : `
+            ${ctl || I.chev}
+          </div>`;
+        }).join("")}
+      ` : `
         <div class="empty" style="padding:34px 20px">
           <div class="ico">${I.note}</div>
-          <h3>회차를 먼저 만들어 주세요</h3>
-          <p>1강~30강처럼 번호로 한 번에 만들 수도 있고, Welcome·Outro처럼 이름을 직접 적어도 됩니다.</p>
-          <button class="btn primary" data-act="bulk-lesson" data-id="${c.id}">${I.list} 여러 회차 만들기</button>
+          <h3>목차를 먼저 만들어 주세요</h3>
+          <p>1강~30강처럼 번호로 한 번에 만들 수도 있고, Welcome 아래에 1·2·3강을 넣는 목차를 그대로 붙여넣어도 됩니다.</p>
+          <button class="btn primary" data-act="bulk-lesson" data-id="${c.id}">${I.list} 목차 한 번에 만들기</button>
         </div>`}
     </div>
     <div class="savebar" data-savestate><span class="dot"></span><span data-savetext></span></div>`;
@@ -879,12 +1197,13 @@ function renderCourse(c){
 /* ---------- 노트 ---------- */
 function renderNote(c, l){
   setTab("all");
-  const idx = c.lessons.indexOf(l);
-  const prev = c.lessons[idx-1], next = c.lessons[idx+1];
+  const ls = lessonsOf(c), idx = ls.indexOf(l);
+  const prev = ls[idx-1], next = ls[idx+1];
+  const sec = sectionFor(c,l);
   topbarIn.innerHTML = `
     <button class="back" data-act="open-course" data-id="${c.id}">${I.back}<span>${esc(c.title.slice(0,10))}</span></button>
     <div class="h1-wrap" style="text-align:center">
-      <p class="eyebrow" style="margin:0">${idx+1} / ${c.lessons.length}</p>
+      <p class="eyebrow" style="margin:0">${idx+1} / ${ls.length}</p>
       <div style="font-size:15px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(l.label)}</div>
     </div>
     <button class="icon-btn" data-act="note-menu" data-cid="${c.id}" data-lid="${l.id}" aria-label="더보기">${I.more}</button>`;
@@ -892,21 +1211,36 @@ function renderNote(c, l){
   view.innerHTML = `
     <div class="narrow">
     <div style="margin-top:18px">
-      <p class="eyebrow">${esc(c.title)}</p>
+      <p class="eyebrow">${esc(c.title)}${sec?" · "+esc(sec.label):""}</p>
       <h1 style="font-size:24px">${esc(l.label)}</h1>
+      <button class="tpl-tag${isTplOverridden(c,l)?" on":""}" data-act="note-tpl"
+        data-cid="${c.id}" data-lid="${l.id}">
+        ${I.note} ${esc(tplName(tplFor(c,l)))}${isTplOverridden(c,l)?" · 이 노트만":""}
+      </button>
       <div class="seg">
         ${Object.keys(STATUS).map(k=>`
           <button data-act="set-status" data-cid="${c.id}" data-lid="${l.id}" data-v="${k}"
             aria-pressed="${l.status===k}">${STATUS[k]}</button>`).join("")}
       </div>
     </div>
-    ${NOTE_FIELDS.map(f=>`
-      <div class="field ${f.big?"big":""}">
-        <div class="field-head"><label for="f-${f.k}">${f.label}</label>
-          ${f.hint?`<span class="hint">${f.hint}</span>`:""}</div>
-        <textarea id="f-${f.k}" data-note="${f.k}" rows="${f.rows||3}"
+    <div class="note-body">
+    ${renderBlocks(fieldsOf(c,l), colsOf(tplFor(c,l)), f=>`
+      <div class="field">
+        <div class="field-head"><label for="f-${esc(f.k)}">${esc(f.label)}</label>
+          ${f.hint?`<span class="hint">${esc(f.hint)}</span>`:""}</div>
+        <textarea id="f-${esc(f.k)}" data-note="${esc(f.k)}" rows="${rowsOf(f)}"
+          style="min-height:${boxHeight(rowsOf(f))}"
           placeholder="${esc(f.ph)}">${esc(l[f.k])}</textarea>
-      </div>`).join("")}
+      </div>`)}
+    </div>
+    ${orphanKeys(c,l).length ? `<div class="orphan">
+      <p class="eyebrow">지금 템플릿에 없는 칸</p>
+      <p class="muted-note" style="margin:4px 0 0">내용은 지워지지 않았습니다. 템플릿에 같은 이름의 칸을 다시 만들면 편집할 수 있고, PDF에도 그대로 들어갑니다.</p>
+      ${orphanKeys(c,l).map(k=>`
+        <div class="field"><div class="field-head"><label>${esc(labelForKey(k))}</label>
+          <span class="hint">읽기 전용</span></div>
+          <textarea rows="3" readonly>${esc(l[k])}</textarea></div>`).join("")}
+    </div>` : ""}
     <div class="savebar" data-savestate><span class="dot"></span><span data-savetext></span></div>
     <div class="btn-row">
       <button class="btn ghost" data-act="save-now">저장</button>
@@ -922,8 +1256,8 @@ function renderNote(c, l){
     </div>`;
   paintSaveState();
 
+  view.querySelectorAll("textarea").forEach(grow);
   view.querySelectorAll("textarea[data-note]").forEach(ta=>{
-    grow(ta);
     ta.addEventListener("input", ()=>{
       l[ta.dataset.note] = ta.value;
       l.updatedAt = nowISO();
@@ -943,18 +1277,207 @@ function grow(ta){
   ta.style.height = Math.max(ta.scrollHeight, ta.classList.contains("big")?260:0) + 2 + "px";
 }
 
+/* ---------- 템플릿 편집 ---------- */
+let focusFieldKey = null;
+function paintNarrowWarn(){
+  const el = document.getElementById("narrowWarn");
+  if(!el) return;
+  const narrow = window.innerWidth < 480;
+  el.style.display = narrow ? "block" : "none";
+  if(narrow) el.textContent = `지금 화면 폭이 ${Math.round(window.innerWidth)}px라 모든 칸이 한 줄로 표시됩니다. `
+    + `설정은 그대로 저장되며, 480px보다 넓은 화면(아이패드 전체 화면 등)에서 나뉘어 보입니다.`;
+}
+addEventListener("resize", paintNarrowWarn);
+/* 포인터 이벤트 하나로 마우스·펜슬·손가락을 모두 처리 */
+function bindResize(t){
+  const grid = document.getElementById("layGrid");
+  if(!grid) return;
+  grid.querySelectorAll(".rz").forEach(h=>{
+    h.addEventListener("pointerdown", e=>{
+      const f = t.fields.find(x=>x.k===h.dataset.k);
+      if(!f) return;
+      e.preventDefault();
+      const cell = h.closest(".lay");
+      const ta = cell.querySelector("textarea");
+      const tag = cell.querySelector(".lay-size");
+      const lh = parseFloat(getComputedStyle(ta).lineHeight) || 26;
+      const y0 = e.clientY;
+      let rows = f.rows;
+      try{ h.setPointerCapture(e.pointerId); }catch(err){}
+      const move = ev=>{
+        rows = Math.max(1, Math.min(MAXROWS, f.rows + Math.round((ev.clientY-y0)/lh)));
+        ta.style.minHeight = boxHeight(rows);
+        if(tag) tag.textContent = rows + "줄";
+      };
+      const done = ()=>{
+        h.removeEventListener("pointermove", move);
+        h.removeEventListener("pointerup", done);
+        h.removeEventListener("pointercancel", done);
+        if(rows !== f.rows){
+          f.rows = rows; t.updatedAt = nowISO();
+          commit(); render();
+        }
+      };
+      h.addEventListener("pointermove", move);
+      h.addEventListener("pointerup", done);
+      h.addEventListener("pointercancel", done);
+    });
+  });
+}
+function renderTemplate(t){
+  setTab("settings");
+  const cols = colsOf(t);
+  const uses = S.courses.filter(c=>c.templateId===t.id);
+  const noteUses = S.courses.reduce((n,c)=>
+    n + c.lessons.filter(l=>l.templateId===t.id).length, 0);
+  const isDefault = S.settings.defaultTemplateId === t.id;
+  topbarIn.innerHTML = `
+    <button class="back" data-act="go-settings">${I.back}<span>설정</span></button>
+    <div class="h1-wrap" style="text-align:center">
+      <p class="eyebrow" style="margin:0">노트 템플릿</p>
+      <div style="font-size:15px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(tplName(t))}</div>
+    </div>
+    <button class="icon-btn" data-act="tpl-menu" data-id="${t.id}" aria-label="더보기">${I.more}</button>`;
+
+  view.innerHTML = `<div class="narrow">
+    <div class="field" style="margin-top:18px">
+      <div class="field-head"><label for="t-name">템플릿 이름</label>
+        ${isDefault?`<span class="hint">새 강의 기본값</span>`:""}</div>
+      <input id="t-name" type="text" value="${esc(t.name)}" placeholder="예: 어학 수업용">
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><h2>레이아웃</h2>
+        <span class="aside">아래 손잡이로 높이 조절</span></div>
+      <div class="chips" style="margin-bottom:12px">
+        <span class="chip-lab">단 수</span>
+        ${COLCOUNTS.map(o=>`
+          <button class="chip sm" data-act="t-cols" data-id="${t.id}" data-v="${o.v}"
+            aria-pressed="${cols===o.v}">${o.n}</button>`).join("")}
+      </div>
+      <div class="pv">
+        <div id="layGrid">
+          ${renderBlocks(t.fields, cols, f=>`
+            <div class="lay" data-k="${esc(f.k)}">
+              <div class="lay-t" id="pv-${esc(f.k)}">${esc(f.label)}</div>
+              <textarea tabindex="-1" readonly rows="${rowsOf(f)}"
+                style="min-height:${boxHeight(rowsOf(f))}" placeholder="${esc(f.ph)}"></textarea>
+              <span class="lay-size">${f.rows}줄</span>
+              <button class="rz rz-y" data-k="${esc(f.k)}" aria-label="높이 조절"></button>
+            </div>`)}
+        </div>
+      </div>
+      <p class="muted-note" id="narrowWarn" style="display:none;color:#7A5300;background:#FFF6E5;
+        border:1px solid #FFE2AC;border-radius:12px;padding:10px 12px"></p>
+      <p class="muted-note">각 단은 세로로 따로 쌓입니다. 왼쪽 단이 길어져도 오른쪽 칸들이 밀려나지 않습니다.
+      칸 아래 손잡이를 위아래로 끌면 높이가 한 줄 단위로 바뀌고, 어느 단에 놓을지는 아래 목록에서 정합니다.
+      <b>가로 전체</b>로 두면 모든 단을 가로질러 놓이며 그 지점에서 단이 한 번 끊깁니다.</p>
+    </div>
+    <div class="sec">
+      <div class="sec-head"><h2>노트 칸</h2><span class="aside">${t.fields.length}개</span></div>
+      ${t.fields.map((f,i)=>`
+        <div class="tfield">
+          <div class="tfield-top">
+            <span class="tfield-n">${i+1}</span>
+            <input type="text" data-fk="${esc(f.k)}" data-prop="label"
+              value="${esc(f.label)}" placeholder="칸 이름">
+            <button class="mini" data-act="f-up" data-id="${t.id}" data-k="${esc(f.k)}"
+              ${i===0?"disabled":""} aria-label="위로">${I.arrowU}</button>
+            <button class="mini" data-act="f-down" data-id="${t.id}" data-k="${esc(f.k)}"
+              ${i===t.fields.length-1?"disabled":""} aria-label="아래로">${I.arrowD}</button>
+            <button class="mini" data-act="f-del" data-id="${t.id}" data-k="${esc(f.k)}"
+              style="color:var(--danger)" aria-label="칸 삭제">${I.trash}</button>
+          </div>
+          <input type="text" data-fk="${esc(f.k)}" data-prop="ph"
+            value="${esc(f.ph)}" placeholder="입력 안내 문구 (선택)">
+          ${cols>1?`<div class="chips">
+            <span class="chip-lab">배치</span>
+            ${[0,1,2,3].slice(0,cols+1).map(ci=>`
+              <button class="chip sm" data-act="f-col" data-id="${t.id}" data-k="${esc(f.k)}"
+                data-v="${ci}" aria-pressed="${(f.col||0)===ci}">${colName(ci)}</button>`).join("")}
+          </div>`:""}
+          <div class="chips">
+            <span class="chip-lab">높이</span>
+            ${HEIGHTS.map(o=>`
+              <button class="chip sm" data-act="f-rows" data-id="${t.id}" data-k="${esc(f.k)}"
+                data-v="${o.v}" aria-pressed="${f.rows===o.v}">${o.n}</button>`).join("")}
+            <span class="chip-val">${cols>1?colName(f.col||0)+" · ":""}${f.rows}줄</span>
+          </div>
+        </div>`).join("")}
+      <div class="btn-row">
+        <button class="btn primary" data-act="f-add" data-id="${t.id}">${I.plus} 칸 추가</button>
+      </div>
+    </div>
+
+
+    <div class="savebar" data-savestate><span class="dot"></span><span data-savetext></span></div>
+    <p class="muted-note">이 템플릿을 쓰는 강의 ${uses.length}개${uses.length?" · "+esc(uses.map(c=>c.title).join(", ")):""}${noteUses?` / 이 템플릿을 따로 지정한 노트 ${noteUses}개`:""}</p>
+    <div class="btn-row">
+      <button class="btn ghost" data-act="tpl-dup" data-id="${t.id}">복제</button>
+      ${isDefault?"":`<button class="btn ghost" data-act="tpl-default" data-id="${t.id}">새 강의 기본값으로</button>`}
+      <button class="btn danger" data-act="tpl-del" data-id="${t.id}">삭제</button>
+    </div>
+  </div>`;
+  paintSaveState();
+  view.querySelectorAll("textarea").forEach(grow);
+
+  bindResize(t);
+  paintNarrowWarn();
+  if(focusFieldKey){
+    const el = view.querySelector(`[data-fk="${focusFieldKey}"][data-prop="label"]`);
+    focusFieldKey = null;
+    if(el){
+      el.focus(); el.select();
+      if(el.scrollIntoView) el.scrollIntoView({ block:"center" });
+    }
+  }
+  const nameInput = document.getElementById("t-name");
+  nameInput.addEventListener("input", ()=>{
+    t.name = nameInput.value; t.updatedAt = nowISO(); touch();
+    const h = topbarIn.querySelector(".h1-wrap div");
+    if(h) h.textContent = tplName(t);
+  });
+  view.querySelectorAll("[data-fk]").forEach(inp=>{
+    inp.addEventListener("input", ()=>{
+      const f = t.fields.find(x=>x.k===inp.dataset.fk);
+      if(!f) return;
+      f[inp.dataset.prop] = inp.value;
+      t.updatedAt = nowISO(); touch();
+      const pv = document.getElementById("pv-"+f.k);
+      if(!pv) return;
+      if(inp.dataset.prop==="label"){
+        pv.textContent = f.label;
+      }else{
+        const cell = pv.closest(".lay");
+        const ta = cell && cell.querySelector("textarea");
+        if(ta) ta.placeholder = f.ph;
+      }
+    });
+  });
+}
+
 /* ---------- 설정 ---------- */
 function renderSettings(){
   setTab("settings");
   topbarIn.innerHTML = `<div class="h1-wrap"><p class="eyebrow">Preferences</p><h1>설정</h1></div>`;
   const lessons = S.courses.reduce((n,c)=>n+c.lessons.length,0);
-  const notes = S.courses.reduce((n,c)=>n+c.lessons.filter(hasText).length,0);
+  const notes = S.courses.reduce((n,c)=>n+writtenCount(c),0);
   let size = "-";
   try{ size = (new Blob([JSON.stringify(S)]).size/1024).toFixed(1) + " KB"; }catch(e){}
 
   view.innerHTML = `
     ${Store.ok ? "" : `<div class="banner">브라우저 저장이 차단된 환경입니다. 자동저장이 동작하지 않으니 백업 내보내기로 보관하세요.</div>`}
     <div class="narrow">
+    <div class="set-group">
+      <h2>노트 템플릿</h2>
+      <div class="set-list">
+        ${S.templates.map(t=>`
+          <button data-act="open-tpl" data-id="${t.id}">${I.note} ${esc(tplName(t))}
+            <span class="val">${t.fields.length}칸${S.settings.defaultTemplateId===t.id?" · 기본":""}</span></button>`).join("")}
+        <button data-act="new-tpl">${I.plus} 새 템플릿 만들기</button>
+      </div>
+      <p class="muted-note">강의마다 다른 템플릿을 쓸 수 있습니다. 강의 화면 → 더보기 → 강의 정보 수정에서 바꿉니다.</p>
+    </div>
     <div class="set-group">
       <h2>데이터</h2>
       <div class="set-list">
@@ -1007,6 +1530,8 @@ function sheet(html, opt){
     </div></div>`;
   const f = layer.querySelector("[data-autofocus]");
   if(f) setTimeout(()=>f.focus(), 60);
+  const hex = layer.querySelector("#c-hex");
+  if(hex) hex.addEventListener("input", ()=>applyDraftColor(hex.value));
 }
 function toast(msg){
   const el = document.createElement("div");
@@ -1025,9 +1550,26 @@ function confirmSheet(title, desc, okLabel, onOk, danger){
 let pendingOk = null;
 
 /* ---------- 강의 만들기 / 수정 ---------- */
-let draftColor = "blue";
+let draftColor = COLOR_PRESETS[0], draftTpl = null;
+function applyDraftColor(v){
+  draftColor = normHex(v) || draftColor;
+  layer.querySelectorAll(".sw[data-v]").forEach(s=>
+    s.setAttribute("aria-pressed", s.dataset.v===draftColor));
+  const custom = layer.querySelector(".sw.custom");
+  if(custom){
+    custom.style.background = draftColor;
+    custom.setAttribute("aria-pressed", !COLOR_PRESETS.includes(draftColor));
+  }
+  const inp = layer.querySelector("#c-hex");
+  if(inp && inp.value.toLowerCase() !== draftColor) inp.value = draftColor;
+  const lab = layer.querySelector("#hex-label");
+  if(lab) lab.textContent = draftColor;
+  const pv = layer.querySelector("#color-pv");
+  if(pv) pv.setAttribute("style", colorVars(draftColor));
+}
 function courseSheet(c){
-  draftColor = c ? c.color : COLORS[S.courses.length % COLORS.length];
+  draftColor = c ? c.color : COLOR_PRESETS[S.courses.length % COLOR_PRESETS.length];
+  draftTpl = c ? c.templateId : S.settings.defaultTemplateId;
   sheet(`
     <h3>${c?"강의 정보 수정":"새 강의"}</h3>
     <p class="desc">강의 하나가 폴더 하나입니다.</p>
@@ -1040,9 +1582,34 @@ function courseSheet(c){
       <input id="c-src" type="text" placeholder="예: 클래스101 · 김민수" value="${c?esc(c.source||""):""}">
     </div>
     <div class="field">
-      <div class="field-head"><label>폴더 색</label></div>
-      <div class="swatches">${COLORS.map(k=>`
-        <button class="sw c-${k}" data-act="pick-color" data-v="${k}" aria-pressed="${draftColor===k}" aria-label="${k}"></button>`).join("")}</div>
+      <div class="field-head"><label>폴더 색</label>
+        <span class="hint" id="hex-label">${esc(draftColor)}</span></div>
+      <div class="swatches">
+        ${COLOR_PRESETS.map(h=>`
+          <button class="sw" data-act="pick-color" data-v="${h}" style="background:${h}"
+            aria-pressed="${draftColor===h}" aria-label="${h}"></button>`).join("")}
+        <label class="sw custom" aria-label="색 직접 고르기"
+          style="background:${esc(draftColor)}">
+          <input type="color" id="c-hex" value="${esc(draftColor)}">
+        </label>
+      </div>
+      <div class="folder-pv"><div class="folder" id="color-pv" style="${colorVars(draftColor)}">
+        <svg class="fsvg" viewBox="0 0 120 92" aria-hidden="true">
+          <path class="f-back" d="M10 4h37a5 5 0 0 1 5 5v7h58a9 9 0 0 1 9 9v53a9 9 0 0 1-9 9H10a9 9 0 0 1-9-9V13a9 9 0 0 1 9-9z"/>
+          <rect class="f-sheet" x="14" y="21" width="92" height="17" rx="3" opacity=".92"/>
+          <path class="f-front" d="M10 31h100a9 9 0 0 1 9 9v38a9 9 0 0 1-9 9H10a9 9 0 0 1-9-9V40a9 9 0 0 1 9-9z"/>
+          <path class="f-hi" d="M10 31h100a9 9 0 0 1 9 9v6H1v-6a9 9 0 0 1 9-9z"/>
+          <rect class="f-track" x="14" y="74" width="92" height="4" rx="2"/>
+          <rect class="f-fill" x="14" y="74" width="55" height="4" rx="2"/>
+        </svg>
+      </div></div>
+    </div>
+    <div class="field">
+      <div class="field-head"><label>노트 템플릿</label>
+        <span class="hint">설정에서 직접 만들 수 있습니다</span></div>
+      <div class="chips">${S.templates.map(t=>`
+        <button class="chip" data-act="pick-tpl" data-v="${t.id}"
+          aria-pressed="${draftTpl===t.id}">${esc(tplName(t))} · ${t.fields.length}칸</button>`).join("")}</div>
     </div>
     <div class="btn-row">
       <button class="btn primary wide" data-act="${c?"save-course":"create-course"}" ${c?`data-id="${c.id}"`:""}>
@@ -1074,9 +1641,12 @@ function bulkSheet(cid){
       </div>
       <div class="preview" id="b-prev"></div>
     ` : `
-      <div class="field"><div class="field-head"><label for="b-list">회차 이름</label><span class="hint">한 줄에 하나</span></div>
-        <textarea id="b-list" rows="9" data-autofocus placeholder="Welcome&#10;오리엔테이션&#10;1강 브랜드란 무엇인가&#10;2강 시장 조사&#10;중간 점검&#10;Outro"></textarea>
+      <div class="field"><div class="field-head"><label for="b-list">목차</label>
+        <span class="hint">한 줄에 하나</span></div>
+        <textarea id="b-list" rows="10" data-autofocus placeholder="Welcome&#10;  1강 오리엔테이션&#10;  2강 준비물&#10;  3강 시작하기&#10;Chapter 1&#10;  4강 브랜드란 무엇인가&#10;Outro"></textarea>
       </div>
+      <p class="muted-note" style="margin-top:8px">앞을 띄어 쓰거나 <b>-</b> 를 붙인 줄은 바로 위 제목에 속한 회차가 됩니다.
+      들여쓴 줄이 하나도 없으면 전부 회차로 만듭니다.</p>
       <div class="preview" id="b-prev"></div>
     `}
     <div class="btn-row">
@@ -1085,7 +1655,17 @@ function bulkSheet(cid){
     </div>`);
   bindBulkPreview();
 }
-function bulkLabels(){
+const isChildLine = l => /^[ \t\u00a0]+\S/.test(l) || /^[-•*\u2022]\s+/.test(l.trim());
+const cleanLine = l => l.replace(/^[ \t\u00a0]*[-•*\u2022]?[ \t\u00a0]*/,"").trim();
+function parseOutline(text){
+  const raw = text.split(/\r?\n/).filter(l=>l.trim()!=="");
+  const nested = raw.some(isChildLine);
+  return raw.map(l=>({
+    type: nested ? (isChildLine(l) ? "lesson" : "section") : "lesson",
+    label: cleanLine(l)
+  })).filter(x=>x.label).slice(0,400);
+}
+function bulkItems(){
   if(bulkMode==="num"){
     const s = parseInt(document.getElementById("b-start").value,10);
     const e = parseInt(document.getElementById("b-end").value,10);
@@ -1095,22 +1675,27 @@ function bulkLabels(){
     const out = [];
     const step = s<=e ? 1 : -1;
     for(let i=s; step>0 ? i<=e : i>=e; i+=step){
-      out.push(`${pre}${i}${suf}`);
+      out.push({ type:"lesson", label:`${pre}${i}${suf}` });
       if(out.length>300) break;
     }
     return out;
   }
-  return document.getElementById("b-list").value
-    .split(/\r?\n/).map(s=>s.trim()).filter(Boolean).slice(0,300);
+  return parseOutline(document.getElementById("b-list").value);
 }
 function bindBulkPreview(){
   const paint = ()=>{
-    const l = bulkLabels();
+    const items = bulkItems();
     const box = document.getElementById("b-prev");
     if(!box) return;
-    box.innerHTML = l.length
-      ? `<b>${l.length}개</b> · ${esc(l.slice(0,4).join(", "))}${l.length>4?" … "+esc(l[l.length-1]):""}`
-      : "만들어질 회차가 없습니다.";
+    if(!items.length){ box.innerHTML = "만들어질 항목이 없습니다."; return; }
+    const secs = items.filter(x=>x.type==="section").length;
+    const les = items.length - secs;
+    const head = `<b>${secs?secs+"개 섹션 · ":""}${les}회차</b>`;
+    const lines = items.slice(0,9).map(x=>
+      x.type==="section" ? `<span class="ol-s">${esc(x.label)}</span>`
+                         : `<span class="ol-l">${esc(x.label)}</span>`).join("");
+    box.innerHTML = head + `<div class="outline-pv">${lines}${
+      items.length>9?`<span class="ol-more">… 외 ${items.length-9}개</span>`:""}</div>`;
   };
   layer.querySelectorAll("#b-start,#b-end,#b-prefix,#b-suffix,#b-list")
     .forEach(el=>el.addEventListener("input", paint));
@@ -1121,12 +1706,12 @@ function bindBulkPreview(){
    8. PDF
    ============================================================ */
 const printRoot = document.getElementById("printRoot");
-function noteBlock(l, i, brk){
-  const parts = NOTE_FIELDS.map(f=>{
+function noteBlock(c, l, i, brk){
+  const parts = fieldsOf(c,l).map(f=>{
     const v = (l[f.k]||"").trim();
-    if(!v) return "";
-    return `<h3>${f.label}</h3><p>${esc(v)}</p>`;
-  }).join("");
+    return v ? `<h3>${esc(f.label)}</h3><p>${esc(v)}</p>` : "";
+  }).join("") + orphanKeys(c,l).map(k=>
+    `<h3>${esc(labelForKey(k))}</h3><p>${esc(l[k])}</p>`).join("");
   return `<section class="p-note${brk?" brk":""}">
     <h2>${i!=null?i+1+". ":""}${esc(l.label)}</h2>
     <div class="meta">${STATUS[l.status]} · 마지막 수정 ${l.updatedAt?fmtFull(l.updatedAt):"없음"}</div>
@@ -1141,15 +1726,18 @@ function doPrint(html){
 function pdfNote(c,l){
   doPrint(`<div class="p-cover"><div class="k">${esc(c.title)}</div>
     <h1>${esc(l.label)}</h1>
-    <div class="sub">내보낸 날짜 ${fmtFull(nowISO())}</div></div>${noteBlock(l,null,false)}`);
+    <div class="sub">내보낸 날짜 ${fmtFull(nowISO())}</div></div>${noteBlock(c,l,null,false)}`);
 }
 function pdfCourse(c){
   doPrint(`<div class="p-cover"><div class="k">Lecture notes</div>
     <h1>${esc(c.title)}</h1>
-    <div class="sub">${c.source?esc(c.source)+" · ":""}${c.lessons.length}회차 · ${doneCount(c)} 완료 · 내보낸 날짜 ${fmtFull(nowISO())}</div></div>
-    <div class="p-toc">${c.lessons.map((l,i)=>
-      `<div><span>${i+1}. ${esc(l.label)}</span><span>${STATUS[l.status]}</span></div>`).join("")}</div>
-    ${c.lessons.map((l,i)=>noteBlock(l,i,false)).join("")}`);
+    <div class="sub">${c.source?esc(c.source)+" · ":""}${lessonsOf(c).length}회차 · ${doneCount(c)} 완료 · 기본 템플릿 ${esc(tplName(tplOf(c)))} · 내보낸 날짜 ${fmtFull(nowISO())}</div></div>
+    <div class="p-toc">${c.lessons.map(x=> isSection(x)
+      ? `<div class="p-toc-s"><span>${esc(x.label)}</span><span></span></div>`
+      : `<div><span>${lessonNo(c,x)}. ${esc(x.label)}</span><span>${STATUS[x.status]}</span></div>`).join("")}</div>
+    ${c.lessons.map(x=> isSection(x)
+      ? `<h2 class="p-sec">${esc(x.label)}</h2>`
+      : noteBlock(c,x,lessonNo(c,x)-1,false)).join("")}`);
 }
 function pdfAll(){
   doPrint(`<div class="p-cover"><div class="k">Lecture notes · 전체</div>
@@ -1157,11 +1745,14 @@ function pdfAll(){
     <div class="sub">${S.courses.length}개 강의 · 내보낸 날짜 ${fmtFull(nowISO())}</div></div>
     ${S.courses.map((c,ci)=>`
       <div class="p-note${ci?" brk":""}"><h2>${esc(c.title)}</h2>
-        <div class="meta">${c.source?esc(c.source)+" · ":""}${c.lessons.length}회차 · ${doneCount(c)} 완료</div>
-        <div class="p-toc" style="margin-top:4mm">${c.lessons.map((l,i)=>
-          `<div><span>${i+1}. ${esc(l.label)}</span><span>${STATUS[l.status]}</span></div>`).join("")}</div>
+        <div class="meta">${c.source?esc(c.source)+" · ":""}${lessonsOf(c).length}회차 · ${doneCount(c)} 완료</div>
+        <div class="p-toc" style="margin-top:4mm">${c.lessons.map(x=> isSection(x)
+          ? `<div class="p-toc-s"><span>${esc(x.label)}</span><span></span></div>`
+          : `<div><span>${lessonNo(c,x)}. ${esc(x.label)}</span><span>${STATUS[x.status]}</span></div>`).join("")}</div>
       </div>
-      ${c.lessons.map((l,i)=>noteBlock(l,i,false)).join("")}`).join("")}`);
+      ${c.lessons.map(x=> isSection(x)
+        ? `<h2 class="p-sec">${esc(x.label)}</h2>`
+        : noteBlock(c,x,lessonNo(c,x)-1,false)).join("")}`).join("")}`);
 }
 
 /* ============================================================
@@ -1169,14 +1760,21 @@ function pdfAll(){
    ============================================================ */
 function exportJSON(){
   const payload = { app:"lecture-notes", appVersion:APP_VERSION, exportedAt:nowISO(), data:S };
-  const blob = new Blob([JSON.stringify(payload,null,2)], { type:"application/json" });
-  const url = URL.createObjectURL(blob);
+  const text = JSON.stringify(payload,null,2);
+  let url, revoke = false;
+  try{
+    url = URL.createObjectURL(new Blob([text], { type:"application/json" }));
+    revoke = true;
+  }catch(err){
+    /* Blob URL을 못 만드는 환경 대비 */
+    url = "data:application/json;charset=utf-8," + encodeURIComponent(text);
+  }
   const a = document.createElement("a");
   const d = new Date();
   a.href = url;
   a.download = `강의노트_백업_${d.getFullYear()}${p2(d.getMonth()+1)}${p2(d.getDate())}.json`;
   document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+  if(revoke) setTimeout(()=>{ try{ URL.revokeObjectURL(url); }catch(e){} }, 1000);
   toast("백업 파일을 내려받았습니다");
 }
 const fileInput = document.getElementById("fileInput");
@@ -1215,6 +1813,7 @@ function applyImport(mode){
   if(!inc) return;
   if(mode==="replace"){
     S.courses = inc.courses;
+    if(Array.isArray(inc.templates) && inc.templates.length) S.templates = inc.templates;
   }else{
     inc.courses.forEach(nc=>{
       const ex = S.courses.find(c=>c.id===nc.id);
@@ -1229,11 +1828,19 @@ function applyImport(mode){
       });
     });
   }
+  if(Array.isArray(inc.templates)){
+    inc.templates.forEach(nt=>{
+      const ex = S.templates.find(x=>x.id===nt.id);
+      if(!ex) S.templates.push(nt);
+      else if((nt.updatedAt||"") > (ex.updatedAt||"")) Object.assign(ex, nt);
+    });
+  }
   S.courses.forEach(c=>{
-    c.color = COLORS.includes(c.color) ? c.color : "blue";
+    c.color = normHex(c.color) || normHex(LEGACY_COLORS[c.color]) || COLOR_PRESETS[0];
     c.lessons = (c.lessons||[]).map(l=>Object.assign(newLesson(l.label||"회차"), l));
   });
   pendingImport = null;
+  migrate();
   commit(); closeLayer(); render();
   toast(mode==="replace" ? "데이터를 교체했습니다" : "데이터를 합쳤습니다");
 }
@@ -1333,6 +1940,127 @@ document.addEventListener("click", e=>{
       </div>`);
       break;
     case "go-settings": closeLayer(); go("#/settings"); break;
+    case "open-tpl": go("#/t/"+id); break;
+    case "new-tpl": {
+      const nt = { id:uid(), name:"새 템플릿",
+        cols:1, fields:[{ k:"f_"+uid(), label:"노트", hint:"", ph:"", col:0, rows:12 }],
+        createdAt:nowISO(), updatedAt:nowISO() };
+      S.templates.push(nt); commit(); go("#/t/"+nt.id); toast("템플릿을 만들었습니다");
+      break;
+    }
+    case "pick-tpl":
+      draftTpl = t.dataset.v;
+      layer.querySelectorAll("[data-act='pick-tpl']").forEach(b=>
+        b.setAttribute("aria-pressed", b.dataset.v===draftTpl));
+      break;
+    case "tpl-menu": {
+      const tp = findTpl(id);
+      sheet(`<h3>${esc(tplName(tp))}</h3><div class="menu">
+        <button data-act="f-add" data-id="${tp.id}">${I.plus} 칸 추가</button>
+        <button data-act="tpl-dup" data-id="${tp.id}">${I.list} 복제</button>
+        ${S.settings.defaultTemplateId===tp.id?"":`<button data-act="tpl-default" data-id="${tp.id}">${I.note} 새 강의 기본값으로</button>`}
+        <hr>
+        <button class="warn" data-act="tpl-del" data-id="${tp.id}">${I.trash} 템플릿 삭제</button>
+      </div>`);
+      break;
+    }
+    case "f-add": {
+      const tp = findTpl(id);
+      const nf = { k:"f_"+uid(), label:"새 칸", hint:"", ph:"", col:0, rows:4 };
+      tp.fields.push(nf);
+      focusFieldKey = nf.k;
+      tp.updatedAt = nowISO();
+      commit(); closeLayer(); go("#/t/"+tp.id); render();
+      break;
+    }
+    case "f-del": {
+      const tp = findTpl(id), k = t.dataset.k;
+      if(tp.fields.length < 2){ toast("칸은 최소 하나 있어야 합니다"); return; }
+      const f = tp.fields.find(x=>x.k===k);
+      const filled = S.courses.reduce((n,c)=>
+        n + c.lessons.filter(l=>tplFor(c,l).id===tp.id && (l[k]||"").trim()).length, 0);
+      confirmSheet("칸을 지울까요?",
+        filled ? `이 칸에 쓴 노트가 ${filled}개 있습니다. 내용은 지워지지 않고 노트 화면 아래에 읽기 전용으로 남습니다.`
+               : `${f.label} 칸을 지웁니다.`,
+        "지우기", ()=>{
+          tp.fields = tp.fields.filter(x=>x.k!==k);
+          tp.updatedAt = nowISO();
+          commit(); closeLayer(); render();
+        }, true);
+      break;
+    }
+    case "f-up": case "f-down": {
+      const tp = findTpl(id), k = t.dataset.k;
+      const i = tp.fields.findIndex(x=>x.k===k);
+      const j = a==="f-up" ? i-1 : i+1;
+      if(j<0 || j>=tp.fields.length) return;
+      const tmp = tp.fields[i]; tp.fields[i] = tp.fields[j]; tp.fields[j] = tmp;
+      tp.updatedAt = nowISO();
+      commit(); render();
+      break;
+    }
+    case "f-col": case "f-rows": {
+      const tp = findTpl(id);
+      const f = tp.fields.find(x=>x.k===t.dataset.k);
+      if(a==="f-col") f.col = clampInt(+t.dataset.v, 0, colsOf(tp), 0);
+      else f.rows = clampInt(+t.dataset.v,1,MAXROWS,4);
+      tp.updatedAt = nowISO();
+      commit(); render();
+      break;
+    }
+    case "t-cols": {
+      const tp = findTpl(id);
+      const n = clampInt(+t.dataset.v, 1, 3, 1);
+      /* 처음 여러 단으로 바꿀 때 아직 배치가 없으면 순서대로 나눠 담는다 */
+      if(n > 1 && !tp.fields.some(f=>f.col)){
+        let ci = 0;
+        tp.fields.forEach((f,i)=>{
+          if(i === 0 && tp.fields.length > 2){ f.col = 0; return; }
+          ci = (ci % n) + 1; f.col = ci;
+        });
+      }
+      tp.cols = n;
+      if(n > 1) tp.fields.forEach(f=>{ if(f.col > n) f.col = n; });
+      tp.updatedAt = nowISO();
+      commit(); render();
+      break;
+    }
+    case "tpl-dup": {
+      const tp = findTpl(id);
+      const nt = { id:uid(), name:tplName(tp)+" 복사본", cols:colsOf(tp),
+        fields:tp.fields.map(f=>Object.assign({}, f)),   /* 칸 키를 유지해야 기존 노트 내용이 그대로 보인다 */
+        createdAt:nowISO(), updatedAt:nowISO() };
+      S.templates.push(nt); commit(); closeLayer(); go("#/t/"+nt.id); toast("복제했습니다");
+      break;
+    }
+    case "tpl-default": {
+      S.settings.defaultTemplateId = id;
+      commit(); closeLayer(); render(); toast("새 강의 기본 템플릿으로 지정했습니다");
+      break;
+    }
+    case "tpl-del": {
+      const tp = findTpl(id);
+      if(S.templates.length < 2){ toast("템플릿이 하나뿐이라 지울 수 없습니다"); return; }
+      const other = S.templates.find(x=>x.id!==tp.id);
+      const uses = S.courses.filter(c=>c.templateId===tp.id);
+      const noteOverrides = S.courses.reduce((n,c)=>
+        n + c.lessons.filter(l=>l.templateId===tp.id).length, 0);
+      closeLayer();
+      confirmSheet("템플릿을 삭제할까요?",
+        (uses.length || noteOverrides)
+          ? `이 템플릿을 쓰는 강의 ${uses.length}개는 '${tplName(other)}'로 바뀌고, 따로 지정한 노트 ${noteOverrides}개는 강의 기본값을 따르게 됩니다. 이미 쓴 노트 내용은 지워지지 않습니다.`
+          : "되돌릴 수 없습니다.",
+        "삭제", ()=>{
+          S.templates = S.templates.filter(x=>x.id!==tp.id);
+          uses.forEach(c=>c.templateId = other.id);
+          S.courses.forEach(c=>c.lessons.forEach(l=>{
+            if(l.templateId === tp.id) delete l.templateId;
+          }));
+          if(S.settings.defaultTemplateId===tp.id) S.settings.defaultTemplateId = other.id;
+          commit(); closeLayer(); go("#/settings"); toast("삭제했습니다");
+        }, true);
+      break;
+    }
     case "course-menu":
       sheet(`<h3>${esc(c.title)}</h3><div class="menu">
         <button data-act="add-lesson" data-id="${c.id}">${I.plus} 회차 추가</button>
@@ -1343,9 +2071,36 @@ document.addEventListener("click", e=>{
         <button class="warn" data-act="del-course" data-id="${c.id}">${I.trash} 강의 삭제</button>
       </div>`);
       break;
+    case "note-tpl": {
+      const l = findLesson(c, lid);
+      const cur = l.templateId || "";
+      closeLayer();
+      sheet(`<h3>이 노트의 템플릿</h3>
+        <p class="desc">이 회차에만 적용됩니다. 다른 회차는 그대로 강의 기본 템플릿을 씁니다.
+        바꿔도 이미 쓴 내용은 지워지지 않습니다.</p>
+        <div class="chips" style="margin-top:14px">
+          <button class="chip" data-act="set-note-tpl" data-cid="${c.id}" data-lid="${l.id}"
+            data-v="" aria-pressed="${!cur}">강의 기본값 · ${esc(tplName(tplOf(c)))}</button>
+          ${S.templates.map(tp=>`
+            <button class="chip" data-act="set-note-tpl" data-cid="${c.id}" data-lid="${l.id}"
+              data-v="${tp.id}" aria-pressed="${cur===tp.id}">${esc(tplName(tp))} · ${tp.fields.length}칸</button>`).join("")}
+        </div>
+        <p class="muted-note">지금 템플릿에 없는 칸의 내용은 노트 맨 아래에 읽기 전용으로 남습니다.</p>`);
+      break;
+    }
+    case "set-note-tpl": {
+      const l = findLesson(c, lid);
+      const v = t.dataset.v;
+      if(v) l.templateId = v; else delete l.templateId;
+      l.updatedAt = nowISO(); c.updatedAt = l.updatedAt;
+      commit(); closeLayer(); render();
+      toast(v ? "이 노트만 템플릿을 바꿨습니다" : "강의 기본 템플릿을 따릅니다");
+      break;
+    }
     case "note-menu": {
       const l = findLesson(c, lid);
       sheet(`<h3>${esc(l.label)}</h3><div class="menu">
+        <button data-act="note-tpl" data-cid="${c.id}" data-lid="${l.id}">${I.note} 이 노트의 템플릿 바꾸기</button>
         <button data-act="ren-lesson" data-cid="${c.id}" data-lid="${l.id}">${I.pen} 회차 이름 변경</button>
         <button data-act="pdf-note" data-cid="${c.id}" data-lid="${l.id}">${I.pdf} 이 노트 PDF</button>
         <button data-act="pdf-course" data-id="${c.id}">${I.pdf} 강의 전체 PDF</button>
@@ -1358,15 +2113,13 @@ document.addEventListener("click", e=>{
     /* 강의 */
     case "new-course": closeLayer(); courseSheet(null); break;
     case "edit-course": closeLayer(); courseSheet(c); break;
-    case "pick-color":
-      draftColor = t.dataset.v;
-      layer.querySelectorAll(".sw").forEach(s=>s.setAttribute("aria-pressed", s.dataset.v===draftColor));
-      break;
+    case "pick-color": applyDraftColor(t.dataset.v); break;
     case "create-course": {
       const title = layer.querySelector("#c-title").value.trim();
       if(!title){ toast("강의 이름을 입력해 주세요"); layer.querySelector("#c-title").focus(); return; }
       const nc = { id:uid(), title, source:layer.querySelector("#c-src").value.trim(),
-        color:draftColor, lessons:[], createdAt:nowISO(), updatedAt:nowISO() };
+        color:draftColor, templateId:draftTpl || S.settings.defaultTemplateId,
+        lessons:[], createdAt:nowISO(), updatedAt:nowISO() };
       S.courses.unshift(nc);
       commit(); closeLayer(); go("#/c/"+nc.id);
       setTimeout(()=>bulkSheet(nc.id), 260);
@@ -1378,6 +2131,7 @@ document.addEventListener("click", e=>{
       c.title = title;
       c.source = layer.querySelector("#c-src").value.trim();
       c.color = draftColor;
+      c.templateId = draftTpl || c.templateId;
       c.updatedAt = nowISO();
       commit(); closeLayer(); render(); toast("저장했습니다");
       break;
@@ -1385,7 +2139,7 @@ document.addEventListener("click", e=>{
     case "del-course":
       closeLayer();
       confirmSheet("강의를 삭제할까요?",
-        `${c.title} · 회차 ${c.lessons.length}개와 노트가 함께 지워집니다. 되돌릴 수 없습니다.`,
+        `${c.title} · 회차 ${lessonsOf(c).length}개와 노트가 함께 지워집니다. 되돌릴 수 없습니다.`,
         "삭제", ()=>{
           S.courses = S.courses.filter(x=>x.id!==c.id);
           commit(); closeLayer(); go("#/"); toast("삭제했습니다");
@@ -1393,18 +2147,25 @@ document.addEventListener("click", e=>{
       break;
 
     /* 회차 */
-    case "add-lesson":
+    case "add-lesson": case "add-section": {
+      const isSec = a==="add-section";
       closeLayer();
-      sheet(`<h3>회차 추가</h3>
-        <p class="desc">이름을 그대로 씁니다. 1강, Welcome, 중간 점검 모두 가능합니다.</p>
-        <div class="field"><div class="field-head"><label for="l-name">회차 이름</label></div>
-          <input id="l-name" type="text" data-autofocus placeholder="예: 3강 색 고르기" enterkeyhint="done"></div>
-        <div class="btn-row"><button class="btn primary wide" data-act="add-lesson-ok" data-id="${id}">추가</button></div>`);
+      sheet(`<h3>${isSec?"섹션 추가":"회차 추가"}</h3>
+        <p class="desc">${isSec
+          ? "섹션은 제목 역할만 합니다. 노트는 없고, 아래에 오는 회차들을 묶습니다."
+          : "노트를 쓰는 항목입니다. 1강, 오리엔테이션 등 이름을 그대로 씁니다."}</p>
+        <div class="field"><div class="field-head"><label for="l-name">${isSec?"섹션 제목":"회차 이름"}</label></div>
+          <input id="l-name" type="text" data-autofocus
+            placeholder="${isSec?"예: Welcome":"예: 3강 색 고르기"}" enterkeyhint="done"></div>
+        <div class="btn-row"><button class="btn primary wide" data-act="add-lesson-ok"
+          data-id="${id}" data-v="${isSec?"section":"lesson"}">추가</button></div>`);
       break;
+    }
     case "add-lesson-ok": {
       const v = layer.querySelector("#l-name").value.trim();
-      if(!v){ toast("회차 이름을 입력해 주세요"); return; }
-      c.lessons.push(newLesson(v));
+      const isSec = t.dataset.v==="section";
+      if(!v){ toast(isSec?"섹션 제목을 입력해 주세요":"회차 이름을 입력해 주세요"); return; }
+      c.lessons.push(isSec ? newSection(v) : newLesson(v));
       c.updatedAt = nowISO();
       commit(); closeLayer(); render(); toast("추가했습니다");
       break;
@@ -1412,11 +2173,15 @@ document.addEventListener("click", e=>{
     case "bulk-lesson": closeLayer(); bulkSheet(id); break;
     case "bulk-mode": bulkMode = t.dataset.v; bulkSheet(document.querySelector("[data-act='bulk-create']").dataset.id); break;
     case "bulk-create": {
-      const labels = bulkLabels();
-      if(!labels.length){ toast("만들 회차가 없습니다"); return; }
-      labels.forEach(x=>c.lessons.push(newLesson(x)));
+      const items = bulkItems();
+      if(!items.length){ toast("만들 항목이 없습니다"); return; }
+      items.forEach(x=>c.lessons.push(
+        x.type==="section" ? newSection(x.label) : newLesson(x.label)));
       c.updatedAt = nowISO();
-      commit(); closeLayer(); render(); toast(labels.length + "개 회차를 만들었습니다");
+      const les = items.filter(x=>x.type==="lesson").length;
+      const secs = items.length - les;
+      commit(); closeLayer(); render();
+      toast((secs?secs+"개 섹션, ":"") + les + "개 회차를 만들었습니다");
       break;
     }
     case "ren-lesson": {
@@ -1439,7 +2204,10 @@ document.addEventListener("click", e=>{
     case "del-lesson": {
       const l = findLesson(c, lid);
       closeLayer();
-      confirmSheet("회차를 삭제할까요?", `${l.label}에 적은 노트가 함께 지워집니다.`, "삭제", ()=>{
+      confirmSheet(isSection(l)?"섹션을 삭제할까요?":"회차를 삭제할까요?",
+        isSection(l)
+          ? `${l.label} 제목만 지워지고, 아래에 있던 회차와 노트는 그대로 남습니다.`
+          : `${l.label}에 적은 노트가 함께 지워집니다.`, "삭제", ()=>{
         c.lessons = c.lessons.filter(x=>x.id!==l.id);
         c.updatedAt = nowISO();
         commit(); closeLayer();
@@ -1478,6 +2246,7 @@ document.addEventListener("click", e=>{
         "강의와 노트가 전부 지워집니다. 되돌릴 수 없습니다. 먼저 백업을 내보내는 것을 권합니다.",
         "전체 삭제", ()=>{
           S = blank();
+          migrate();
           S.settings.lastSeenVersion = APP_VERSION;
           commit(); closeLayer(); go("#/"); render(); toast("모두 삭제했습니다");
         }, true);
