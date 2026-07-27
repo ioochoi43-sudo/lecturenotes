@@ -58,7 +58,7 @@ input,textarea{font-size:16px} /* iOS 자동 확대 방지 */
    레이아웃
    ============================================================ */
 .app{
-  max-width:960px;margin:0 auto;
+  max-width:1200px;margin:0 auto;
   padding:0 var(--pad);
   padding-bottom:calc(var(--tab-h) + 28px + env(safe-area-inset-bottom));
 }
@@ -72,7 +72,7 @@ input,textarea{font-size:16px} /* iOS 자동 확대 방지 */
   transition:border-color .2s;
 }
 .topbar.stuck{border-bottom-color:var(--line)}
-.topbar-in{max-width:960px;margin:0 auto;padding:0 var(--pad);
+.topbar-in{max-width:1200px;margin:0 auto;padding:0 var(--pad);
   display:flex;align-items:center;gap:10px;min-height:40px}
 .eyebrow{
   font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
@@ -261,7 +261,7 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
   border-top:1px solid var(--line);
   padding-bottom:env(safe-area-inset-bottom)
 }
-.tabbar-in{max-width:960px;margin:0 auto;display:flex;height:var(--tab-h)}
+.tabbar-in{max-width:640px;margin:0 auto;display:flex;height:var(--tab-h)}
 .tabbar button{
   flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
   color:var(--muted);font-size:10.5px;font-weight:600
@@ -460,7 +460,8 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
 /* ============================================================
    넓은 화면(아이패드) — 늘리지 않고 촘촘하게
    ============================================================ */
-.narrow{max-width:660px;margin:0 auto}
+.narrow{max-width:1040px;margin:0 auto}
+.narrow.set{max-width:720px}
 @media(min-width:700px){
   :root{--pad:26px;--tab-h:56px}
   h1{font-size:24px}
@@ -479,6 +480,12 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
   .progress-top b{font-size:20px}
   .tabbar button{font-size:10px}
   .tabbar button svg{width:21px;height:21px}
+}
+@media(min-width:1100px){
+  :root{--pad:34px}
+  .grid{gap:24px 18px}
+  .ncols{gap:0 22px}
+  .lay-grid,#layGrid .ncols{gap:0 20px}
 }
 
 /* ============================================================
@@ -501,8 +508,18 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
   .p-sec{font-size:15pt;margin:10mm 0 4mm;padding-bottom:2mm;border-bottom:1.5px solid #000;
     page-break-after:avoid;break-after:avoid}
   .p-toc span{color:#666}
-  .p-note{page-break-inside:avoid;break-inside:avoid;margin-bottom:9mm;
-    padding-bottom:6mm;border-bottom:1px solid #DDD}
+  .p-note{margin-bottom:9mm;padding-bottom:6mm;border-bottom:1px solid #DDD}
+  .p-note h2{page-break-after:avoid;break-after:avoid}
+  .p-cols{display:grid;gap:0 5mm;align-items:start}
+  .p-cols.n2{grid-template-columns:1fr 1fr}
+  .p-cols.n3{grid-template-columns:1fr 1fr 1fr}
+  .p-col{min-width:0}
+  .p-field{border:0.3mm solid #C4C4C4;border-radius:1.5mm;padding:2mm 2.5mm 2.4mm;
+    margin-bottom:3mm;page-break-inside:avoid;break-inside:avoid}
+  .p-field .lab{font-size:7pt;font-weight:700;letter-spacing:.09em;color:#777;
+    margin-bottom:1.4mm}
+  .p-field .val{margin:0;white-space:pre-wrap;word-break:break-word}
+  .p-field.empty{border-style:dashed;border-color:#D8D8D8}
   .p-note.brk{page-break-before:always;break-before:page}
   .p-note h2{font-size:14pt;margin:0 0 1mm;letter-spacing:-.01em}
   .p-note .meta{font-size:8.5pt;color:#666;margin-bottom:4mm}
@@ -544,8 +561,21 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
 /* ============================================================
    0. 버전
    ============================================================ */
-const APP_VERSION = "1.4.0";
+const APP_VERSION = "1.5.0";
 const CHANGELOG = [
+  { v:"1.5.0", date:"2026-07-27", notes:[
+    "PDF가 템플릿 모양 그대로 나옵니다 — 칸 테두리·라벨·단 배치를 화면과 같게 유지합니다",
+    "비어 있는 칸도 점선 상자로 남아, 인쇄해서 손으로 채우는 용도로도 쓸 수 있습니다",
+    "노트마다 다른 템플릿을 지정했다면 PDF에도 그 템플릿 이름이 표시됩니다",
+    "설정 → PDF 모양에서 '내용만'(빈 칸 생략)으로 되돌릴 수 있습니다",
+    "긴 노트가 페이지 경계에서 잘리던 문제를 고쳤습니다"
+  ]},
+  { v:"1.4.1", date:"2026-07-27", notes:[
+    "아이패드 가로 화면에 맞춰 전체 폭을 넓혔습니다 (960 → 1200px)",
+    "노트 본문 폭 660 → 1040px, 2단일 때 각 열이 322 → 509px로 넓어집니다",
+    "홈 폴더가 한 줄에 7개 → 9개까지 들어갑니다",
+    "설정은 목록이라 읽기 좋은 폭(720px)으로, 아래 탭바는 가운데로 모았습니다"
+  ]},
   { v:"1.4.0", date:"2026-07-27", notes:[
     "노트마다 템플릿을 따로 지정할 수 있습니다 — 노트 제목 아래 템플릿 이름을 누르면 바로 바뀝니다",
     "지정하지 않은 노트는 강의 기본 템플릿을 그대로 따릅니다",
@@ -769,6 +799,7 @@ function migrate(){
     t.cols = clampInt(t.cols, 1, 3, 1);
     if(t.cols > 1) t.fields.forEach(f=>{ if(f.col > t.cols) f.col = t.cols; });
   });
+  if(S.settings.pdfStyle !== "text") S.settings.pdfStyle = "template";
   if(!S.settings.defaultTemplateId || !S.templates.some(t=>t.id===S.settings.defaultTemplateId))
     S.settings.defaultTemplateId = S.templates[0].id;
   S.courses.forEach(c=>{
@@ -807,11 +838,15 @@ function layoutBlocks(fields, cols){
   });
   return blocks;
 }
-const renderBlocks = (fields, cols, one) => layoutBlocks(fields, cols).map(b =>
-  b.full ? one(b.full)
-    : `<div class="ncols n${cols}">${b.cols.map(list=>
-        `<div class="ncol">${list.map(one).join("")}</div>`).join("")}</div>`
-).join("");
+function renderBlocks(fields, cols, one, cls){
+  const wrap = (cls && cls.wrap) || "ncols";
+  const colc = (cls && cls.col) || "ncol";
+  return layoutBlocks(fields, cols).map(b =>
+    b.full ? one(b.full)
+      : `<div class="${wrap} n${cols}">${b.cols.map(list=>
+          `<div class="${colc}">${list.map(one).join("")}</div>`).join("")}</div>`
+  ).join("");
+}
 const tplName = t => (t.name||"").trim() || "이름 없는 템플릿";
 
 function newLesson(label){
@@ -1467,7 +1502,7 @@ function renderSettings(){
 
   view.innerHTML = `
     ${Store.ok ? "" : `<div class="banner">브라우저 저장이 차단된 환경입니다. 자동저장이 동작하지 않으니 백업 내보내기로 보관하세요.</div>`}
-    <div class="narrow">
+    <div class="narrow set">
     <div class="set-group">
       <h2>노트 템플릿</h2>
       <div class="set-list">
@@ -1477,6 +1512,17 @@ function renderSettings(){
         <button data-act="new-tpl">${I.plus} 새 템플릿 만들기</button>
       </div>
       <p class="muted-note">강의마다 다른 템플릿을 쓸 수 있습니다. 강의 화면 → 더보기 → 강의 정보 수정에서 바꿉니다.</p>
+    </div>
+    <div class="set-group">
+      <h2>PDF 모양</h2>
+      <div class="chips">
+        <button class="chip" data-act="pdf-style" data-v="template"
+          aria-pressed="${S.settings.pdfStyle!=="text"}">템플릿 그대로</button>
+        <button class="chip" data-act="pdf-style" data-v="text"
+          aria-pressed="${S.settings.pdfStyle==="text"}">내용만</button>
+      </div>
+      <p class="muted-note">템플릿 그대로는 칸 테두리와 단 배치를 화면과 같게 유지하고, 비어 있는 칸도 그대로 남깁니다.
+      내용만은 채워 넣은 칸만 제목과 본문으로 이어 붙입니다.</p>
     </div>
     <div class="set-group">
       <h2>데이터</h2>
@@ -1706,17 +1752,37 @@ function bindBulkPreview(){
    8. PDF
    ============================================================ */
 const printRoot = document.getElementById("printRoot");
+/* 인쇄용 칸 상자 — 화면과 같은 라벨·테두리·높이 비율을 유지한다 */
+function pField(label, rows, val){
+  const v = (val||"").trim();
+  const lines = Math.min(clampInt(rows,1,MAXROWS,4), 6);
+  return `<div class="p-field${v?"":" empty"}" style="min-height:calc(${lines} * 1.62em)">
+    <div class="lab">${esc(label)}</div>
+    <p class="val">${esc(v)}</p>
+  </div>`;
+}
 function noteBlock(c, l, i, brk){
-  const parts = fieldsOf(c,l).map(f=>{
-    const v = (l[f.k]||"").trim();
-    return v ? `<h3>${esc(f.label)}</h3><p>${esc(v)}</p>` : "";
-  }).join("") + orphanKeys(c,l).map(k=>
-    `<h3>${esc(labelForKey(k))}</h3><p>${esc(l[k])}</p>`).join("");
-  return `<section class="p-note${brk?" brk":""}">
-    <h2>${i!=null?i+1+". ":""}${esc(l.label)}</h2>
-    <div class="meta">${STATUS[l.status]} · 마지막 수정 ${l.updatedAt?fmtFull(l.updatedAt):"없음"}</div>
-    ${parts || `<p class="p-empty">작성된 노트가 없습니다.</p>`}
-  </section>`;
+  const tpl = tplFor(c,l);
+  const orphans = orphanKeys(c,l);
+  const head = `<h2>${i!=null?i+1+". ":""}${esc(l.label)}</h2>
+    <div class="meta">${STATUS[l.status]} · 마지막 수정 ${l.updatedAt?fmtFull(l.updatedAt):"없음"}${
+      isTplOverridden(c,l) ? " · 템플릿 " + esc(tplName(tpl)) : ""}</div>`;
+
+  if(S.settings.pdfStyle === "text"){
+    const parts = fieldsOf(c,l).map(f=>{
+      const v = (l[f.k]||"").trim();
+      return v ? `<h3>${esc(f.label)}</h3><p>${esc(v)}</p>` : "";
+    }).join("") + orphans.map(k=>
+      `<h3>${esc(labelForKey(k))}</h3><p>${esc(l[k])}</p>`).join("");
+    return `<section class="p-note${brk?" brk":""}">${head}
+      ${parts || `<p class="p-empty">작성된 노트가 없습니다.</p>`}</section>`;
+  }
+
+  const body = renderBlocks(fieldsOf(c,l), colsOf(tpl),
+      f=>pField(f.label, rowsOf(f), l[f.k]),
+      { wrap:"p-cols", col:"p-col" })
+    + orphans.map(k=>pField(labelForKey(k), 2, l[k])).join("");
+  return `<section class="p-note${brk?" brk":""}">${head}${body}</section>`;
 }
 function doPrint(html){
   printRoot.innerHTML = html;
@@ -2238,6 +2304,11 @@ document.addEventListener("click", e=>{
     case "save-now": commit(); toast("저장했습니다 · " + fmtFull(S.settings.savedAt)); break;
 
     /* 데이터 */
+    case "pdf-style":
+      S.settings.pdfStyle = t.dataset.v==="text" ? "text" : "template";
+      commit(); render();
+      toast(S.settings.pdfStyle==="text" ? "내용만 내보냅니다" : "템플릿 그대로 내보냅니다");
+      break;
     case "export-json": closeLayer(); exportJSON(); break;
     case "import-json": closeLayer(); fileInput.click(); break;
     case "do-import": applyImport(t.dataset.mode); break;
