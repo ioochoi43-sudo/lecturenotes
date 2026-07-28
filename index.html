@@ -7,6 +7,12 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#FFFFFF">
 <title>강의 노트</title>
+<meta name="apple-mobile-web-app-title" content="강의 노트">
+<meta name="application-name" content="강의 노트">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png" sizes="192x192" type="image/png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20112%20101%27%3E%3Cpath%20fill%3D%27%233ba0ea%27%20d%3D%27M11%202h18c4%200%206%201.3%207.6%203.4l1.8%202.3c1.5%201.9%203.4%202%206%202H101a10%2010%200%200%201%2010%2010v69a12%2012%200%200%201-12%2012H13A12%2012%200%200%201%201%2088.7V12A10%2010%200%200%201%2011%202z%27%2F%3E%3Crect%20x%3D%2711%27%20y%3D%2719%27%20width%3D%2790%27%20height%3D%2722%27%20rx%3D%274%27%20fill%3D%27%23ffffff%27%2F%3E%3Cpath%20fill%3D%27%2374c2fb%27%20d%3D%27M9%2028h90a8%208%200%200%201%208%208v52.7a12%2012%200%200%201-12%2012H13A12%2012%200%200%201%201%2088.7V36a8%208%200%200%201%208-8z%27%2F%3E%3C%2Fsvg%3E" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
 
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin="anonymous">
 <link rel="stylesheet" as="style" crossorigin
@@ -408,6 +414,65 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
 .chip-val{font-size:11.5px;color:var(--muted);align-self:center;margin-left:auto;
   font-variant-numeric:tabular-nums}
 
+/* PDF 문서 서식 편집 */
+.md-wrap{display:grid;gap:0 20px}
+.md-pane{min-width:0}
+@media(max-width:899px){
+  .md-wrap .md-pane{display:none}
+  .md-wrap.edit .md-pane.edit{display:block}
+  .md-wrap.pv .md-pane.pv{display:block}
+}
+@media(min-width:900px){
+  .md-wrap{grid-template-columns:1fr 1fr}
+  .md-wrap .md-pane{display:block}
+  .md-seg{display:none}
+}
+#md-src{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13.5px;line-height:1.65}
+.md-tools{display:flex;flex-wrap:wrap;gap:6px}
+.mdt{height:32px;min-width:34px;padding:0 10px;border-radius:9px;background:var(--surface);
+  font-size:13px;font-weight:650;color:var(--ink-2);
+  display:inline-flex;align-items:center;justify-content:center}
+.mdt:active{background:var(--surface-2)}
+.mdt.b{font-weight:800;color:var(--ink)}
+.mdt.i{font-style:italic}
+.mdt.s{text-decoration:line-through}
+.mdt.c{font-family:ui-monospace,Menlo,monospace;font-size:12px}
+.mdt.mk{background:#FFF08A;color:#6B5300}
+.mdt.mk:active{background:#F2E07A}
+.pdf-pv{border:1px solid var(--line);border-radius:var(--r-md);padding:20px;background:#fff}
+.pdf-pv .p-md h1{font-size:23px;margin:0 0 8px;letter-spacing:-.02em;line-height:1.25}
+.pdf-pv .p-md h2{font-size:16.5px;margin:20px 0 6px;letter-spacing:-.01em}
+.pdf-pv .p-md h3{font-size:14px;margin:16px 0 4px}
+.pdf-pv .p-md h4{font-size:13px;margin:12px 0 3px}
+.pdf-pv .p-md p{margin:0 0 6px;font-size:13px;line-height:1.6;color:var(--ink-2)}
+.pdf-pv .p-md ul,.pdf-pv .p-md ol{margin:0 0 8px;padding-left:20px;font-size:13px;color:var(--ink-2)}
+.pdf-pv .p-md li{margin:2px 0}
+.pdf-pv .p-md hr{border:0;border-top:1px solid var(--ink);margin:14px 0}
+.pdf-pv .p-md blockquote{margin:6px 0;padding-left:12px;border-left:3px solid var(--line);color:var(--muted)}
+.pdf-pv .p-md code{font-family:ui-monospace,Menlo,monospace;font-size:12px;
+  background:var(--surface);padding:1px 4px;border-radius:4px}
+.pdf-pv .p-md del{color:var(--muted)}
+.pdf-pv mark{background:#FFF08A;color:inherit;padding:0 3px;border-radius:3px}
+.pdf-pv .p-md > :first-child{margin-top:0}
+.pdf-pv .p-toc{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
+  padding:8px 0;margin:8px 0 4px}
+.pdf-pv .p-toc div{display:flex;justify-content:space-between;gap:16px;font-size:12.5px;
+  padding:2px 0;color:var(--ink-2)}
+.pdf-pv .p-toc-s{font-weight:700;padding-top:7px!important;color:var(--ink)}
+.pdf-pv .p-note{margin-top:10px}
+.pdf-pv .p-cols{display:grid;gap:0 12px;align-items:start}
+.pdf-pv .p-cols.n2{grid-template-columns:1fr 1fr}
+.pdf-pv .p-cols.n3{grid-template-columns:1fr 1fr 1fr}
+.pdf-pv .p-col{min-width:0}
+.pdf-pv .p-field{border:1px solid #D6D6D6;border-radius:6px;padding:8px 9px;margin-bottom:8px}
+.pdf-pv .p-field.empty{border-style:dashed;border-color:#E3E3E3}
+.pdf-pv .p-field .lab{font-size:9px;font-weight:700;letter-spacing:.09em;color:#8A8A8A;
+  margin-bottom:4px}
+.pdf-pv .p-field .val{margin:0;white-space:pre-wrap;word-break:break-word;
+  font-size:12.5px;line-height:1.55;color:var(--ink)}
+.pdf-pv .p-kicker{font-size:11px;color:var(--muted);margin:0 0 10px}
+.pdf-pv .p-empty{color:#B0B0B0;font-style:italic;font-size:12.5px}
+
 /* 목차 섹션 */
 .sec-row{display:flex;align-items:center;gap:10px;padding:16px 2px 8px}
 .sec-row:first-child{padding-top:2px}
@@ -496,11 +561,26 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
   #printRoot{display:block!important}
   @page{size:A4;margin:16mm 15mm}
   html,body{background:#fff}
-  #printRoot{color:#000;font-size:10.5pt;line-height:1.62}
-  .p-cover{margin-bottom:14mm}
-  .p-cover .k{font-size:8pt;letter-spacing:.14em;text-transform:uppercase;color:#666}
-  .p-cover h1{font-size:22pt;margin:3mm 0 2mm;letter-spacing:-.02em}
-  .p-cover .sub{font-size:10pt;color:#444}
+  #printRoot{color:#000;font-size:10.5pt;line-height:1.62;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #printRoot mark{background:#FFF08A;color:#000;padding:0 .6mm;border-radius:.8mm;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .p-course.brk{page-break-before:always;break-before:page}
+  .p-kicker{font-size:8.5pt;color:#666;margin:0 0 4mm}
+  .p-md h1{font-size:22pt;margin:0 0 3mm;letter-spacing:-.02em;line-height:1.25}
+  .p-md h2{font-size:14pt;margin:9mm 0 2.5mm;letter-spacing:-.01em;
+    page-break-after:avoid;break-after:avoid}
+  .p-md h3{font-size:11.5pt;margin:7mm 0 1.5mm;page-break-after:avoid;break-after:avoid}
+  .p-md h4{font-size:10pt;margin:5mm 0 1mm;page-break-after:avoid;break-after:avoid}
+  .p-md p{margin:0 0 2mm}
+  .p-md ul,.p-md ol{margin:0 0 2.5mm;padding-left:6mm}
+  .p-md li{margin:.6mm 0}
+  .p-md hr{border:0;border-top:0.4mm solid #111;margin:5mm 0}
+  .p-md blockquote{margin:2mm 0;padding-left:4mm;border-left:0.7mm solid #CCC;color:#555}
+  .p-md code{font-family:ui-monospace,Menlo,monospace;font-size:9pt;
+    background:#F1F1F1;padding:0 1mm;border-radius:1mm}
+  .p-md del{color:#888}
+  .p-md > :first-child{margin-top:0}
   .p-toc{border-top:1px solid #000;border-bottom:1px solid #000;padding:4mm 0;margin-bottom:10mm}
   .p-toc div{display:flex;justify-content:space-between;gap:6mm;font-size:9.5pt;padding:1mm 0}
   .p-toc-s{font-weight:700;padding-top:2mm!important}
@@ -515,6 +595,7 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
   .p-col{min-width:0}
   .p-field{border:0.3mm solid #C4C4C4;border-radius:1.5mm;padding:2mm 2.5mm 2.4mm;
     margin-bottom:3mm;page-break-inside:avoid;break-inside:avoid}
+  .p-field.long{page-break-inside:auto;break-inside:auto}
   .p-field .lab{font-size:7pt;font-weight:700;letter-spacing:.09em;color:#777;
     margin-bottom:1.4mm}
   .p-field .val{margin:0;white-space:pre-wrap;word-break:break-word}
@@ -560,8 +641,29 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
 /* ============================================================
    0. 버전
    ============================================================ */
-const APP_VERSION = "1.6.0";
+const APP_VERSION = "1.9.0";
 const CHANGELOG = [
+  { v:"1.9.0", date:"2026-07-28", notes:[
+    "홈 화면에 추가할 때 폴더 모양 앱 아이콘이 표시됩니다",
+    "서식을 겹쳐 쓸 수 있습니다 — 굵게+하이라이트, 하이라이트+기울임 등",
+    "코드 표기 안에서는 다른 서식이 적용되지 않습니다",
+    "굵게 위에 기울임을 덧씌울 때 별표가 잘못 벗겨지던 문제를 고쳤습니다",
+    "긴 글이 든 칸은 페이지를 넘어 이어지도록 명시했습니다"
+  ]},
+  { v:"1.8.0", date:"2026-07-28", notes:[
+    "문서 서식 편집기에 서식 버튼을 넣었습니다 — H1·H2·H3, 굵게, 기울임, 취소선, 코드, 목록, 인용, 구분선",
+    "==하이라이트== 문법을 지원합니다. 형광펜처럼 노란 배경으로 인쇄됩니다",
+    "글자를 고르고 버튼을 누르면 적용되고, 다시 누르면 해제됩니다",
+    "단축키: Cmd(Ctrl)+B 굵게, +I 기울임, +H 하이라이트, +E 코드"
+  ]},
+  { v:"1.7.0", date:"2026-07-28", notes:[
+    "PDF 문서 서식을 마크다운으로 직접 짤 수 있습니다 (설정 → PDF 모양 → 문서 서식 편집)",
+    "표지 · 섹션 제목 · 회차 머리말 세 블록을 따로 편집합니다",
+    "편집과 미리보기를 나란히 보여주고, 넓은 화면에서는 두 칸으로 배치됩니다",
+    "{{강의명}} {{회차수}} {{날짜}} {{목차}} 같은 값을 눌러서 넣을 수 있습니다",
+    "제목·굵게·목록·인용·구분선·코드 표기를 지원합니다",
+    "노트 템플릿(칸 구성)과는 완전히 별개로 동작합니다"
+  ]},
   { v:"1.6.0", date:"2026-07-28", notes:[
     "폴더 그림을 레퍼런스와 같은 형태로 다시 그렸습니다",
     "왼쪽 탭에서 곡선 어깨로 이어지는 실루엣, 앞면 세로 그라데이션, 상단 하이라이트",
@@ -833,6 +935,7 @@ function migrate(){
     if(t.cols > 1) t.fields.forEach(f=>{ if(f.col > t.cols) f.col = t.cols; });
   });
   if(S.settings.pdfStyle !== "text") S.settings.pdfStyle = "template";
+  /* pdfDoc()은 읽을 때마다 기본값으로 채우므로 여기서 손대지 않는다 (초기화 순서 문제) */
   if(!S.settings.defaultTemplateId || !S.templates.some(t=>t.id===S.settings.defaultTemplateId))
     S.settings.defaultTemplateId = S.templates[0].id;
   S.courses.forEach(c=>{
@@ -974,6 +1077,7 @@ function route(){
   if(parts[0]==="all") return { name:"all" };
   if(parts[0]==="settings") return { name:"settings" };
   if(parts[0]==="t" && parts[1]) return { name:"template", tid:parts[1] };
+  if(parts[0]==="pdfdoc") return { name:"pdfdoc" };
   if(parts[0]==="c" && parts[1]){
     if(parts[2]==="l" && parts[3]) return { name:"note", cid:parts[1], lid:parts[3] };
     return { name:"course", cid:parts[1] };
@@ -998,6 +1102,7 @@ function render(){
   if(r.name==="home") return renderHome();
   if(r.name==="all") return renderAll();
   if(r.name==="settings") return renderSettings();
+  if(r.name==="pdfdoc") return renderPdfDoc();
   if(r.name==="template"){
     const t = findTpl(r.tid);
     if(!t) return go("#/settings");
@@ -1543,6 +1648,163 @@ function renderTemplate(t){
   });
 }
 
+/* ---------- PDF 문서 서식 ---------- */
+let mdBlockKey = "cover", mdPane = "edit";
+function pdfSample(){
+  const withL = S.courses.find(x=>lessonsOf(x).length);
+  if(withL) return { c:withL, l:lessonsOf(withL)[0] };
+  const tpl = S.templates[0];
+  const c = { id:"sample", title:"실무 브랜딩 클래스", source:"클래스101 · 김민수",
+    color:COLOR_PRESETS[0], templateId:tpl.id, lessons:[] };
+  const l = newLesson("1강 오리엔테이션");
+  l.status = "doing"; l.updatedAt = nowISO();
+  if(tpl.fields[0]) l[tpl.fields[0].k] = "브랜드는 약속이다. 반복해서 지켜야 인식이 된다.";
+  c.lessons = [ newSection("Welcome"), l, newLesson("2강 시장 조사") ];
+  return { c, l };
+}
+function pdfPreviewHTML(){
+  const doc = pdfDoc(), { c, l } = pdfSample();
+  const sec = sectionFor(c,l);
+  return mdBlock(doc.cover, courseVars(c), tocHTML(c))
+    + (sec ? mdBlock(doc.section, { "섹션명":sec.label, "강의명":c.title }) : "")
+    + `<section class="p-note">${mdBlock(doc.note, noteVars(c,l))}${noteFieldsHTML(c,l)}</section>`;
+}
+function mdWrap(ta, mark){
+  const v = ta.value, a = ta.selectionStart, b = ta.selectionEnd, n = mark.length;
+  const sel = v.slice(a,b);
+  /* '*'는 '**'(굵게)와 헷갈리기 쉬워, 굵게가 걸린 자리에서는 해제하지 않고 덧씌운다 */
+  const boldClash = mark === "*" &&
+    (sel.slice(0,2) === "**" || sel.slice(-2) === "**" ||
+     v.slice(a-2,a) === "**" || v.slice(b,b+2) === "**");
+  if(!boldClash && sel.length >= 2*n && sel.slice(0,n) === mark && sel.slice(-n) === mark){
+    const inner = sel.slice(n, -n);
+    ta.value = v.slice(0,a) + inner + v.slice(b);
+    ta.selectionStart = a; ta.selectionEnd = a + inner.length;
+  } else if(!boldClash && v.slice(a-n, a) === mark && v.slice(b, b+n) === mark){
+    ta.value = v.slice(0, a-n) + sel + v.slice(b+n);
+    ta.selectionStart = a-n; ta.selectionEnd = b-n;
+  } else {
+    ta.value = v.slice(0,a) + mark + sel + mark + v.slice(b);
+    ta.selectionStart = a+n; ta.selectionEnd = a+n+sel.length;
+  }
+}
+function mdLine(ta, prefix){
+  const v = ta.value;
+  const start = v.lastIndexOf("\n", ta.selectionStart - 1) + 1;
+  let end = v.indexOf("\n", ta.selectionEnd);
+  if(end < 0) end = v.length;
+  const lines = v.slice(start, end).split("\n");
+  const re = prefix === "1. " ? /^\d+[.)]\s+/
+    : new RegExp("^" + prefix.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  const has = lines.every(l => !l.trim() || re.test(l));
+  const out = lines.map((l,i)=>{
+    if(!l.trim()) return l;
+    if(has) return l.replace(re, "");
+    const bare = l.replace(/^(#{1,4}\s+|[-*+]\s+|\d+[.)]\s+|&gt;\s?|>\s?)/, "");
+    return (prefix === "1. " ? (i+1) + ". " : prefix) + bare;
+  });
+  const txt = out.join("\n");
+  ta.value = v.slice(0,start) + txt + v.slice(end);
+  ta.selectionStart = start; ta.selectionEnd = start + txt.length;
+}
+function mdInsert(ta, text){
+  const v = ta.value, a = ta.selectionStart;
+  const ins = (a === 0 || v[a-1] === "\n" ? "" : "\n") + text;
+  ta.value = v.slice(0,a) + ins + v.slice(a);
+  ta.selectionStart = ta.selectionEnd = a + ins.length;
+}
+function applyMdTool(key){
+  const ta = document.getElementById("md-src");
+  const tool = MD_TOOLS.find(x=>x.k===key);
+  if(!ta || !tool) return;
+  if(tool.t === "wrap") mdWrap(ta, tool.v);
+  else if(tool.t === "line") mdLine(ta, tool.v);
+  else mdInsert(ta, tool.v);
+  ta.focus();
+  ta.dispatchEvent(new Event("input", { bubbles:true }));
+}
+function renderPdfDoc(){
+  setTab("settings");
+  const doc = pdfDoc();
+  const blk = PDF_BLOCKS.find(b=>b.k===mdBlockKey) || PDF_BLOCKS[0];
+  topbarIn.innerHTML = `
+    <button class="back" data-act="go-settings">${I.back}<span>설정</span></button>
+    <div class="h1-wrap" style="text-align:center">
+      <p class="eyebrow" style="margin:0">PDF 문서 서식</p>
+      <div style="font-size:15px;font-weight:650">마크다운</div>
+    </div>
+    <button class="icon-btn" data-act="md-menu" aria-label="더보기">${I.more}</button>`;
+
+  view.innerHTML = `
+    <div style="margin-top:16px">
+      <p class="muted-note" style="margin:0 0 12px">PDF의 표지와 제목을 마크다운으로 직접 짭니다.
+      노트 칸 구성(노트 템플릿)과는 별개이고, 칸 상자는 회차 머리말 아래에 그대로 들어갑니다.</p>
+      <div class="chips">
+        ${PDF_BLOCKS.map(b=>`
+          <button class="chip" data-act="md-block" data-v="${b.k}"
+            aria-pressed="${b.k===mdBlockKey}">${b.n}</button>`).join("")}
+      </div>
+      <p class="muted-note" style="margin-top:8px">${esc(blk.d)}에 들어갑니다.</p>
+    </div>
+
+    <div class="md-seg seg" style="margin-top:14px">
+      <button data-act="md-pane" data-v="edit" aria-pressed="${mdPane==="edit"}">편집</button>
+      <button data-act="md-pane" data-v="pv" aria-pressed="${mdPane==="pv"}">미리보기</button>
+    </div>
+
+    <div class="md-wrap ${mdPane}">
+      <div class="md-pane edit">
+        <div class="field-head" style="margin-top:16px"><label>서식</label>
+          <span class="hint">선택 후 누르면 적용</span></div>
+        <div class="md-tools">
+          ${MD_TOOLS.map(t=>`
+            <button class="mdt ${t.cls||""}" data-act="md-tool" data-v="${t.k}"
+              title="${esc(t.title)}" aria-label="${esc(t.title)}">${esc(t.n)}</button>`).join("")}
+        </div>
+        <div class="field" style="margin-top:12px">
+          <div class="field-head"><label for="md-src">${esc(blk.n)} 마크다운</label>
+            <span class="hint">==하이라이트== 도 됩니다</span></div>
+          <textarea id="md-src" rows="10" spellcheck="false"
+            placeholder="# {{강의명}}">${esc(doc[mdBlockKey])}</textarea>
+        </div>
+        <div class="field-head" style="margin-top:14px"><label>넣을 수 있는 값</label>
+          <span class="hint">눌러서 삽입</span></div>
+        <div class="chips">
+          ${PDF_VARS[mdBlockKey].map(v=>`
+            <button class="chip sm" data-act="md-var" data-v="${esc(v)}">{{${esc(v)}}}</button>`).join("")}
+        </div>
+      </div>
+      <div class="md-pane pv">
+        <div class="field-head" style="margin-top:14px"><label>미리보기</label>
+          <span class="hint">실제 PDF와 같은 구성</span></div>
+        <div class="pdf-pv" id="md-pv">${pdfPreviewHTML()}</div>
+      </div>
+    </div>
+
+    <div class="savebar" data-savestate><span class="dot"></span><span data-savetext></span></div>
+    <div class="btn-row">
+      <button class="btn ghost" data-act="md-reset">이 블록 기본값으로</button>
+      <button class="btn ghost" data-act="pdf-all">${I.pdf} 전체 PDF 미리 내보내기</button>
+    </div>`;
+  paintSaveState();
+
+  const ta = document.getElementById("md-src");
+  grow(ta);
+  ta.addEventListener("keydown", e=>{
+    if(!(e.metaKey || e.ctrlKey)) return;
+    const map = { b:"b", i:"i", e:"code", h:"mark" };
+    const k = map[(e.key||"").toLowerCase()];
+    if(k){ e.preventDefault(); applyMdTool(k); }
+  });
+  ta.addEventListener("input", ()=>{
+    grow(ta);
+    S.settings.pdfDoc = Object.assign(pdfDoc(), { [mdBlockKey]: ta.value });
+    touch();
+    const pv = document.getElementById("md-pv");
+    if(pv) pv.innerHTML = pdfPreviewHTML();
+  });
+}
+
 /* ---------- 설정 ---------- */
 function renderSettings(){
   setTab("settings");
@@ -1575,6 +1837,10 @@ function renderSettings(){
       </div>
       <p class="muted-note">템플릿 그대로는 칸 테두리와 단 배치를 화면과 같게 유지하고, 비어 있는 칸도 그대로 남깁니다.
       내용만은 채워 넣은 칸만 제목과 본문으로 이어 붙입니다.</p>
+      <div class="set-list" style="margin-top:12px">
+        <button data-act="open-pdfdoc">${I.list} 문서 서식 편집 (마크다운)
+          <span class="val">표지 · 제목</span></button>
+      </div>
     </div>
     <div class="set-group">
       <h2>데이터</h2>
@@ -1800,37 +2066,164 @@ function bindBulkPreview(){
    8. PDF
    ============================================================ */
 const printRoot = document.getElementById("printRoot");
+/* ── PDF 문서 서식 (노트 템플릿과 별개) ──────────────────────────
+   마크다운으로 표지·섹션 제목·회차 머리말을 직접 짠다. */
+const PDF_DOC_DEFAULT = {
+  cover: "# {{강의명}}\n\n{{강사}} · {{회차수}}회차 · {{완료수}} 완료 · 내보낸 날짜 {{날짜}}\n\n---\n\n## 목차\n\n{{목차}}",
+  section: "## {{섹션명}}",
+  note: "### {{번호}}. {{회차명}}\n\n{{상태}} · 마지막 수정 {{수정일}}"
+};
+const PDF_VARS = {
+  cover: ["강의명","강사","회차수","완료수","작성수","섹션수","날짜","시각","템플릿명","목차"],
+  section: ["섹션명","강의명"],
+  note: ["번호","회차명","상태","수정일","섹션명","강의명","템플릿명"]
+};
+const MD_TOOLS = [
+  { k:"h1",    n:"H1",  t:"line",   v:"# ",     title:"대제목" },
+  { k:"h2",    n:"H2",  t:"line",   v:"## ",    title:"중제목" },
+  { k:"h3",    n:"H3",  t:"line",   v:"### ",   title:"소제목" },
+  { k:"b",     n:"B",   t:"wrap",   v:"**",     cls:"b",  title:"굵게" },
+  { k:"i",     n:"I",   t:"wrap",   v:"*",      cls:"i",  title:"기울임" },
+  { k:"mark",  n:"하이라이트", t:"wrap", v:"==", cls:"mk", title:"하이라이트" },
+  { k:"s",     n:"S",   t:"wrap",   v:"~~",     cls:"s",  title:"취소선" },
+  { k:"code",  n:"코드", t:"wrap",  v:"`",      cls:"c",  title:"코드" },
+  { k:"ul",    n:"• 목록", t:"line", v:"- ",    title:"목록" },
+  { k:"ol",    n:"1. 번호", t:"line", v:"1. ",  title:"번호 목록" },
+  { k:"quote", n:"❝ 인용", t:"line", v:"> ",    title:"인용" },
+  { k:"hr",    n:"— 구분선", t:"insert", v:"\n---\n", title:"구분선" }
+];
+const PDF_BLOCKS = [
+  { k:"cover",   n:"표지",      d:"강의마다 맨 앞에 한 번" },
+  { k:"section", n:"섹션 제목",  d:"Welcome 같은 섹션마다" },
+  { k:"note",    n:"회차 머리말", d:"회차 노트 상자 위에" }
+];
+function pdfDoc(){
+  const d = S.settings.pdfDoc || {};
+  return {
+    cover: typeof d.cover === "string" ? d.cover : PDF_DOC_DEFAULT.cover,
+    section: typeof d.section === "string" ? d.section : PDF_DOC_DEFAULT.section,
+    note: typeof d.note === "string" ? d.note : PDF_DOC_DEFAULT.note
+  };
+}
+/* 이미 이스케이프된 문자열을 받는다는 전제 (원본 HTML은 들어올 수 없음) */
+function mdInline(t){
+  const codes = [];
+  let out = t.replace(/`([^`]+)`/g, (m,p1)=>{ codes.push(p1); return "\u0001" + (codes.length-1) + "\u0001"; });
+  /* 한 번만 돌리면 **==셋==** 처럼 세 겹으로 감싼 경우 바깥쪽이 남는다.
+     안쪽이 태그로 바뀐 뒤 한 번 더 훑어 바깥쪽까지 처리한다. */
+  const pass = x => x
+    .replace(/==([^=\n]+)==/g, '<mark>$1</mark>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>')
+    .replace(/~~([^~]+)~~/g, '<del>$1</del>');
+  out = pass(pass(out));
+  return out.replace(/\u0001(\d+)\u0001/g, (m,i)=>'<code>' + codes[+i] + '</code>');
+}
+function mdToHtml(src){
+  const lines = String(src||"").replace(/\r\n?/g,"\n").split("\n");
+  const out = []; let list = null, para = [];
+  const flushP = ()=>{ if(para.length){ out.push("<p>"+mdInline(para.join(" "))+"</p>"); para = []; } };
+  const flushL = ()=>{ if(list){ out.push("</"+list+">"); list = null; } };
+  lines.forEach(raw=>{
+    const t = raw.trim();
+    if(!t){ flushP(); flushL(); return; }
+    let m;
+    if((m = /^(#{1,4})\s+(.*)$/.exec(t))){
+      flushP(); flushL();
+      const n = m[1].length;
+      out.push("<h"+n+">"+mdInline(m[2])+"</h"+n+">"); return;
+    }
+    if(/^(-{3,}|\*{3,}|_{3,})$/.test(t)){ flushP(); flushL(); out.push("<hr>"); return; }
+    if((m = /^&gt;\s?(.*)$/.exec(t))){ flushP(); flushL(); out.push("<blockquote>"+mdInline(m[1])+"</blockquote>"); return; }
+    if((m = /^[-*+]\s+(.*)$/.exec(t))){
+      flushP(); if(list!=="ul"){ flushL(); out.push("<ul>"); list = "ul"; }
+      out.push("<li>"+mdInline(m[1])+"</li>"); return;
+    }
+    if((m = /^\d+[.)]\s+(.*)$/.exec(t))){
+      flushP(); if(list!=="ol"){ flushL(); out.push("<ol>"); list = "ol"; }
+      out.push("<li>"+mdInline(m[1])+"</li>"); return;
+    }
+    flushL(); para.push(t);
+  });
+  flushP(); flushL();
+  return out.join("\n");
+}
+function fillVars(tplText, vars){
+  return esc(tplText).replace(/\{\{\s*([^{}]+?)\s*\}\}/g, (m,k)=>{
+    const v = vars[k.trim()];
+    return v === undefined ? m : esc(v);
+  });
+}
+function mdBlock(tplText, vars, tocHTML){
+  let html = mdToHtml(fillVars(tplText, vars));
+  if(tocHTML !== undefined)
+    html = html.replace(/<p>\s*\{\{목차\}\}\s*<\/p>|\{\{목차\}\}/g, tocHTML);
+  return `<div class="p-md">${html}</div>`;
+}
+function courseVars(c){
+  const now = new Date();
+  return {
+    "강의명": c.title, "강사": c.source || "",
+    "회차수": String(lessonsOf(c).length), "완료수": String(doneCount(c)),
+    "작성수": String(writtenCount(c)),
+    "섹션수": String(c.lessons.filter(isSection).length),
+    "날짜": fmtDate(now.toISOString()), "시각": fmtFull(now.toISOString()),
+    "템플릿명": tplName(tplOf(c))
+  };
+}
+function noteVars(c,l){
+  const sec = sectionFor(c,l);
+  return {
+    "번호": String(lessonNo(c,l)), "회차명": l.label,
+    "상태": STATUS[l.status], "수정일": l.updatedAt ? fmtFull(l.updatedAt) : "없음",
+    "섹션명": sec ? sec.label : "", "강의명": c.title,
+    "템플릿명": tplName(tplFor(c,l))
+  };
+}
+function tocHTML(c){
+  return `<div class="p-toc">${c.lessons.map(x=> isSection(x)
+    ? `<div class="p-toc-s"><span>${esc(x.label)}</span><span></span></div>`
+    : `<div><span>${lessonNo(c,x)}. ${esc(x.label)}</span><span>${STATUS[x.status]}</span></div>`).join("")}</div>`;
+}
+
 /* 인쇄용 칸 상자 — 화면과 같은 라벨·테두리·높이 비율을 유지한다 */
 function pField(label, rows, val){
   const v = (val||"").trim();
   const lines = Math.min(clampInt(rows,1,MAXROWS,4), 6);
-  return `<div class="p-field${v?"":" empty"}" style="min-height:calc(${lines} * 1.62em)">
+  /* 한 페이지를 넘길 만한 칸은 쪼개질 수 있게 둔다.
+     통째로 유지하려 들면 넘치는 부분이 잘려 사라진다. */
+  const long = v.length > 300 || v.split("\n").length > 6;
+  return `<div class="p-field${v?"":" empty"}${long?" long":""}" style="min-height:calc(${lines} * 1.62em)">
     <div class="lab">${esc(label)}</div>
     <p class="val">${esc(v)}</p>
   </div>`;
 }
-function noteBlock(c, l, i, brk){
+/* 노트 '내용' 부분만. 머리말은 PDF 문서 서식(마크다운)이 담당한다. */
+function noteFieldsHTML(c, l){
   const tpl = tplFor(c,l);
   const orphans = orphanKeys(c,l);
-  const head = `<h2>${i!=null?i+1+". ":""}${esc(l.label)}</h2>
-    <div class="meta">${STATUS[l.status]} · 마지막 수정 ${l.updatedAt?fmtFull(l.updatedAt):"없음"}${
-      isTplOverridden(c,l) ? " · 템플릿 " + esc(tplName(tpl)) : ""}</div>`;
-
   if(S.settings.pdfStyle === "text"){
     const parts = fieldsOf(c,l).map(f=>{
       const v = (l[f.k]||"").trim();
       return v ? `<h3>${esc(f.label)}</h3><p>${esc(v)}</p>` : "";
     }).join("") + orphans.map(k=>
       `<h3>${esc(labelForKey(k))}</h3><p>${esc(l[k])}</p>`).join("");
-    return `<section class="p-note${brk?" brk":""}">${head}
-      ${parts || `<p class="p-empty">작성된 노트가 없습니다.</p>`}</section>`;
+    return parts || `<p class="p-empty">작성된 노트가 없습니다.</p>`;
   }
-
-  const body = renderBlocks(fieldsOf(c,l), colsOf(tpl),
+  return renderBlocks(fieldsOf(c,l), colsOf(tpl),
       f=>pField(f.label, rowsOf(f), l[f.k]),
       { wrap:"p-cols", col:"p-col" })
     + orphans.map(k=>pField(labelForKey(k), 2, l[k])).join("");
-  return `<section class="p-note${brk?" brk":""}">${head}${body}</section>`;
+}
+function courseBody(c, brk){
+  const doc = pdfDoc();
+  return `<div class="p-course${brk?" brk":""}">
+    ${mdBlock(doc.cover, courseVars(c), tocHTML(c))}
+    ${c.lessons.map(x=> isSection(x)
+      ? mdBlock(doc.section, { "섹션명":x.label, "강의명":c.title })
+      : `<section class="p-note">${mdBlock(doc.note, noteVars(c,x))}${noteFieldsHTML(c,x)}</section>`
+    ).join("")}
+  </div>`;
 }
 function doPrint(html){
   printRoot.innerHTML = html;
@@ -1838,36 +2231,13 @@ function doPrint(html){
   setTimeout(()=>window.print(), 400);
 }
 function pdfNote(c,l){
-  doPrint(`<div class="p-cover"><div class="k">${esc(c.title)}</div>
-    <h1>${esc(l.label)}</h1>
-    <div class="sub">내보낸 날짜 ${fmtFull(nowISO())}</div></div>${noteBlock(c,l,null,false)}`);
+  doPrint(`<div class="p-course">
+    <p class="p-kicker">${esc(c.title)} · 내보낸 날짜 ${fmtFull(nowISO())}</p>
+    <section class="p-note">${mdBlock(pdfDoc().note, noteVars(c,l))}${noteFieldsHTML(c,l)}</section>
+  </div>`);
 }
-function pdfCourse(c){
-  doPrint(`<div class="p-cover"><div class="k">Lecture notes</div>
-    <h1>${esc(c.title)}</h1>
-    <div class="sub">${c.source?esc(c.source)+" · ":""}${lessonsOf(c).length}회차 · ${doneCount(c)} 완료 · 기본 템플릿 ${esc(tplName(tplOf(c)))} · 내보낸 날짜 ${fmtFull(nowISO())}</div></div>
-    <div class="p-toc">${c.lessons.map(x=> isSection(x)
-      ? `<div class="p-toc-s"><span>${esc(x.label)}</span><span></span></div>`
-      : `<div><span>${lessonNo(c,x)}. ${esc(x.label)}</span><span>${STATUS[x.status]}</span></div>`).join("")}</div>
-    ${c.lessons.map(x=> isSection(x)
-      ? `<h2 class="p-sec">${esc(x.label)}</h2>`
-      : noteBlock(c,x,lessonNo(c,x)-1,false)).join("")}`);
-}
-function pdfAll(){
-  doPrint(`<div class="p-cover"><div class="k">Lecture notes · 전체</div>
-    <h1>강의 노트 모음</h1>
-    <div class="sub">${S.courses.length}개 강의 · 내보낸 날짜 ${fmtFull(nowISO())}</div></div>
-    ${S.courses.map((c,ci)=>`
-      <div class="p-note${ci?" brk":""}"><h2>${esc(c.title)}</h2>
-        <div class="meta">${c.source?esc(c.source)+" · ":""}${lessonsOf(c).length}회차 · ${doneCount(c)} 완료</div>
-        <div class="p-toc" style="margin-top:4mm">${c.lessons.map(x=> isSection(x)
-          ? `<div class="p-toc-s"><span>${esc(x.label)}</span><span></span></div>`
-          : `<div><span>${lessonNo(c,x)}. ${esc(x.label)}</span><span>${STATUS[x.status]}</span></div>`).join("")}</div>
-      </div>
-      ${c.lessons.map(x=> isSection(x)
-        ? `<h2 class="p-sec">${esc(x.label)}</h2>`
-        : noteBlock(c,x,lessonNo(c,x)-1,false)).join("")}`).join("")}`);
-}
+function pdfCourse(c){ doPrint(courseBody(c, false)); }
+function pdfAll(){ doPrint(S.courses.map((c,i)=>courseBody(c, i>0)).join("")); }
 
 /* ============================================================
    9. 백업 / 가져오기
@@ -2055,6 +2425,35 @@ document.addEventListener("click", e=>{
       break;
     case "go-settings": closeLayer(); go("#/settings"); break;
     case "open-tpl": go("#/t/"+id); break;
+    case "open-pdfdoc": go("#/pdfdoc"); break;
+    case "md-block": if(dirty) commit(); mdBlockKey = t.dataset.v; render(); break;
+    case "md-pane": if(dirty) commit(); mdPane = t.dataset.v; render(); break;
+    case "md-tool": applyMdTool(t.dataset.v); break;
+    case "md-var": {
+      const ta = document.getElementById("md-src");
+      if(!ta) return;
+      const a0 = ta.selectionStart, a1 = ta.selectionEnd;
+      const token = "{{" + t.dataset.v + "}}";
+      ta.value = ta.value.slice(0,a0) + token + ta.value.slice(a1);
+      ta.selectionStart = ta.selectionEnd = a0 + token.length;
+      ta.focus();
+      ta.dispatchEvent(new Event("input", { bubbles:true }));
+      break;
+    }
+    case "md-menu":
+      sheet(`<h3>PDF 문서 서식</h3><div class="menu">
+        <button data-act="md-reset-all">${I.refresh} 세 블록 모두 기본값으로</button>
+        <button data-act="pdf-all">${I.pdf} 전체 PDF로 내보내기</button>
+      </div>`);
+      break;
+    case "md-reset":
+      S.settings.pdfDoc = Object.assign(pdfDoc(), { [mdBlockKey]: PDF_DOC_DEFAULT[mdBlockKey] });
+      commit(); render(); toast("기본값으로 되돌렸습니다");
+      break;
+    case "md-reset-all":
+      S.settings.pdfDoc = Object.assign({}, PDF_DOC_DEFAULT);
+      commit(); closeLayer(); render(); toast("모두 기본값으로 되돌렸습니다");
+      break;
     case "new-tpl": {
       const nt = { id:uid(), name:"새 템플릿",
         cols:1, fields:[{ k:"f_"+uid(), label:"노트", hint:"", ph:"", col:0, rows:12 }],
