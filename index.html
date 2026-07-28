@@ -126,14 +126,13 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
 
 .folder{margin-bottom:8px}
 .fsvg{display:block;width:100%;height:auto;
-  filter:drop-shadow(0 3px 7px rgba(var(--fsh),.26))}
-.f-back{fill:var(--f-back)}
-.f-front{fill:var(--f-mid)}
-.f-hi{fill:#fff;opacity:.14}
+  filter:drop-shadow(0 5px 10px rgba(var(--fsh),.3))}
+.fsvg.add{filter:none}
+.f-hi{stroke:#fff;stroke-opacity:.5;stroke-width:1;fill:none}
 .f-sheet{fill:#fff}
 .f-track{fill:#fff;opacity:.34}
 .f-fill{fill:#fff;transition:width .35s ease}
-.f-dash{fill:var(--accent-soft);stroke:#C6D3EA;stroke-width:1.6;stroke-dasharray:5 4}
+.f-dash{fill:var(--accent-soft);stroke:#C6D3EA;stroke-width:1.8;stroke-dasharray:5 4}
 .f-plus{stroke:var(--accent);stroke-width:2.4;stroke-linecap:round;fill:none}
 .tile .name{font-size:13.5px;font-weight:650;letter-spacing:-.01em;line-height:1.32;
   display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -561,8 +560,14 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
 /* ============================================================
    0. 버전
    ============================================================ */
-const APP_VERSION = "1.5.0";
+const APP_VERSION = "1.6.0";
 const CHANGELOG = [
+  { v:"1.6.0", date:"2026-07-28", notes:[
+    "폴더 그림을 레퍼런스와 같은 형태로 다시 그렸습니다",
+    "왼쪽 탭에서 곡선 어깨로 이어지는 실루엣, 앞면 세로 그라데이션, 상단 하이라이트",
+    "색을 HSL로 다루도록 바꿔, 어떤 색을 골라도 그라데이션이 탁해지지 않습니다",
+    "기본 폴더 색을 하늘색 계열로 바꿨습니다 (기존 강의 색은 그대로)"
+  ]},
   { v:"1.5.0", date:"2026-07-27", notes:[
     "PDF가 템플릿 모양 그대로 나옵니다 — 칸 테두리·라벨·단 배치를 화면과 같게 유지합니다",
     "비어 있는 칸도 점선 상자로 남아, 인쇄해서 손으로 채우는 용도로도 쓸 수 있습니다",
@@ -712,7 +717,7 @@ function fmtRel(iso){
   if(d < 7) return d + "일 전";
   return fmtDate(iso);
 }
-const COLOR_PRESETS = ["#4c86f5","#7a5af0","#14a896","#eda01a","#e75b60","#6e7885"];
+const COLOR_PRESETS = ["#50b1f7","#4c86f5","#7a5af0","#14a896","#eda01a","#e75b60"];
 const LEGACY_COLORS = { blue:"#4c86f5", violet:"#7a5af0", teal:"#14a896",
   amber:"#eda01a", rose:"#e75b60", slate:"#6e7885" };
 function normHex(v){
@@ -721,6 +726,35 @@ function normHex(v){
   if(/^[0-9a-fA-F]{6}$/.test(x)) x = "#"+x;
   if(/^#[0-9a-fA-F]{3}$/.test(x)) x = "#"+x[1]+x[1]+x[2]+x[2]+x[3]+x[3];
   return /^#[0-9a-fA-F]{6}$/.test(x) ? x.toLowerCase() : null;
+}
+function toHSL(hex){
+  const n = parseInt(hex.slice(1),16);
+  const r=((n>>16)&255)/255, g=((n>>8)&255)/255, b=(n&255)/255;
+  const mx=Math.max(r,g,b), mn=Math.min(r,g,b), l=(mx+mn)/2;
+  let h=0, sat=0;
+  if(mx!==mn){
+    const d=mx-mn;
+    sat = l>0.5 ? d/(2-mx-mn) : d/(mx+mn);
+    h = mx===r ? (g-b)/d + (g<b?6:0) : mx===g ? (b-r)/d+2 : (r-g)/d+4;
+    h/=6;
+  }
+  return [h,sat,l];
+}
+function fromHSL(h,s,l){
+  const f=(p,q,t)=>{ t=(t+1)%1;
+    return t<1/6 ? p+(q-p)*6*t : t<1/2 ? q : t<2/3 ? p+(q-p)*(2/3-t)*6 : p; };
+  let r,g,b;
+  if(s===0){ r=g=b=l; }
+  else{
+    const q = l<0.5 ? l*(1+s) : l+s-l*s, p = 2*l-q;
+    r=f(p,q,h+1/3); g=f(p,q,h); b=f(p,q,h-1/3);
+  }
+  return "#" + [r,g,b].map(v=>Math.round(v*255).toString(16).padStart(2,"0")).join("");
+}
+/* 밝기·채도를 따로 움직여 레퍼런스의 색 관계를 어떤 색에서도 재현한다 */
+function adjust(hex, dl, ds){
+  const [h,s,l] = toHSL(normHex(hex) || COLOR_PRESETS[0]);
+  return fromHSL(h, Math.max(0,Math.min(1,s+(ds||0))), Math.max(0,Math.min(1,l+(dl||0))));
 }
 function shade(hex, amt){
   const n = parseInt(hex.slice(1),16);
@@ -734,8 +768,7 @@ const rgbOf = hex => {
 /* 사용자가 고른 한 가지 색에서 폴더 뒷면·그림자 색을 자동 계산 */
 function colorVars(hex){
   const h = normHex(hex) || COLOR_PRESETS[0];
-  const back = shade(h,.72);
-  return `--f-mid:${h};--f-back:${back};--fsh:${rgbOf(back)}`;
+  return `--f-mid:${h};--f-back:${adjust(h,-.10,0)};--fsh:${rgbOf(adjust(h,-.24,0))}`;
 }
 const STATUS = { todo:"안 봄", doing:"보는 중", done:"완료" };
 
@@ -990,30 +1023,49 @@ function setTab(name){
   });
 }
 
-/* 폴더 그래픽 — 종이 장수는 작성한 노트 수, 아래 선은 완료율 */
+/* 폴더 그래픽 — 왼쪽 탭에서 곡선 어깨로 이어지는 실루엣, 앞면 세로 그라데이션,
+   끼워진 흰 종이, 상단 하이라이트. 아래 흰 선은 완료율. */
+const F_BACK = "M11 2h18c4 0 6 1.3 7.6 3.4l1.8 2.3c1.5 1.9 3.4 2 6 2H101a10 10 0 0 1 10 10v69a12 12 0 0 1-12 12H13A12 12 0 0 1 1 88.7V12A10 10 0 0 1 11 2z";
+const F_FRONT = "M9 28h90a8 8 0 0 1 8 8v52.7a12 12 0 0 1-12 12H13A12 12 0 0 1 1 88.7V36a8 8 0 0 1 8-8z";
+function folderSVG(hex, opts){
+  const o = opts || {};
+  const base = normHex(hex) || COLOR_PRESETS[0];
+  const gid = "fg" + (o.id || "x").replace(/[^a-zA-Z0-9_-]/g, "");
+  const pct = Math.max(0, Math.min(1, o.pct || 0));
+  const sheets = o.sheets == null ? 1 : o.sheets;
+  return `<svg class="fsvg" viewBox="0 0 112 101" aria-hidden="true">
+    <defs>
+      <linearGradient id="b${gid}" x1="0" y1="0" x2="0.2" y2="1">
+        <stop offset="0" stop-color="${adjust(base,0,.02)}"/>
+        <stop offset="1" stop-color="${adjust(base,-.09,0)}"/>
+      </linearGradient>
+      <linearGradient id="f${gid}" x1="0" y1="0" x2="0.12" y2="1">
+        <stop offset="0" stop-color="${adjust(base,.14,.14)}"/>
+        <stop offset="1" stop-color="${adjust(base,-.12,-.06)}"/>
+      </linearGradient>
+    </defs>
+    <path fill="url(#b${gid})" d="${F_BACK}"/>
+    ${sheets>1?`<rect class="f-sheet" x="17" y="15" width="78" height="22" rx="4" opacity=".5"/>`:""}
+    ${sheets>0?`<rect class="f-sheet" x="11" y="19" width="90" height="22" rx="4"/>`:""}
+    <path fill="url(#f${gid})" d="${F_FRONT}"/>
+    <path class="f-hi" d="M10 28.6h88"/>
+    ${o.track?`<rect class="f-track" x="12" y="87" width="84" height="4" rx="2"/>
+      <rect class="f-fill" x="12" y="87" width="${(84*pct).toFixed(1)}" height="4" rx="2"/>`:""}
+  </svg>`;
+}
 function folderHTML(c){
   const total = lessonsOf(c).length, done = doneCount(c);
   const written = writtenCount(c);
-  const pct = total ? done/total : 0;
-  const sheets =
-    (written > 2 ? `<rect class="f-sheet" x="21" y="17" width="78" height="17" rx="3" opacity=".5"/>` : "") +
-    (written > 0 ? `<rect class="f-sheet" x="14" y="21" width="92" height="17" rx="3" opacity=".92"/>` : "");
-  return `<div class="folder" style="${colorVars(c.color)}">
-    <svg class="fsvg" viewBox="0 0 120 92" aria-hidden="true">
-      <path class="f-back" d="M10 4h37a5 5 0 0 1 5 5v7h58a9 9 0 0 1 9 9v53a9 9 0 0 1-9 9H10a9 9 0 0 1-9-9V13a9 9 0 0 1 9-9z"/>
-      ${sheets}
-      <path class="f-front" d="M10 31h100a9 9 0 0 1 9 9v38a9 9 0 0 1-9 9H10a9 9 0 0 1-9-9V40a9 9 0 0 1 9-9z"/>
-      <path class="f-hi" d="M10 31h100a9 9 0 0 1 9 9v6H1v-6a9 9 0 0 1 9-9z"/>
-      ${total ? `<rect class="f-track" x="14" y="74" width="92" height="4" rx="2"/>
-        <rect class="f-fill" x="14" y="74" width="${(92*pct).toFixed(1)}" height="4" rx="2"/>` : ""}
-    </svg>
-  </div>`;
+  return `<div class="folder" style="${colorVars(c.color)}">${folderSVG(c.color, {
+    id: c.id, pct: total ? done/total : 0, track: total > 0,
+    sheets: written > 2 ? 2 : 1
+  })}</div>`;
 }
 function addFolderHTML(){
   return `<div class="folder">
-    <svg class="fsvg" viewBox="0 0 120 92" style="filter:none" aria-hidden="true">
-      <path class="f-dash" d="M10 5h37a5 5 0 0 1 5 5v6.5h58a9 9 0 0 1 9 9v52a9 9 0 0 1-9 9H10a9 9 0 0 1-9-9V14a9 9 0 0 1 9-9z"/>
-      <path class="f-plus" d="M60 44v18M51 53h18"/>
+    <svg class="fsvg add" viewBox="0 0 112 101" aria-hidden="true">
+      <path class="f-dash" d="${F_BACK}"/>
+      <path class="f-plus" d="M56 50v20M46 60h20"/>
     </svg>
   </div>`;
 }
@@ -1611,7 +1663,10 @@ function applyDraftColor(v){
   const lab = layer.querySelector("#hex-label");
   if(lab) lab.textContent = draftColor;
   const pv = layer.querySelector("#color-pv");
-  if(pv) pv.setAttribute("style", colorVars(draftColor));
+  if(pv){
+    pv.setAttribute("style", colorVars(draftColor));
+    pv.innerHTML = folderSVG(draftColor, { id:"pv", pct:.62, track:true, sheets:1 });
+  }
 }
 function courseSheet(c){
   draftColor = c ? c.color : COLOR_PRESETS[S.courses.length % COLOR_PRESETS.length];
@@ -1640,14 +1695,7 @@ function courseSheet(c){
         </label>
       </div>
       <div class="folder-pv"><div class="folder" id="color-pv" style="${colorVars(draftColor)}">
-        <svg class="fsvg" viewBox="0 0 120 92" aria-hidden="true">
-          <path class="f-back" d="M10 4h37a5 5 0 0 1 5 5v7h58a9 9 0 0 1 9 9v53a9 9 0 0 1-9 9H10a9 9 0 0 1-9-9V13a9 9 0 0 1 9-9z"/>
-          <rect class="f-sheet" x="14" y="21" width="92" height="17" rx="3" opacity=".92"/>
-          <path class="f-front" d="M10 31h100a9 9 0 0 1 9 9v38a9 9 0 0 1-9 9H10a9 9 0 0 1-9-9V40a9 9 0 0 1 9-9z"/>
-          <path class="f-hi" d="M10 31h100a9 9 0 0 1 9 9v6H1v-6a9 9 0 0 1 9-9z"/>
-          <rect class="f-track" x="14" y="74" width="92" height="4" rx="2"/>
-          <rect class="f-fill" x="14" y="74" width="55" height="4" rx="2"/>
-        </svg>
+        ${folderSVG(draftColor, { id:"pv", pct:.62, track:true, sheets:1 })}
       </div></div>
     </div>
     <div class="field">
