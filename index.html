@@ -712,8 +712,14 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
 /* ============================================================
    0. 버전
    ============================================================ */
-const APP_VERSION = "1.13.0";
+const APP_VERSION = "1.14.0";
 const CHANGELOG = [
+  { v:"1.14.0", date:"2026-10-16", notes:[
+    "서식 버튼을 눌러도 막대가 사라지지 않습니다 — 연달아 여러 번 누를 수 있습니다",
+    "키보드와 글자 선택도 그대로 유지됩니다",
+    "글자가 없는 줄에서도 제목·목록·인용이 걸립니다 (먼저 눌러 두고 이어서 쓰기)",
+    "겹쳐 쓴 서식을 바깥쪽부터 하나씩 벗길 수 있습니다"
+  ]},
   { v:"1.13.0", date:"2026-10-16", notes:[
     "노트 칸에도 서식 버튼이 생겼습니다 — 글 쓰는 칸을 누르면 아래에서 올라옵니다",
     "글자를 고르고 버튼을 누르면 적용, 다시 누르면 해제됩니다",
@@ -1530,10 +1536,11 @@ const fvKey = (l,k) => l.id + "|" + k;
 /* 지금 글을 쓰고 있는 노트 칸. 도구 버튼은 이 칸에 적용된다. */
 let activeNoteTA = null;
 function noteToolsHTML(){
+  /* type="button" + 포커스를 가져가지 않음(mousedown 차단) → 키보드와 선택이 유지된다 */
   return `<div class="note-tools" id="noteTools" aria-hidden="true">
     <div class="nt-inner">
       ${MD_TOOLS.map(t=>`
-        <button class="mdt ${t.cls||""}" data-act="note-md" data-v="${t.k}"
+        <button type="button" tabindex="-1" class="mdt ${t.cls||""}" data-act="note-md" data-v="${t.k}"
           title="${esc(t.title)}" aria-label="${esc(t.title)}">${esc(t.n)}</button>`).join("")}
     </div>
   </div>`;
@@ -1546,6 +1553,18 @@ function mountNoteTools(){
     const host = document.createElement("div");
     host.innerHTML = noteToolsHTML();
     bar = host.firstElementChild;
+    /* 버튼을 눌러도 입력칸에서 포커스가 빠지지 않도록 기본 동작을 막는다 */
+    bar.addEventListener("mousedown", e=>e.preventDefault());
+    bar.addEventListener("touchstart", e=>{
+      if(e.cancelable) e.preventDefault();
+    }, { passive:false });
+    /* 터치에서는 preventDefault 때문에 click이 안 올 수 있어 직접 처리 */
+    bar.addEventListener("touchend", e=>{
+      const b = e.target.closest("[data-act='note-md']");
+      if(!b) return;
+      if(e.cancelable) e.preventDefault();
+      noteMdApply(b.dataset.v);
+    }, { passive:false });
     document.body.appendChild(bar);
   }
   bar.classList.remove("on");
@@ -1563,15 +1582,25 @@ function showNoteTools(on){
   bar.setAttribute("aria-hidden", on ? "false" : "true");
   document.body.classList.toggle("tools-open", !!on);
 }
+function noteMdApply(key){
+  const ta = activeNoteTA;
+  if(!ta || !ta.isConnected){
+    activeNoteTA = null; showNoteTools(false);
+    toast("먼저 글을 쓸 칸을 눌러 주세요");
+    return;
+  }
+  applyMdTool(key, ta);
+}
 function bindNoteField(ta){
   ta.addEventListener("focus", ()=>{ activeNoteTA = ta; showNoteTools(true); });
   ta.addEventListener("blur", ()=>{
-    /* 도구 버튼을 누르는 중에는 닫지 않는다 */
+    /* 도구 버튼을 누르는 중이거나 다른 노트 칸으로 옮겨가는 중이면 닫지 않는다 */
     setTimeout(()=>{
       const el = document.activeElement;
       if(el && el.closest && el.closest(".note-tools")) return;
+      if(el && el.matches && el.matches("textarea[data-note]")) return;
       if(activeNoteTA === ta){ activeNoteTA = null; showNoteTools(false); }
-    }, 120);
+    }, 150);
   });
 }
 function renderNote(c, l){
@@ -1880,6 +1909,24 @@ function pdfPreviewHTML(){
     + (sec ? mdBlock(doc.section, { "섹션명":sec.label, "강의명":c.title }) : "")
     + `<section class="p-note">${mdBlock(doc.note, noteVars(c,l))}${noteFieldsHTML(c,l)}</section>`;
 }
+/* 선택 바깥을 한 겹씩 벗겨보며 같은 표시로 감싼 지점을 찾는다 (최대 3겹).
+   겹칠 때 쓰이는 표시만 보고, 긴 것부터 맞춰 '*'가 '**'를 먹지 않게 한다. */
+function outerWrap(v, a, b, mark){
+  const n = mark.length;
+  const marks = ["**", "==", "~~", "`", "*"];
+  let s = a, e = b;
+  for(let depth = 0; depth < 3; depth++){
+    if(v.slice(s - n, s) === mark && v.slice(e, e + n) === mark) return { s: s - n, e };
+    let moved = false;
+    for(const m of marks){
+      if(v.slice(s - m.length, s) === m && v.slice(e, e + m.length) === m){
+        s -= m.length; e += m.length; moved = true; break;
+      }
+    }
+    if(!moved) return null;
+  }
+  return null;
+}
 function mdWrap(ta, mark){
   const v = ta.value, a = ta.selectionStart, b = ta.selectionEnd, n = mark.length;
   const sel = v.slice(a,b);
@@ -1894,6 +1941,11 @@ function mdWrap(ta, mark){
   } else if(!boldClash && v.slice(a-n, a) === mark && v.slice(b, b+n) === mark){
     ta.value = v.slice(0, a-n) + sel + v.slice(b+n);
     ta.selectionStart = a-n; ta.selectionEnd = b-n;
+  } else if(!boldClash && outerWrap(v, a, b, mark)){
+    /* **==글==** 처럼 바깥 겹에 같은 표시가 있으면 그 겹만 벗긴다 */
+    const o = outerWrap(v, a, b, mark);
+    ta.value = v.slice(0, o.s) + v.slice(o.s + n, o.e) + v.slice(o.e + n);
+    ta.selectionStart = a - n; ta.selectionEnd = b - n;
   } else {
     ta.value = v.slice(0,a) + mark + sel + mark + v.slice(b);
     ta.selectionStart = a+n; ta.selectionEnd = a+n+sel.length;
@@ -1907,16 +1959,23 @@ function mdLine(ta, prefix){
   const lines = v.slice(start, end).split("\n");
   const re = prefix === "1. " ? /^\d+[.)]\s+/
     : new RegExp("^" + prefix.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
-  const has = lines.every(l => !l.trim() || re.test(l));
+  /* 글자가 없는 줄에서도 적용되어야 한다. 그래야 먼저 '# '를 넣고 이어서 쓸 수 있다. */
+  const only = lines.length === 1;
+  const has = only ? re.test(lines[0]) : lines.every(l => !l.trim() || re.test(l));
   const out = lines.map((l,i)=>{
-    if(!l.trim()) return l;
+    if(!l.trim() && !only) return l;
     if(has) return l.replace(re, "");
     const bare = l.replace(/^(#{1,4}\s+|[-*+]\s+|\d+[.)]\s+|&gt;\s?|>\s?)/, "");
     return (prefix === "1. " ? (i+1) + ". " : prefix) + bare;
   });
   const txt = out.join("\n");
   ta.value = v.slice(0,start) + txt + v.slice(end);
-  ta.selectionStart = start; ta.selectionEnd = start + txt.length;
+  if(only && !lines[0].trim()){
+    /* 빈 줄이었다면 바로 이어 쓸 수 있게 커서를 끝에 둔다 */
+    ta.selectionStart = ta.selectionEnd = start + txt.length;
+  }else{
+    ta.selectionStart = start; ta.selectionEnd = start + txt.length;
+  }
 }
 function mdInsert(ta, text){
   const v = ta.value, a = ta.selectionStart;
@@ -1967,9 +2026,9 @@ function renderPdfDoc(){
       <div class="md-pane edit">
         <div class="field-head" style="margin-top:16px"><label>서식</label>
           <span class="hint">선택 후 누르면 적용</span></div>
-        <div class="md-tools">
+        <div class="md-tools" id="mdTools">
           ${MD_TOOLS.map(t=>`
-            <button class="mdt ${t.cls||""}" data-act="md-tool" data-v="${t.k}"
+            <button type="button" tabindex="-1" class="mdt ${t.cls||""}" data-act="md-tool" data-v="${t.k}"
               title="${esc(t.title)}" aria-label="${esc(t.title)}">${esc(t.n)}</button>`).join("")}
         </div>
         <div class="field" style="margin-top:12px">
@@ -2001,6 +2060,9 @@ function renderPdfDoc(){
 
   const ta = document.getElementById("md-src");
   grow(ta, true);
+  /* 서식 버튼을 눌러도 편집칸 포커스와 선택이 유지되도록 */
+  const tools = document.getElementById("mdTools");
+  if(tools) tools.addEventListener("mousedown", e=>e.preventDefault());
   ta.addEventListener("blur", ()=>grow(ta, true));
   ta.addEventListener("keydown", e=>{
     if(!(e.metaKey || e.ctrlKey)) return;
@@ -2664,16 +2726,7 @@ document.addEventListener("click", e=>{
     case "md-block": if(dirty) commit(); mdBlockKey = t.dataset.v; render(); break;
     case "md-pane": if(dirty) commit(); mdPane = t.dataset.v; render(); break;
     case "md-tool": applyMdTool(t.dataset.v); break;
-    case "note-md": {
-      const ta = activeNoteTA;
-      if(!ta || !ta.isConnected){
-        activeNoteTA = null; showNoteTools(false);
-        toast("먼저 글을 쓸 칸을 눌러 주세요");
-        return;
-      }
-      applyMdTool(t.dataset.v, ta);
-      break;
-    }
+    case "note-md": noteMdApply(t.dataset.v); break;
     case "md-var": {
       const ta = document.getElementById("md-src");
       if(!ta) return;
