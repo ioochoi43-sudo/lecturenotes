@@ -280,17 +280,28 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
    시트 / 모달 / 토스트
    ============================================================ */
 .scrim{
-  position:fixed;inset:0;z-index:40;background:rgba(14,17,22,.34);
+  position:fixed;left:0;right:0;top:var(--vvt,0px);
+  height:var(--vvh,100vh);
+  z-index:40;background:rgba(14,17,22,.34);
   display:flex;align-items:flex-end;justify-content:center;
   -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)
 }
+@supports (height:100dvh){ .scrim{ height:var(--vvh,100dvh) } }
 .scrim.center{align-items:center;padding:20px}
 .sheet{
   width:100%;max-width:520px;background:#fff;border-radius:22px 22px 0 0;
   padding:8px 20px calc(24px + env(safe-area-inset-bottom));
-  max-height:88vh;overflow:auto;animation:up .24s cubic-bezier(.2,.8,.2,1)
+  max-height:calc(100% - 18px);overflow:auto;-webkit-overflow-scrolling:touch;
+  animation:up .24s cubic-bezier(.2,.8,.2,1)
 }
-.scrim.center .sheet{border-radius:20px;padding:22px;animation:pop .18s ease-out;max-width:420px}
+.scrim.center .sheet{border-radius:20px;padding:22px;animation:pop .18s ease-out;
+  max-width:420px;max-height:100%}
+/* 내용이 길어도 마지막 버튼은 항상 손 닿는 곳에 */
+.sheet > .btn-row:last-child{
+  position:sticky;bottom:0;background:#fff;z-index:1;
+  margin-top:16px;padding-top:12px;padding-bottom:4px;
+  box-shadow:0 -12px 16px -12px rgba(14,17,22,.18)
+}
 @keyframes up{from{transform:translateY(16px);opacity:.6}}
 @keyframes pop{from{transform:scale(.96);opacity:0}}
 .grip{width:38px;height:4px;border-radius:99px;background:var(--surface-2);margin:6px auto 14px}
@@ -413,6 +424,30 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
 .chip-lab{font-size:11.5px;font-weight:700;color:var(--muted);align-self:center;margin-right:2px}
 .chip-val{font-size:11.5px;color:var(--muted);align-self:center;margin-left:auto;
   font-variant-numeric:tabular-nums}
+
+/* 노트 칸 미리보기 */
+.fh-right{display:flex;align-items:center;gap:10px;min-width:0}
+.fv-toggle{font-size:11.5px;font-weight:650;color:var(--accent);padding:2px 0;flex:none}
+.fv-toggle.on{color:var(--muted)}
+.md-view{border:1px solid var(--line);border-radius:var(--r-md);padding:12px 13px;
+  background:var(--surface);line-height:1.62;letter-spacing:-.005em;cursor:text;
+  word-break:break-word;overflow-wrap:anywhere}
+.md-view > :first-child{margin-top:0}
+.md-view > :last-child{margin-bottom:0}
+.md-view h1{font-size:19px;margin:0 0 7px;letter-spacing:-.02em}
+.md-view h2{font-size:17px;margin:14px 0 5px;letter-spacing:-.01em}
+.md-view h3{font-size:15px;margin:12px 0 4px}
+.md-view h4{font-size:14px;margin:10px 0 3px}
+.md-view p{margin:0 0 7px}
+.md-view ul,.md-view ol{margin:0 0 7px;padding-left:20px}
+.md-view li{margin:2px 0}
+.md-view hr{border:0;border-top:1px solid #D9DDE3;margin:12px 0}
+.md-view blockquote{margin:7px 0;padding-left:12px;border-left:3px solid #D9DDE3;color:var(--ink-2)}
+.md-view code{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;background:#fff;
+  padding:1px 5px;border-radius:5px;border:1px solid var(--line)}
+.md-view mark{background:#FFF08A;color:inherit;padding:0 3px;border-radius:3px}
+.md-view del{color:var(--muted)}
+.md-view .md-empty{color:#BDC3CB}
 
 /* PDF 문서 서식 편집 */
 .md-wrap{display:grid;gap:0 20px}
@@ -598,7 +633,18 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
   .p-field.long{page-break-inside:auto;break-inside:auto}
   .p-field .lab{font-size:7pt;font-weight:700;letter-spacing:.09em;color:#777;
     margin-bottom:1.4mm}
-  .p-field .val{margin:0;white-space:pre-wrap;word-break:break-word}
+  .p-field .val{margin:0;word-break:break-word}
+  .p-field .val > :first-child{margin-top:0}
+  .p-field .val > :last-child{margin-bottom:0}
+  .p-field .val p{margin:0 0 1.6mm}
+  .p-field .val h1{font-size:12.5pt;margin:0 0 1.6mm}
+  .p-field .val h2{font-size:11.5pt;margin:2.5mm 0 1.2mm}
+  .p-field .val h3{font-size:10.5pt;margin:2.5mm 0 1mm}
+  .p-field .val h4{font-size:10pt;margin:2mm 0 1mm}
+  .p-field .val ul,.p-field .val ol{margin:0 0 1.6mm;padding-left:5mm}
+  .p-field .val li{margin:.5mm 0}
+  .p-field .val hr{border:0;border-top:0.3mm solid #CCC;margin:2.5mm 0}
+  .p-field .val blockquote{margin:1.5mm 0;padding-left:3mm;border-left:0.5mm solid #CCC;color:#555}
   .p-field.empty{border-style:dashed;border-color:#D8D8D8}
   .p-note.brk{page-break-before:always;break-before:page}
   .p-note h2{font-size:14pt;margin:0 0 1mm;letter-spacing:-.01em}
@@ -641,8 +687,21 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
 /* ============================================================
    0. 버전
    ============================================================ */
-const APP_VERSION = "1.10.0";
+const APP_VERSION = "1.12.0";
 const CHANGELOG = [
+  { v:"1.12.0", date:"2026-10-15", notes:[
+    "아이폰 '텍스트 대치'(키보드 단축어)가 노트와 모든 입력칸에서 동작합니다",
+    "입력 중 칸 높이를 건드리지 않도록 바꿔, 자동수정 후보가 끊기지 않습니다",
+    "팝업이 화면 아래로 잘리던 문제를 고쳤습니다 — 주소창·키보드를 뺀 실제 보이는 높이에 맞춥니다",
+    "내용이 긴 팝업에서도 저장·만들기 버튼이 아래에 고정되어 항상 눌립니다"
+  ]},
+  { v:"1.11.0", date:"2026-10-15", notes:[
+    "노트 본문에서도 마크다운이 됩니다 — 칸마다 오른쪽 위 '미리보기'를 누르면 서식이 적용된 모습으로 바뀝니다",
+    "==하이라이트== 굵게 기울임 제목 목록 인용 코드 모두 지원하고, PDF에도 그대로 나갑니다",
+    "줄바꿈은 누른 그대로 유지됩니다 (빈 줄 없이 줄만 바꿔도 붙지 않음)",
+    "더보기 → 모든 칸 미리보기로 한 번에 전환할 수 있습니다",
+    "목차의 한 줄 요약에서는 마크다운 기호를 빼고 보여줍니다"
+  ]},
   { v:"1.10.0", date:"2026-07-28", notes:[
     "회차를 추가할 때 어느 섹션에 넣을지 고를 수 있습니다",
     "섹션 줄 오른쪽 + 버튼을 누르면 그 섹션으로 바로 추가됩니다",
@@ -1052,13 +1111,24 @@ function hasText(c,l){
 }
 const doneCount = c => lessonsOf(c).filter(l=>l.status==="done").length;
 const writtenCount = c => lessonsOf(c).filter(l=>hasText(c,l)).length;
+function stripMd(x){
+  return x
+    .replace(/^#{1,4}\s+/gm, "")
+    .replace(/^\s*[-*+]\s+/gm, "")
+    .replace(/^\s*&gt;\s?/gm, "").replace(/^\s*>\s?/gm, "")
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/==([^=\n]+)==/g, "$1")
+    .replace(/~~([^~]+)~~/g, "$1")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/(^|[^*])\*([^*\n]+)\*/g, "$1$2");
+}
 function snippet(c, l, n){
   let t = "";
   for(const f of fieldsOf(c,l)){
     const v = (l[f.k]||"").trim();
     if(v){ t = v; break; }
   }
-  t = t.replace(/\s+/g," ").trim();
+  t = stripMd(t).replace(/\s+/g," ").trim();
   return t ? (t.length>n ? t.slice(0,n)+"…" : t) : "";
 }
 
@@ -1406,6 +1476,8 @@ function renderCourse(c){
 }
 
 /* ---------- 노트 ---------- */
+let fieldView = {};
+const fvKey = (l,k) => l.id + "|" + k;
 function renderNote(c, l){
   setTab("all");
   const ls = lessonsOf(c), idx = ls.indexOf(l);
@@ -1435,14 +1507,27 @@ function renderNote(c, l){
       </div>
     </div>
     <div class="note-body">
-    ${renderBlocks(fieldsOf(c,l), colsOf(tplFor(c,l)), f=>`
-      <div class="field">
+    ${renderBlocks(fieldsOf(c,l), colsOf(tplFor(c,l)), f=>{
+      const pv = !!fieldView[fvKey(l, f.k)];
+      const val = l[f.k] || "";
+      const ref = `data-cid="${c.id}" data-lid="${l.id}" data-k="${esc(f.k)}"`;
+      return `<div class="field">
         <div class="field-head"><label for="f-${esc(f.k)}">${esc(f.label)}</label>
-          ${f.hint?`<span class="hint">${esc(f.hint)}</span>`:""}</div>
-        <textarea id="f-${esc(f.k)}" data-note="${esc(f.k)}" rows="${rowsOf(f)}"
-          style="min-height:${boxHeight(rowsOf(f))}"
-          placeholder="${esc(f.ph)}">${esc(l[f.k])}</textarea>
-      </div>`)}
+          <span class="fh-right">
+            ${f.hint?`<span class="hint">${esc(f.hint)}</span>`:""}
+            <button class="fv-toggle${pv?" on":""}" data-act="field-view" ${ref}>${pv?"편집":"미리보기"}</button>
+          </span></div>
+        ${pv
+          ? `<div class="md-view" data-act="field-view" ${ref}
+              style="min-height:${boxHeight(rowsOf(f))}">${
+              val.trim() ? mdToHtml(esc(val), { br:true })
+                         : `<span class="md-empty">비어 있음</span>`}</div>`
+          : `<textarea id="f-${esc(f.k)}" data-note="${esc(f.k)}" rows="${rowsOf(f)}"
+              autocorrect="on" autocapitalize="sentences" spellcheck="true"
+              style="min-height:${boxHeight(rowsOf(f))}"
+              placeholder="${esc(f.ph)}">${esc(val)}</textarea>`}
+      </div>`;
+    })}
     </div>
     ${orphanKeys(c,l).length ? `<div class="orphan">
       <p class="eyebrow">지금 템플릿에 없는 칸</p>
@@ -1467,8 +1552,9 @@ function renderNote(c, l){
     </div>`;
   paintSaveState();
 
-  view.querySelectorAll("textarea").forEach(grow);
+  view.querySelectorAll("textarea").forEach(ta=>grow(ta, true));
   view.querySelectorAll("textarea[data-note]").forEach(ta=>{
+    ta.addEventListener("blur", ()=>grow(ta, true));
     ta.addEventListener("input", ()=>{
       l[ta.dataset.note] = ta.value;
       l.updatedAt = nowISO();
@@ -1483,9 +1569,15 @@ function renderNote(c, l){
     });
   });
 }
-function grow(ta){
-  ta.style.height = "auto";
-  ta.style.height = Math.max(ta.scrollHeight, ta.classList.contains("big")?260:0) + 2 + "px";
+/* 입력 중에는 늘리기만 한다. 타이핑 도중 height를 auto로 되돌리면
+   iOS에서 자동수정·텍스트 대치 후보가 취소된다. 줄이는 계산은 포커스가 빠질 때. */
+function grow(ta, full){
+  if(full){
+    ta.style.height = "auto";
+    ta.style.height = (ta.scrollHeight + 2) + "px";
+    return;
+  }
+  if(ta.scrollHeight > ta.clientHeight) ta.style.height = (ta.scrollHeight + 2) + "px";
 }
 
 /* ---------- 템플릿 편집 ---------- */
@@ -1554,7 +1646,7 @@ function renderTemplate(t){
     <div class="field" style="margin-top:18px">
       <div class="field-head"><label for="t-name">템플릿 이름</label>
         ${isDefault?`<span class="hint">새 강의 기본값</span>`:""}</div>
-      <input id="t-name" type="text" value="${esc(t.name)}" placeholder="예: 어학 수업용">
+      <input id="t-name" type="text" autocorrect="on" autocapitalize="sentences" value="${esc(t.name)}" placeholder="예: 어학 수업용">
     </div>
 
     <div class="sec">
@@ -1590,7 +1682,7 @@ function renderTemplate(t){
         <div class="tfield">
           <div class="tfield-top">
             <span class="tfield-n">${i+1}</span>
-            <input type="text" data-fk="${esc(f.k)}" data-prop="label"
+            <input type="text" autocorrect="on" autocapitalize="sentences" data-fk="${esc(f.k)}" data-prop="label"
               value="${esc(f.label)}" placeholder="칸 이름">
             <button class="mini" data-act="f-up" data-id="${t.id}" data-k="${esc(f.k)}"
               ${i===0?"disabled":""} aria-label="위로">${I.arrowU}</button>
@@ -1599,7 +1691,7 @@ function renderTemplate(t){
             <button class="mini" data-act="f-del" data-id="${t.id}" data-k="${esc(f.k)}"
               style="color:var(--danger)" aria-label="칸 삭제">${I.trash}</button>
           </div>
-          <input type="text" data-fk="${esc(f.k)}" data-prop="ph"
+          <input type="text" autocorrect="on" autocapitalize="sentences" data-fk="${esc(f.k)}" data-prop="ph"
             value="${esc(f.ph)}" placeholder="입력 안내 문구 (선택)">
           ${cols>1?`<div class="chips">
             <span class="chip-lab">배치</span>
@@ -1630,7 +1722,7 @@ function renderTemplate(t){
     </div>
   </div>`;
   paintSaveState();
-  view.querySelectorAll("textarea").forEach(grow);
+  view.querySelectorAll("textarea").forEach(ta=>grow(ta, true));
 
   bindResize(t);
   paintNarrowWarn();
@@ -1783,7 +1875,7 @@ function renderPdfDoc(){
         <div class="field" style="margin-top:12px">
           <div class="field-head"><label for="md-src">${esc(blk.n)} 마크다운</label>
             <span class="hint">==하이라이트== 도 됩니다</span></div>
-          <textarea id="md-src" rows="10" spellcheck="false"
+          <textarea id="md-src" rows="10" autocorrect="on" autocapitalize="sentences"
             placeholder="# {{강의명}}">${esc(doc[mdBlockKey])}</textarea>
         </div>
         <div class="field-head" style="margin-top:14px"><label>넣을 수 있는 값</label>
@@ -1808,7 +1900,8 @@ function renderPdfDoc(){
   paintSaveState();
 
   const ta = document.getElementById("md-src");
-  grow(ta);
+  grow(ta, true);
+  ta.addEventListener("blur", ()=>grow(ta, true));
   ta.addEventListener("keydown", e=>{
     if(!(e.metaKey || e.ctrlKey)) return;
     const map = { b:"b", i:"i", e:"code", h:"mark" };
@@ -1903,10 +1996,27 @@ function renderSettings(){
 /* ============================================================
    7. 레이어 (시트·모달·토스트)
    ============================================================ */
+/* iOS는 주소창·키보드 때문에 100vh가 실제 보이는 높이보다 크다.
+   visualViewport로 실제 영역을 재서 시트가 아래로 잘리지 않게 한다. */
+function fitViewport(){
+  const vv = window.visualViewport;
+  if(!vv) return;
+  const r = document.documentElement.style;
+  r.setProperty("--vvh", Math.round(vv.height) + "px");
+  r.setProperty("--vvt", Math.round(vv.offsetTop) + "px");
+}
+if(window.visualViewport){
+  visualViewport.addEventListener("resize", fitViewport);
+  visualViewport.addEventListener("scroll", fitViewport);
+}
+addEventListener("orientationchange", ()=>setTimeout(fitViewport, 200));
+fitViewport();
+
 const layer = document.getElementById("layer");
 function closeLayer(){ layer.innerHTML = ""; }
 function sheet(html, opt){
   opt = opt || {};
+  fitViewport();
   layer.innerHTML = `<div class="scrim ${opt.center?"center":""}" data-act="scrim">
     <div class="sheet" role="dialog" aria-modal="true">
       ${opt.center?"":'<div class="grip"></div>'}${html}
@@ -1961,11 +2071,11 @@ function courseSheet(c){
     <p class="desc">강의 하나가 폴더 하나입니다.</p>
     <div class="field">
       <div class="field-head"><label for="c-title">강의 이름</label></div>
-      <input id="c-title" type="text" data-autofocus placeholder="예: 실무 브랜딩 클래스" value="${c?esc(c.title):""}">
+      <input id="c-title" type="text" data-autofocus autocorrect="on" autocapitalize="sentences" placeholder="예: 실무 브랜딩 클래스" value="${c?esc(c.title):""}">
     </div>
     <div class="field">
       <div class="field-head"><label for="c-src">강사 · 플랫폼</label><span class="hint">선택</span></div>
-      <input id="c-src" type="text" placeholder="예: 클래스101 · 김민수" value="${c?esc(c.source||""):""}">
+      <input id="c-src" type="text" autocorrect="on" autocapitalize="sentences" placeholder="예: 클래스101 · 김민수" value="${c?esc(c.source||""):""}">
     </div>
     <div class="field">
       <div class="field-head"><label>폴더 색</label>
@@ -2022,7 +2132,7 @@ function bulkSheet(cid){
     ` : `
       <div class="field"><div class="field-head"><label for="b-list">목차</label>
         <span class="hint">한 줄에 하나</span></div>
-        <textarea id="b-list" rows="10" data-autofocus placeholder="Welcome&#10;  1강 오리엔테이션&#10;  2강 준비물&#10;  3강 시작하기&#10;Chapter 1&#10;  4강 브랜드란 무엇인가&#10;Outro"></textarea>
+        <textarea id="b-list" rows="10" data-autofocus autocorrect="on" autocapitalize="sentences" placeholder="Welcome&#10;  1강 오리엔테이션&#10;  2강 준비물&#10;  3강 시작하기&#10;Chapter 1&#10;  4강 브랜드란 무엇인가&#10;Outro"></textarea>
       </div>
       <p class="muted-note" style="margin-top:8px">앞을 띄어 쓰거나 <b>-</b> 를 붙인 줄은 바로 위 제목에 속한 회차가 됩니다.
       들여쓴 줄이 하나도 없으면 전부 회차로 만듭니다.</p>
@@ -2138,10 +2248,16 @@ function mdInline(t){
   out = pass(pass(out));
   return out.replace(/\u0001(\d+)\u0001/g, (m,i)=>'<code>' + codes[+i] + '</code>');
 }
-function mdToHtml(src){
+function mdToHtml(src, opts){
+  const br = !!(opts && opts.br);
   const lines = String(src||"").replace(/\r\n?/g,"\n").split("\n");
   const out = []; let list = null, para = [];
-  const flushP = ()=>{ if(para.length){ out.push("<p>"+mdInline(para.join(" "))+"</p>"); para = []; } };
+  const flushP = ()=>{
+    if(!para.length) return;
+    /* 노트는 줄바꿈을 눌러 쓴 그대로 살린다 */
+    out.push("<p>" + (br ? para.map(mdInline).join("<br>") : mdInline(para.join(" "))) + "</p>");
+    para = [];
+  };
   const flushL = ()=>{ if(list){ out.push("</"+list+">"); list = null; } };
   lines.forEach(raw=>{
     const t = raw.trim();
@@ -2214,7 +2330,7 @@ function pField(label, rows, val){
   const long = v.length > 300 || v.split("\n").length > 6;
   return `<div class="p-field${v?"":" empty"}${long?" long":""}" style="min-height:calc(${lines} * 1.62em)">
     <div class="lab">${esc(label)}</div>
-    <p class="val">${esc(v)}</p>
+    <div class="val">${v ? mdToHtml(esc(v), { br:true }) : ""}</div>
   </div>`;
 }
 /* 노트 '내용' 부분만. 머리말은 PDF 문서 서식(마크다운)이 담당한다. */
@@ -2224,9 +2340,9 @@ function noteFieldsHTML(c, l){
   if(S.settings.pdfStyle === "text"){
     const parts = fieldsOf(c,l).map(f=>{
       const v = (l[f.k]||"").trim();
-      return v ? `<h3>${esc(f.label)}</h3><p>${esc(v)}</p>` : "";
+      return v ? `<h3>${esc(f.label)}</h3><div class="val">${mdToHtml(esc(v),{ br:true })}</div>` : "";
     }).join("") + orphans.map(k=>
-      `<h3>${esc(labelForKey(k))}</h3><p>${esc(l[k])}</p>`).join("");
+      `<h3>${esc(labelForKey(k))}</h3><div class="val">${mdToHtml(esc(l[k]),{ br:true })}</div>`).join("");
     return parts || `<p class="p-empty">작성된 노트가 없습니다.</p>`;
   }
   return renderBlocks(fieldsOf(c,l), colsOf(tpl),
@@ -2631,7 +2747,10 @@ document.addEventListener("click", e=>{
     }
     case "note-menu": {
       const l = findLesson(c, lid);
+      const anyPv = fieldsOf(c,l).some(f=>fieldView[fvKey(l,f.k)]);
       sheet(`<h3>${esc(l.label)}</h3><div class="menu">
+        <button data-act="note-view-all" data-cid="${c.id}" data-lid="${l.id}" data-v="${anyPv?"0":"1"}">
+          ${I.list} ${anyPv?"모든 칸 편집으로":"모든 칸 미리보기"}</button>
         <button data-act="note-tpl" data-cid="${c.id}" data-lid="${l.id}">${I.note} 이 노트의 템플릿 바꾸기</button>
         <button data-act="ren-lesson" data-cid="${c.id}" data-lid="${l.id}">${I.pen} 회차 이름 변경</button>
         <button data-act="pdf-note" data-cid="${c.id}" data-lid="${l.id}">${I.pdf} 이 노트 PDF</button>
@@ -2691,7 +2810,7 @@ document.addEventListener("click", e=>{
           ? "섹션은 제목 역할만 합니다. 노트는 없고, 아래에 오는 회차들을 묶습니다."
           : "노트를 쓰는 항목입니다. 1강, 오리엔테이션 등 이름을 그대로 씁니다."}</p>
         <div class="field"><div class="field-head"><label for="l-name">${isSec?"섹션 제목":"회차 이름"}</label></div>
-          <input id="l-name" type="text" data-autofocus
+          <input id="l-name" type="text" data-autofocus autocorrect="on" autocapitalize="sentences"
             placeholder="${isSec?"예: Welcome":"예: 3강 색 고르기"}" enterkeyhint="done"></div>
         ${!isSec && secs.length ? `
           <div class="field">
@@ -2749,7 +2868,7 @@ document.addEventListener("click", e=>{
       closeLayer();
       sheet(`<h3>회차 이름 변경</h3>
         <div class="field"><div class="field-head"><label for="l-name">회차 이름</label></div>
-          <input id="l-name" type="text" data-autofocus value="${esc(l.label)}" enterkeyhint="done"></div>
+          <input id="l-name" type="text" data-autofocus autocorrect="on" autocapitalize="sentences" value="${esc(l.label)}" enterkeyhint="done"></div>
         <div class="btn-row"><button class="btn primary wide" data-act="ren-ok" data-cid="${c.id}" data-lid="${l.id}">저장</button></div>`);
       break;
     }
@@ -2786,6 +2905,21 @@ document.addEventListener("click", e=>{
       break;
     }
     case "toggle-order": editOrder = !editOrder; render(); break;
+    case "field-view": {
+      if(dirty) commit();
+      const key = lid + "|" + t.dataset.k;
+      fieldView[key] = !fieldView[key];
+      render();
+      break;
+    }
+    case "note-view-all": {
+      if(dirty) commit();
+      const l = findLesson(c, lid);
+      const on = t.dataset.v === "1";
+      fieldsOf(c,l).forEach(f=>{ fieldView[fvKey(l,f.k)] = on; });
+      closeLayer(); render();
+      break;
+    }
     case "set-status": {
       const l = findLesson(c, lid);
       l.status = t.dataset.v;
