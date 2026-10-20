@@ -450,6 +450,56 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
 }
 @media print{.note-tools{display:none!important}}
 
+/* 저장 경고 / 되돌리기 */
+.save-alert{
+  position:fixed;left:50%;transform:translateX(-50%);
+  bottom:calc(var(--tab-h) + 18px + env(safe-area-inset-bottom));
+  z-index:70;width:min(560px, calc(100vw - 32px));
+  background:#FFF6E5;border:1px solid #FFD98A;border-radius:14px;
+  padding:13px 15px;font-size:13px;line-height:1.6;color:#6B4A00;
+  box-shadow:0 10px 28px rgba(14,17,22,.18)
+}
+.save-alert b{display:block;margin-bottom:3px;font-size:13.5px;color:#523800}
+.save-alert .btn{height:34px;margin-top:9px;margin-right:6px;font-size:13px}
+.save-alert .btn.primary{background:#B86E00}
+.savebar .dot.fail{background:var(--danger);animation:none}
+.toast.undo{display:flex;align-items:center;gap:14px;padding-right:8px}
+.toast.undo button{color:#8FC2FF;font-weight:700;font-size:13.5px;padding:6px 10px}
+
+/* 이모지 표 */
+.emt{border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
+.emt-head,.emt-row{display:grid;grid-template-columns:62px 1fr 108px;align-items:center;gap:8px}
+.emt-head{padding:9px 12px;background:var(--surface);
+  font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--muted);
+  border-bottom:1px solid var(--line)}
+.emt-row{padding:7px 12px;border-bottom:1px solid var(--line)}
+.emt-row:last-child{border-bottom:0}
+.emt input{border:1px solid transparent;border-radius:9px;padding:8px 9px;background:transparent;
+  outline:none;width:100%;min-width:0}
+.emt input:focus{border-color:#B9CCFF;background:#fff;box-shadow:0 0 0 3px var(--accent-soft)}
+.emt input::placeholder{color:#C3C8D0}
+.emt-e{font-size:20px;text-align:center;line-height:1.1}
+.emt-n{font-size:14px}
+.emt-ctl{display:flex;align-items:center;justify-content:flex-end;gap:2px}
+.emt-ctl .mini{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;color:var(--ink-2)}
+.emt-ctl .mini:active{background:var(--surface-2)}
+.emt-ctl .mini svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;
+  stroke-linecap:round;stroke-linejoin:round}
+.emt-pv{font-size:17px;opacity:.5;padding-right:6px}
+@media(max-width:420px){
+  .emt-head,.emt-row{grid-template-columns:52px 1fr 100px;gap:6px}
+  .emt-row{padding:6px 9px}
+}
+
+/* 도구 막대 이모지 줄 */
+.nt-inner.em{padding-bottom:0;border-bottom:1px solid var(--line);padding-top:7px}
+.nt-inner.em + .nt-inner{padding-top:7px}
+.emj{flex:none;height:34px;min-width:38px;border-radius:9px;background:var(--surface);
+  font-size:18px;line-height:1;display:inline-flex;align-items:center;justify-content:center;
+  margin-bottom:7px}
+.emj:active{background:var(--surface-2)}
+.emj.add{font-size:16px;color:var(--accent);background:var(--accent-soft)}
+
 /* 노트 칸 미리보기 */
 .fh-right{display:flex;align-items:center;gap:10px;min-width:0}
 .fv-toggle{font-size:11.5px;font-weight:650;color:var(--accent);padding:2px 0;flex:none}
@@ -465,6 +515,7 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
 .md-view h4{font-size:14px;margin:10px 0 3px}
 .md-view p{margin:0 0 7px}
 .md-view ul,.md-view ol{margin:0 0 7px;padding-left:20px}
+.md-view li > ul,.md-view li > ol,.md-view ul ul,.md-view ul ol,.md-view ol ol,.md-view ol ul{margin:2px 0 2px}
 .md-view li{margin:2px 0}
 .md-view hr{border:0;border-top:1px solid #D9DDE3;margin:12px 0}
 .md-view blockquote{margin:7px 0;padding-left:12px;border-left:3px solid #D9DDE3;color:var(--ink-2)}
@@ -667,6 +718,7 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
   .p-field .val h3{font-size:10.5pt;margin:2.5mm 0 1mm}
   .p-field .val h4{font-size:10pt;margin:2mm 0 1mm}
   .p-field .val ul,.p-field .val ol{margin:0 0 1.6mm;padding-left:5mm}
+  .p-field .val ul ul,.p-field .val ul ol,.p-field .val ol ol,.p-field .val ol ul{margin:.4mm 0}
   .p-field .val li{margin:.5mm 0}
   .p-field .val hr{border:0;border-top:0.3mm solid #CCC;margin:2.5mm 0}
   .p-field .val blockquote{margin:1.5mm 0;padding-left:3mm;border-left:0.5mm solid #CCC;color:#555}
@@ -712,8 +764,24 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
 /* ============================================================
    0. 버전
    ============================================================ */
-const APP_VERSION = "1.14.0";
+const APP_VERSION = "1.16.0";
 const CHANGELOG = [
+  { v:"1.16.0", date:"2026-10-20", notes:[
+    "저장 안전장치를 크게 보강했습니다",
+    "저장에 실패하면 '저장됨'으로 보이던 문제를 고쳤습니다 — 이제 실패를 알리고 5초마다 다시 시도합니다",
+    "앱을 전환할 때 저장되지 않던 문제를 고쳤습니다",
+    "직전 저장본을 따로 보관해, 저장본이 깨져도 되살립니다",
+    "다른 탭에서 내용이 바뀌면 덮어쓰지 않고 어느 쪽을 남길지 묻습니다",
+    "강의·회차·템플릿을 지우면 '되돌리기'가 8초간 표시됩니다"
+  ]},
+  { v:"1.15.0", date:"2026-10-20", notes:[
+    "번호 목록이 1. 2. 3.으로 자동으로 이어집니다 — 줄 끝에서 Enter만 누르면 됩니다",
+    "빈 항목에서 Enter를 한 번 더 누르면 목록이 끝납니다",
+    "들여쓰기 버튼(⇤ ⇥)과 Tab·Shift+Tab을 넣었습니다. 깊이에 맞춰 번호가 다시 매겨집니다",
+    "들여쓴 목록은 미리보기와 PDF에서도 단계별로 들어갑니다",
+    "자주 쓰는 이모지를 등록해 노트 쓸 때 바로 넣을 수 있습니다 (설정 → 노트 쓰기)",
+    "이모지는 표에서 수정·추가·정렬·삭제할 수 있습니다"
+  ]},
   { v:"1.14.0", date:"2026-10-16", notes:[
     "서식 버튼을 눌러도 막대가 사라지지 않습니다 — 연달아 여러 번 누를 수 있습니다",
     "키보드와 글자 선택도 그대로 유지됩니다",
@@ -837,22 +905,61 @@ const CHANGELOG = [
    1. 저장소
    ============================================================ */
 const KEY = "lecture-notes.v1";
+const BAK = "lecture-notes.v1.bak";
 const Store = {
   ok:true, mem:null,
   read(){
     try{
       const raw = localStorage.getItem(KEY);
-      return raw ? JSON.parse(raw) : null;
-    }catch(e){ this.ok=false; return this.mem; }
+      if(raw) return JSON.parse(raw);
+    }catch(e){
+      /* 주 저장본이 깨졌으면 직전 저장본으로 되살린다 */
+      try{
+        const bak = localStorage.getItem(BAK);
+        if(bak){
+          const data = JSON.parse(bak);
+          this.restored = true;
+          return data;
+        }
+      }catch(e2){}
+      this.ok = false;
+      return this.mem;
+    }
+    try{
+      const bak = localStorage.getItem(BAK);
+      if(bak && !localStorage.getItem(KEY)) return JSON.parse(bak);
+    }catch(e3){}
+    return null;
   },
   write(data){
     this.mem = data;
-    try{ localStorage.setItem(KEY, JSON.stringify(data)); return true; }
-    catch(e){ this.ok=false; return false; }
+    const text = JSON.stringify(data);
+    try{
+      /* 새로 쓰기 전에 직전 내용을 백업해 둔다.
+         쓰는 도중 문제가 생겨도 한 세대 전으로 되살릴 수 있다. */
+      const prev = localStorage.getItem(KEY);
+      if(prev && prev !== text){
+        try{ localStorage.setItem(BAK, prev); }catch(e0){}
+      }
+      localStorage.setItem(KEY, text);
+      lastWriteStamp = data.settings && data.settings.savedAt;
+      return true;
+    }
+    catch(e){
+      /* 공간이 모자라면 백업을 비워서라도 본 데이터를 지킨다 */
+      try{
+        localStorage.removeItem(BAK);
+        localStorage.setItem(KEY, text);
+        lastWriteStamp = data.settings && data.settings.savedAt;
+        return true;
+      }catch(e2){ this.ok=false; return false; }
+    }
   }
 };
 
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+/* 다른 탭이 먼저 저장했는지 보고, 그랬다면 그쪽 내용을 받아들인다 */
+let lastWriteStamp = null;
 const nowISO = () => new Date().toISOString();
 
 function blank(){
@@ -860,6 +967,7 @@ function blank(){
     settings:{ lastSeenVersion:null, savedAt:null, defaultTemplateId:null } };
 }
 let S = Store.read() || blank();
+const restoredFromBackup = !!Store.restored;
 if(!S.courses) S = blank();
 if(!S.settings) S.settings = { lastSeenVersion:null, savedAt:null };
 
@@ -873,24 +981,97 @@ function touch(){
   clearTimeout(saveTimer);
   saveTimer = setTimeout(commit, 600);
 }
+let saveFailed = false, lastGoodAt = null;
 function commit(){
   clearTimeout(saveTimer);
-  S.settings.savedAt = nowISO();
-  Store.write(S);
-  dirty = false;
+  const stamp = nowISO();
+  const prev = S.settings.savedAt;
+  S.settings.savedAt = stamp;
+  const ok = Store.write(S);
+  if(ok){
+    dirty = false;
+    lastGoodAt = stamp;
+    if(saveFailed){ saveFailed = false; renderSaveBanner(); }
+  }else{
+    /* 저장이 안 됐으면 '저장됨'으로 보이게 두지 않는다 */
+    S.settings.savedAt = prev;
+    dirty = true;
+    if(!saveFailed){ saveFailed = true; renderSaveBanner(); }
+    scheduleRetry();
+  }
   paintSaveState();
+  return ok;
+}
+/* 저장에 실패하면 조용히 포기하지 않고 계속 다시 시도한다 */
+let retryTimer = null;
+function scheduleRetry(){
+  clearTimeout(retryTimer);
+  retryTimer = setTimeout(()=>{ if(dirty) commit(); }, 5000);
+}
+function renderSaveBanner(){
+  let el = document.getElementById("saveAlert");
+  if(!saveFailed){ if(el) el.remove(); return; }
+  if(!el){
+    el = document.createElement("div");
+    el.id = "saveAlert";
+    el.className = "save-alert";
+    document.body.appendChild(el);
+  }
+  el.innerHTML = `<b>저장되지 않고 있습니다.</b>
+    기기 저장 공간이 찼거나 브라우저가 저장을 막고 있습니다.
+    지금 화면의 내용은 그대로 있으니, 백업 파일로 먼저 내보내 주세요.
+    <button class="btn primary" data-act="export-json">백업 내보내기</button>`;
 }
 function paintSaveState(){
   document.querySelectorAll("[data-savestate]").forEach(el=>{
     const dot = el.querySelector(".dot");
     if(dot) dot.classList.toggle("pending", dirty);
     const t = el.querySelector("[data-savetext]");
-    if(t) t.textContent = dirty ? "저장 중…"
-      : (S.settings.savedAt ? "저장됨 · " + fmtFull(S.settings.savedAt) : "아직 저장된 내용이 없습니다");
+    if(!t) return;
+    if(saveFailed){
+      t.textContent = "저장 실패 — 백업을 내보내 주세요"
+        + (lastGoodAt ? " (마지막 저장 " + fmtFull(lastGoodAt) + ")" : "");
+      if(dot) dot.classList.add("fail");
+    }else{
+      if(dot) dot.classList.remove("fail");
+      t.textContent = dirty ? "저장 중…"
+        : (S.settings.savedAt ? "저장됨 · " + fmtFull(S.settings.savedAt) : "아직 저장된 내용이 없습니다");
+    }
   });
 }
-addEventListener("visibilitychange", ()=>{ if(document.hidden && dirty) commit(); });
-addEventListener("pagehide", ()=>{ if(dirty) commit(); });
+/* 화면을 떠나는 모든 경로에서 저장한다.
+   iOS 사파리는 visibilitychange를 놓치는 경우가 있어 blur·pagehide도 함께 건다. */
+function flush(){ if(dirty) commit(); }
+/* visibilitychange는 document에서 일어난다. window에 걸면 받지 못한다. */
+document.addEventListener("visibilitychange", ()=>{ if(document.visibilityState !== "visible") flush(); });
+addEventListener("pagehide", flush);
+addEventListener("beforeunload", flush);
+addEventListener("blur", flush);
+addEventListener("freeze", flush);
+
+/* 다른 탭에서 저장되면 알려 준다. 쓰던 내용을 말없이 덮어쓰지 않는다. */
+addEventListener("storage", e=>{
+  if(e.key !== KEY || !e.newValue) return;
+  if(e.newValue === JSON.stringify(S)) return;
+  if(dirty){
+    /* 여기서 쓰던 내용이 있으면 사용자가 고르게 한다 */
+    if(document.getElementById("saveAlert")) return;
+    const el = document.createElement("div");
+    el.id = "saveAlert";
+    el.className = "save-alert";
+    el.innerHTML = `<b>다른 탭에서 내용이 바뀌었습니다.</b>
+      여기서 쓰던 내용과 다릅니다. 어느 쪽을 남길지 골라 주세요.
+      <button class="btn primary" data-act="keep-mine">여기 내용 저장</button>
+      <button class="btn ghost" data-act="keep-theirs">다른 탭 내용 열기</button>`;
+    document.body.appendChild(el);
+  }else{
+    /* 쓰던 게 없으면 조용히 최신 내용으로 맞춘다 */
+    try{
+      const incoming = JSON.parse(e.newValue);
+      if(incoming && incoming.courses){ S = incoming; migrate(); render(); }
+    }catch(err){}
+  }
+});
 
 /* ============================================================
    3. 유틸
@@ -1004,6 +1185,16 @@ function builtinTemplate(){
 }
 const LESSON_META = { id:1, type:1, label:1, status:1, createdAt:1, updatedAt:1 };
 
+const DEFAULT_EMOJIS = [
+  { e:"⭐", n:"중요" }, { e:"✅", n:"완료" }, { e:"❓", n:"질문" },
+  { e:"📌", n:"기억" }, { e:"⚠️", n:"주의" }, { e:"💡", n:"아이디어" },
+  { e:"🔁", n:"복습" }, { e:"📝", n:"과제" }
+];
+function emojiList(){
+  const v = S.settings.emojis;
+  if(!Array.isArray(v)) return DEFAULT_EMOJIS.map(x=>Object.assign({ id:uid() }, x));
+  return v;
+}
 function migrate(){
   if(!Array.isArray(S.templates) || !S.templates.length) S.templates = [builtinTemplate()];
   S.templates.forEach(t=>{
@@ -1037,6 +1228,13 @@ function migrate(){
     if(t.cols > 1) t.fields.forEach(f=>{ if(f.col > t.cols) f.col = t.cols; });
   });
   if(!S.settings || typeof S.settings !== "object") S.settings = {};
+  if(!Array.isArray(S.settings.emojis))
+    S.settings.emojis = DEFAULT_EMOJIS.map(x=>({ id:uid(), e:x.e, n:x.n }));
+  S.settings.emojis = S.settings.emojis
+    .filter(x=>x && typeof x === "object" && typeof x.e === "string" && x.e.trim())
+    .map(x=>({ id:x.id || uid(), e:String(x.e).trim().slice(0,8),
+               n:typeof x.n === "string" ? x.n.slice(0,20) : "" }))
+    .slice(0, 40);
   if(S.settings.pdfStyle !== "text") S.settings.pdfStyle = "template";
   /* pdfDoc()은 읽을 때마다 기본값으로 채우므로 여기서 손대지 않는다 (초기화 순서 문제) */
   if(!S.settings.defaultTemplateId || !S.templates.some(t=>t.id===S.settings.defaultTemplateId))
@@ -1219,6 +1417,7 @@ function route(){
   if(parts[0]==="settings") return { name:"settings" };
   if(parts[0]==="t" && parts[1]) return { name:"template", tid:parts[1] };
   if(parts[0]==="pdfdoc") return { name:"pdfdoc" };
+  if(parts[0]==="emoji") return { name:"emoji" };
   if(parts[0]==="c" && parts[1]){
     if(parts[2]==="l" && parts[3]) return { name:"note", cid:parts[1], lid:parts[3] };
     return { name:"course", cid:parts[1] };
@@ -1246,6 +1445,7 @@ function render(){
   if(r.name==="all") return renderAll();
   if(r.name==="settings") return renderSettings();
   if(r.name==="pdfdoc") return renderPdfDoc();
+  if(r.name==="emoji") return renderEmoji();
   if(r.name==="template"){
     const t = findTpl(r.tid);
     if(!t) return go("#/settings");
@@ -1536,8 +1736,16 @@ const fvKey = (l,k) => l.id + "|" + k;
 /* 지금 글을 쓰고 있는 노트 칸. 도구 버튼은 이 칸에 적용된다. */
 let activeNoteTA = null;
 function noteToolsHTML(){
+  const em = emojiList();
   /* type="button" + 포커스를 가져가지 않음(mousedown 차단) → 키보드와 선택이 유지된다 */
   return `<div class="note-tools" id="noteTools" aria-hidden="true">
+    ${em.length ? `<div class="nt-inner em">
+      ${em.map(x=>`
+        <button type="button" tabindex="-1" class="emj" data-act="note-emoji" data-v="${esc(x.e)}"
+          title="${esc(x.n||x.e)}" aria-label="${esc(x.n||x.e)}">${esc(x.e)}</button>`).join("")}
+      <button type="button" tabindex="-1" class="emj add" data-act="go-emoji"
+        title="이모지 관리" aria-label="이모지 관리">＋</button>
+    </div>` : ""}
     <div class="nt-inner">
       ${MD_TOOLS.map(t=>`
         <button type="button" tabindex="-1" class="mdt ${t.cls||""}" data-act="note-md" data-v="${t.k}"
@@ -1560,10 +1768,12 @@ function mountNoteTools(){
     }, { passive:false });
     /* 터치에서는 preventDefault 때문에 click이 안 올 수 있어 직접 처리 */
     bar.addEventListener("touchend", e=>{
-      const b = e.target.closest("[data-act='note-md']");
+      const b = e.target.closest("[data-act='note-md'],[data-act='note-emoji'],[data-act='go-emoji']");
       if(!b) return;
       if(e.cancelable) e.preventDefault();
-      noteMdApply(b.dataset.v);
+      if(b.dataset.act === "note-md") noteMdApply(b.dataset.v);
+      else if(b.dataset.act === "note-emoji") noteEmojiInsert(b.dataset.v);
+      else go("#/emoji");
     }, { passive:false });
     document.body.appendChild(bar);
   }
@@ -1582,6 +1792,46 @@ function showNoteTools(on){
   bar.setAttribute("aria-hidden", on ? "false" : "true");
   document.body.classList.toggle("tools-open", !!on);
 }
+/* Enter를 누르면 목록·인용을 이어 준다. 빈 항목에서 Enter면 목록을 끝낸다. */
+function autoContinueList(ta, e){
+  if(e.key !== "Enter" || e.shiftKey || e.isComposing) return false;
+  const v = ta.value, pos = ta.selectionStart;
+  if(pos !== ta.selectionEnd) return false;
+  const start = v.lastIndexOf("\n", pos - 1) + 1;
+  const line = v.slice(start, pos);
+  const sp = splitLine(line);
+  if(!sp.marker || /^#{1,4}\s+/.test(sp.marker)) return false;
+  e.preventDefault();
+  if(!sp.body.trim()){
+    /* 빈 항목에서 Enter → 표시를 지우고 목록을 끝낸다 */
+    ta.value = v.slice(0, start) + v.slice(pos);
+    ta.selectionStart = ta.selectionEnd = start;
+  }else{
+    const m = /^(\d+)([.)])\s+/.exec(sp.marker);
+    const next = m ? (parseInt(m[1],10) + 1) + m[2] + " " : sp.marker;
+    const ins = "\n" + sp.indent + next;
+    ta.value = v.slice(0, pos) + ins + v.slice(pos);
+    ta.selectionStart = ta.selectionEnd = pos + ins.length;
+  }
+  renumber(ta);
+  ta.dispatchEvent(new Event("input", { bubbles:true }));
+  return true;
+}
+function noteEmojiInsert(ch){
+  const ta = activeNoteTA;
+  if(!ta || !ta.isConnected){
+    activeNoteTA = null; showNoteTools(false);
+    toast("먼저 글을 쓸 칸을 눌러 주세요");
+    return;
+  }
+  const v = ta.value, a = ta.selectionStart, b = ta.selectionEnd;
+  const needSpace = a > 0 && !/\s$/.test(v.slice(0,a));
+  const ins = (needSpace ? " " : "") + ch + " ";
+  ta.value = v.slice(0,a) + ins + v.slice(b);
+  ta.selectionStart = ta.selectionEnd = a + ins.length;
+  ta.focus();
+  ta.dispatchEvent(new Event("input", { bubbles:true }));
+}
 function noteMdApply(key){
   const ta = activeNoteTA;
   if(!ta || !ta.isConnected){
@@ -1592,6 +1842,14 @@ function noteMdApply(key){
   applyMdTool(key, ta);
 }
 function bindNoteField(ta){
+  ta.addEventListener("keydown", e=>{
+    if(autoContinueList(ta, e)) return;
+    if(e.key === "Tab"){
+      e.preventDefault();
+      mdIndent(ta, e.shiftKey ? -1 : 1);
+      ta.dispatchEvent(new Event("input", { bubbles:true }));
+    }
+  });
   ta.addEventListener("focus", ()=>{ activeNoteTA = ta; showNoteTools(true); });
   ta.addEventListener("blur", ()=>{
     /* 도구 버튼을 누르는 중이거나 다른 노트 칸으로 옮겨가는 중이면 닫지 않는다 */
@@ -1951,22 +2209,53 @@ function mdWrap(ta, mark){
     ta.selectionStart = a+n; ta.selectionEnd = a+n+sel.length;
   }
 }
+const MARKER_RE = /^(\s*)(#{1,4}\s+|[-*+]\s+|\d+[.)]\s+|>\s?)?/;
+const INDENT = "  ";
+/* 줄을 들여쓰기 / 표시 / 내용으로 쪼갠다 */
+function splitLine(l){
+  const m = MARKER_RE.exec(l) || [l, "", ""];
+  return { indent: m[1] || "", marker: m[2] || "", body: l.slice((m[0]||"").length) };
+}
+/* 같은 깊이에서 바로 위 번호 목록의 다음 번호 */
+function nextNumber(v, start, indent){
+  let p = start;
+  while(p > 0){
+    const lineEnd = p - 1;
+    const lineStart = v.lastIndexOf("\n", lineEnd - 1) + 1;
+    const prev = v.slice(lineStart, lineEnd);
+    if(!prev.trim()) break;
+    const sp = splitLine(prev);
+    if(sp.indent.length < indent.length) break;
+    if(sp.indent.length === indent.length){
+      const m = /^(\d+)[.)]/.exec(sp.marker);
+      if(m) return parseInt(m[1], 10) + 1;
+      break;
+    }
+    p = lineStart;
+  }
+  return 1;
+}
 function mdLine(ta, prefix){
   const v = ta.value;
   const start = v.lastIndexOf("\n", ta.selectionStart - 1) + 1;
   let end = v.indexOf("\n", ta.selectionEnd);
   if(end < 0) end = v.length;
   const lines = v.slice(start, end).split("\n");
-  const re = prefix === "1. " ? /^\d+[.)]\s+/
+  const isOl = prefix === "1. ";
+  const re = isOl ? /^\d+[.)]\s+/
     : new RegExp("^" + prefix.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
   /* 글자가 없는 줄에서도 적용되어야 한다. 그래야 먼저 '# '를 넣고 이어서 쓸 수 있다. */
   const only = lines.length === 1;
-  const has = only ? re.test(lines[0]) : lines.every(l => !l.trim() || re.test(l));
-  const out = lines.map((l,i)=>{
+  const has = only ? re.test(splitLine(lines[0]).marker)
+                   : lines.every(l => !l.trim() || re.test(splitLine(l).marker));
+  /* 한 줄만 바꿀 때는 위 목록 번호를 이어받고, 여러 줄이면 1부터 매긴다 */
+  const base = isOl && only ? nextNumber(v, start, splitLine(lines[0]).indent) : 1;
+  let n = base;
+  const out = lines.map((l)=>{
     if(!l.trim() && !only) return l;
-    if(has) return l.replace(re, "");
-    const bare = l.replace(/^(#{1,4}\s+|[-*+]\s+|\d+[.)]\s+|&gt;\s?|>\s?)/, "");
-    return (prefix === "1. " ? (i+1) + ". " : prefix) + bare;
+    const sp = splitLine(l);
+    if(has) return sp.indent + sp.body;
+    return sp.indent + (isOl ? (n++) + ". " : prefix) + sp.body;
   });
   const txt = out.join("\n");
   ta.value = v.slice(0,start) + txt + v.slice(end);
@@ -1976,6 +2265,59 @@ function mdLine(ta, prefix){
   }else{
     ta.selectionStart = start; ta.selectionEnd = start + txt.length;
   }
+}
+/* 줄 앞 공백 두 칸을 넣고 뺀다. 번호 목록은 깊이에 맞춰 다시 매긴다. */
+function mdIndent(ta, dir){
+  const v = ta.value;
+  const start = v.lastIndexOf("\n", ta.selectionStart - 1) + 1;
+  let end = v.indexOf("\n", ta.selectionEnd);
+  if(end < 0) end = v.length;
+  const lines = v.slice(start, end).split("\n");
+  const out = lines.map(l=>{
+    if(!l.trim() && lines.length > 1) return l;
+    if(dir > 0) return INDENT + l;
+    return l.replace(/^(\t| {1,2})/, "");
+  });
+  const txt = out.join("\n");
+  const delta = txt.length - (end - start);
+  ta.value = v.slice(0, start) + txt + v.slice(end);
+  if(lines.length === 1){
+    const pos = Math.max(start, ta.selectionStart + delta);
+    ta.selectionStart = ta.selectionEnd = Math.min(pos, start + txt.length);
+  }else{
+    ta.selectionStart = start; ta.selectionEnd = start + txt.length;
+  }
+  renumber(ta);
+}
+/* 번호 목록 전체를 깊이별로 다시 매긴다 */
+function renumber(ta){
+  const a = ta.selectionStart, b = ta.selectionEnd;
+  const lines = ta.value.split("\n");
+  const counters = {};
+  let prevIndent = null;
+  const out = lines.map(l=>{
+    if(!l.trim()){ prevIndent = null; return l; }
+    const sp = splitLine(l);
+    const d = sp.indent.length;
+    const m = /^(\d+)([.)])\s+/.exec(sp.marker);
+    if(!m){
+      if(!/^[-*+]\s+/.test(sp.marker)) { for(const k in counters) delete counters[k]; }
+      prevIndent = d;
+      return l;
+    }
+    if(prevIndent !== null && d > prevIndent) counters[d] = 0;
+    if(counters[d] === undefined) counters[d] = 0;
+    for(const k in counters){ if(+k > d) delete counters[k]; }
+    counters[d]++;
+    prevIndent = d;
+    return sp.indent + counters[d] + m[2] + " " + sp.body;
+  });
+  const txt = out.join("\n");
+  if(txt === ta.value) return;
+  const grew = txt.length - ta.value.length;
+  ta.value = txt;
+  ta.selectionStart = Math.max(0, a + (a > 0 ? grew : 0));
+  ta.selectionEnd = Math.max(ta.selectionStart, b + (b > 0 ? grew : 0));
 }
 function mdInsert(ta, text){
   const v = ta.value, a = ta.selectionStart;
@@ -1989,6 +2331,7 @@ function applyMdTool(key, ta){
   if(!ta || !tool) return;
   if(tool.t === "wrap") mdWrap(ta, tool.v);
   else if(tool.t === "line") mdLine(ta, tool.v);
+  else if(tool.t === "indent") mdIndent(ta, tool.v);
   else mdInsert(ta, tool.v);
   ta.focus();
   ta.dispatchEvent(new Event("input", { bubbles:true }));
@@ -2065,6 +2408,13 @@ function renderPdfDoc(){
   if(tools) tools.addEventListener("mousedown", e=>e.preventDefault());
   ta.addEventListener("blur", ()=>grow(ta, true));
   ta.addEventListener("keydown", e=>{
+    if(autoContinueList(ta, e)) return;
+    if(e.key === "Tab"){
+      e.preventDefault();
+      mdIndent(ta, e.shiftKey ? -1 : 1);
+      ta.dispatchEvent(new Event("input", { bubbles:true }));
+      return;
+    }
     if(!(e.metaKey || e.ctrlKey)) return;
     const map = { b:"b", i:"i", e:"code", h:"mark" };
     const k = map[(e.key||"").toLowerCase()];
@@ -2076,6 +2426,77 @@ function renderPdfDoc(){
     touch();
     const pv = document.getElementById("md-pv");
     if(pv) pv.innerHTML = pdfPreviewHTML();
+  });
+}
+
+/* ---------- 자주 쓰는 이모지 ---------- */
+let emojiEdit = false;
+function renderEmoji(){
+  setTab("settings");
+  const list = emojiList();
+  topbarIn.innerHTML = `
+    <button class="back" data-act="go-settings">${I.back}<span>설정</span></button>
+    <div class="h1-wrap" style="text-align:center">
+      <p class="eyebrow" style="margin:0">노트에 넣을 기호</p>
+      <div style="font-size:15px;font-weight:650">자주 쓰는 이모지</div>
+    </div>
+    <button class="icon-btn" data-act="emoji-edit" aria-label="${emojiEdit?"완료":"순서·삭제"}">
+      ${emojiEdit ? I.chev : I.pen}</button>`;
+
+  view.innerHTML = `<div class="narrow set">
+    <p class="muted-note" style="margin:16px 0 0">여기 등록한 기호는 노트를 쓸 때 아래 막대에서 바로 넣을 수 있습니다.
+    이름은 길게 눌렀을 때 보이는 설명입니다.</p>
+
+    <div class="sec" style="margin-top:18px">
+      <div class="sec-head"><h2>등록한 기호</h2>
+        <span class="aside">${list.length}개${emojiEdit?" · 정렬·삭제 중":""}</span></div>
+      ${list.length ? `<div class="emt">
+        <div class="emt-head"><span>기호</span><span>이름</span><span></span></div>
+        ${list.map((x,i)=>`
+          <div class="emt-row">
+            <input class="emt-e" type="text" maxlength="8" value="${esc(x.e)}"
+              data-em="${x.id}" data-prop="e" aria-label="기호">
+            <input class="emt-n" type="text" maxlength="20" value="${esc(x.n||"")}"
+              placeholder="이름 (선택)" autocorrect="on"
+              data-em="${x.id}" data-prop="n" aria-label="이름">
+            <span class="emt-ctl">
+              ${emojiEdit ? `
+                <button class="mini" data-act="em-up" data-id="${x.id}" ${i===0?"disabled":""} aria-label="위로">${I.arrowU}</button>
+                <button class="mini" data-act="em-down" data-id="${x.id}" ${i===list.length-1?"disabled":""} aria-label="아래로">${I.arrowD}</button>
+                <button class="mini" data-act="em-del" data-id="${x.id}" style="color:var(--danger)" aria-label="삭제">${I.trash}</button>`
+              : `<span class="emt-pv">${esc(x.e)}</span>`}
+            </span>
+          </div>`).join("")}
+      </div>` : `<p class="muted-note" style="margin-top:0">등록한 기호가 없습니다. 아래에서 추가해 보세요.</p>`}
+      <div class="btn-row">
+        <button class="btn primary" data-act="em-add">${I.plus} 기호 추가</button>
+        <button class="btn ghost" data-act="em-reset">기본값으로</button>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><h2>자주 쓰는 것들</h2>
+        <span class="aside">눌러서 추가</span></div>
+      <div class="chips">
+        ${["⭐","✅","❗","❓","📌","⚠️","💡","🔁","📝","🔥","👍","🎯","🧠","📖","🕐","✏️","🔗","💬","📊","🏁"]
+          .map(e=>`<button class="chip sm" data-act="em-quick" data-v="${esc(e)}">${esc(e)}</button>`).join("")}
+      </div>
+    </div>
+
+    <div class="savebar" data-savestate><span class="dot"></span><span data-savetext></span></div>
+  </div>`;
+  paintSaveState();
+
+  view.querySelectorAll("[data-em]").forEach(inp=>{
+    inp.addEventListener("input", ()=>{
+      const row = S.settings.emojis.find(x=>x.id===inp.dataset.em);
+      if(!row) return;
+      if(inp.dataset.prop === "e") row.e = inp.value.trim().slice(0,8);
+      else row.n = inp.value.slice(0,20);
+      touch();
+      const pv = inp.closest(".emt-row").querySelector(".emt-pv");
+      if(pv && inp.dataset.prop === "e") pv.textContent = row.e;
+    });
   });
 }
 
@@ -2091,6 +2512,13 @@ function renderSettings(){
   view.innerHTML = `
     ${Store.ok ? "" : `<div class="banner">브라우저 저장이 차단된 환경입니다. 자동저장이 동작하지 않으니 백업 내보내기로 보관하세요.</div>`}
     <div class="narrow set">
+    <div class="set-group">
+      <h2>노트 쓰기</h2>
+      <div class="set-list">
+        <button data-act="go-emoji">${I.note} 자주 쓰는 이모지
+          <span class="val">${emojiList().length}개</span></button>
+      </div>
+    </div>
     <div class="set-group">
       <h2>노트 템플릿</h2>
       <div class="set-list">
@@ -2189,11 +2617,26 @@ function sheet(html, opt){
   if(hex) hex.addEventListener("input", ()=>applyDraftColor(hex.value));
 }
 function toast(msg){
+  document.querySelectorAll(".toast").forEach(x=>x.remove());
   const el = document.createElement("div");
   el.className = "toast";
   el.textContent = msg;
   document.body.appendChild(el);
-  setTimeout(()=>el.remove(), 2000);
+  setTimeout(()=>{ if(el.isConnected && !el.dataset.keep) el.remove(); }, 2000);
+  return el;
+}
+/* 지운 것을 되돌릴 수 있게 잠시 들고 있는다 */
+let undoSnap = null, undoTimer = null;
+function toastUndo(msg, snapshot){
+  undoSnap = snapshot;
+  clearTimeout(undoTimer);
+  document.querySelectorAll(".toast").forEach(x=>x.remove());
+  const el = document.createElement("div");
+  el.className = "toast undo";
+  el.dataset.keep = "1";
+  el.innerHTML = `<span>${esc(msg)}</span><button data-act="undo-del">되돌리기</button>`;
+  document.body.appendChild(el);
+  undoTimer = setTimeout(()=>{ el.remove(); undoSnap = null; }, 8000);
 }
 function confirmSheet(title, desc, okLabel, onOk, danger){
   sheet(`<h3>${esc(title)}</h3><p class="desc">${esc(desc)}</p>
@@ -2381,6 +2824,8 @@ const MD_TOOLS = [
   { k:"ul",    n:"• 목록", t:"line", v:"- ",    title:"목록" },
   { k:"ol",    n:"1. 번호", t:"line", v:"1. ",  title:"번호 목록" },
   { k:"quote", n:"❝ 인용", t:"line", v:"> ",    title:"인용" },
+  { k:"outdent", n:"⇤", t:"indent", v:-1, title:"내어쓰기" },
+  { k:"indent",  n:"⇥", t:"indent", v:1,  title:"들여쓰기" },
   { k:"hr",    n:"— 구분선", t:"insert", v:"\n---\n", title:"구분선" }
 ];
 const PDF_BLOCKS = [
@@ -2413,14 +2858,28 @@ function mdInline(t){
 function mdToHtml(src, opts){
   const br = !!(opts && opts.br);
   const lines = String(src||"").replace(/\r\n?/g,"\n").split("\n");
-  const out = []; let list = null, para = [];
+  const out = []; let para = [];
+  /* 들여쓰기 깊이만큼 목록을 겹쳐 연다 */
+  const stack = [];   /* 열려 있는 목록들의 태그 */
+  const closeTo = n => { while(stack.length > n) out.push("</" + stack.pop() + ">"); };
+  const openList = (tag, depth) => {
+    closeTo(depth + 1);
+    if(stack.length === depth + 1 && stack[depth] !== tag){
+      out.push("</" + stack.pop() + ">");
+    }
+    while(stack.length < depth + 1){
+      out.push("<" + tag + ">");
+      stack.push(tag);
+    }
+  };
+  let list = null;
   const flushP = ()=>{
     if(!para.length) return;
     /* 노트는 줄바꿈을 눌러 쓴 그대로 살린다 */
     out.push("<p>" + (br ? para.map(mdInline).join("<br>") : mdInline(para.join(" "))) + "</p>");
     para = [];
   };
-  const flushL = ()=>{ if(list){ out.push("</"+list+">"); list = null; } };
+  const flushL = ()=>{ closeTo(0); list = null; };
   lines.forEach(raw=>{
     const t = raw.trim();
     if(!t){ flushP(); flushL(); return; }
@@ -2432,12 +2891,14 @@ function mdToHtml(src, opts){
     }
     if(/^(-{3,}|\*{3,}|_{3,})$/.test(t)){ flushP(); flushL(); out.push("<hr>"); return; }
     if((m = /^&gt;\s?(.*)$/.exec(t))){ flushP(); flushL(); out.push("<blockquote>"+mdInline(m[1])+"</blockquote>"); return; }
+    const ind = /^[ \t]*/.exec(raw)[0].replace(/\t/g, "  ").length;
+    const depth = Math.min(Math.floor(ind / 2), 5);
     if((m = /^[-*+]\s+(.*)$/.exec(t))){
-      flushP(); if(list!=="ul"){ flushL(); out.push("<ul>"); list = "ul"; }
+      flushP(); openList("ul", depth);
       out.push("<li>"+mdInline(m[1])+"</li>"); return;
     }
     if((m = /^\d+[.)]\s+(.*)$/.exec(t))){
-      flushP(); if(list!=="ol"){ flushL(); out.push("<ol>"); list = "ol"; }
+      flushP(); openList("ol", depth);
       out.push("<li>"+mdInline(m[1])+"</li>"); return;
     }
     flushL(); para.push(t);
@@ -2723,6 +3184,46 @@ document.addEventListener("click", e=>{
     case "go-settings": closeLayer(); go("#/settings"); break;
     case "open-tpl": go("#/t/"+id); break;
     case "open-pdfdoc": go("#/pdfdoc"); break;
+    case "go-emoji": closeLayer(); go("#/emoji"); break;
+    case "note-emoji": noteEmojiInsert(t.dataset.v); break;
+    case "emoji-edit": if(dirty) commit(); emojiEdit = !emojiEdit; render(); break;
+    case "em-add": {
+      S.settings.emojis.push({ id:uid(), e:"⭐", n:"" });
+      commit(); render();
+      const rows = view.querySelectorAll(".emt-row .emt-e");
+      const last = rows[rows.length-1];
+      if(last){ last.focus(); last.select(); }
+      break;
+    }
+    case "em-quick": {
+      const ch = t.dataset.v;
+      if(S.settings.emojis.some(x=>x.e===ch)){ toast("이미 등록되어 있습니다"); return; }
+      if(S.settings.emojis.length >= 40){ toast("최대 40개까지 등록됩니다"); return; }
+      S.settings.emojis.push({ id:uid(), e:ch, n:"" });
+      commit(); render(); toast(ch + " 추가했습니다");
+      break;
+    }
+    case "em-del": {
+      S.settings.emojis = S.settings.emojis.filter(x=>x.id!==id);
+      commit(); render();
+      break;
+    }
+    case "em-up": case "em-down": {
+      const arr = S.settings.emojis;
+      const i = arr.findIndex(x=>x.id===id);
+      const j = a==="em-up" ? i-1 : i+1;
+      if(i<0 || j<0 || j>=arr.length) return;
+      const tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+      commit(); render();
+      break;
+    }
+    case "em-reset":
+      confirmSheet("기본값으로 되돌릴까요?",
+        "등록한 기호와 이름이 모두 기본 목록으로 바뀝니다.", "되돌리기", ()=>{
+          S.settings.emojis = DEFAULT_EMOJIS.map(x=>({ id:uid(), e:x.e, n:x.n }));
+          commit(); closeLayer(); render(); toast("기본값으로 되돌렸습니다");
+        }, true);
+      break;
     case "md-block": if(dirty) commit(); mdBlockKey = t.dataset.v; render(); break;
     case "md-pane": if(dirty) commit(); mdPane = t.dataset.v; render(); break;
     case "md-tool": applyMdTool(t.dataset.v); break;
@@ -2862,13 +3363,15 @@ document.addEventListener("click", e=>{
           ? `이 템플릿을 쓰는 강의 ${uses.length}개는 '${tplName(other)}'로 바뀌고, 따로 지정한 노트 ${noteOverrides}개는 강의 기본값을 따르게 됩니다. 이미 쓴 노트 내용은 지워지지 않습니다.`
           : "되돌릴 수 없습니다.",
         "삭제", ()=>{
+          const snap = JSON.parse(JSON.stringify(S));
           S.templates = S.templates.filter(x=>x.id!==tp.id);
           uses.forEach(c=>c.templateId = other.id);
           S.courses.forEach(c=>c.lessons.forEach(l=>{
             if(l.templateId === tp.id) delete l.templateId;
           }));
           if(S.settings.defaultTemplateId===tp.id) S.settings.defaultTemplateId = other.id;
-          commit(); closeLayer(); go("#/settings"); toast("삭제했습니다");
+          commit(); closeLayer(); go("#/settings");
+          toastUndo("템플릿을 삭제했습니다", snap);
         }, true);
       break;
     }
@@ -2955,8 +3458,10 @@ document.addEventListener("click", e=>{
       confirmSheet("강의를 삭제할까요?",
         `${c.title} · 회차 ${lessonsOf(c).length}개와 노트가 함께 지워집니다. 되돌릴 수 없습니다.`,
         "삭제", ()=>{
+          const snap = JSON.parse(JSON.stringify(S));
           S.courses = S.courses.filter(x=>x.id!==c.id);
-          commit(); closeLayer(); go("#/"); toast("삭제했습니다");
+          commit(); closeLayer(); go("#/");
+          toastUndo("강의를 삭제했습니다", snap);
         }, true);
       break;
 
@@ -3050,11 +3555,12 @@ document.addEventListener("click", e=>{
         isSection(l)
           ? `${l.label} 제목만 지워지고, 아래에 있던 회차와 노트는 그대로 남습니다.`
           : `${l.label}에 적은 노트가 함께 지워집니다.`, "삭제", ()=>{
+        const snap = JSON.parse(JSON.stringify(S));
         c.lessons = c.lessons.filter(x=>x.id!==l.id);
         c.updatedAt = nowISO();
         commit(); closeLayer();
         if(route().name==="note") go("#/c/"+c.id); else render();
-        toast("삭제했습니다");
+        toastUndo(isSection(l) ? "섹션을 삭제했습니다" : "회차를 삭제했습니다", snap);
       }, true);
       break;
     }
@@ -3107,13 +3613,34 @@ document.addEventListener("click", e=>{
       confirmSheet("모든 데이터를 삭제할까요?",
         "강의와 노트가 전부 지워집니다. 되돌릴 수 없습니다. 먼저 백업을 내보내는 것을 권합니다.",
         "전체 삭제", ()=>{
+          const snap = JSON.parse(JSON.stringify(S));
           S = blank();
           migrate();
           S.settings.lastSeenVersion = APP_VERSION;
-          commit(); closeLayer(); go("#/"); render(); toast("모두 삭제했습니다");
+          commit(); closeLayer(); go("#/"); render();
+          toastUndo("모두 삭제했습니다", snap);
         }, true);
       break;
     case "confirm-ok": if(pendingOk){ const f = pendingOk; pendingOk = null; f(); } break;
+    case "undo-del": {
+      if(!undoSnap) return;
+      S = undoSnap; undoSnap = null;
+      clearTimeout(undoTimer);
+      document.querySelectorAll(".toast").forEach(x=>x.remove());
+      migrate(); commit(); render(); toast("되돌렸습니다");
+      break;
+    }
+    case "keep-mine": {
+      const el = document.getElementById("saveAlert"); if(el) el.remove();
+      commit(); toast("여기 내용을 저장했습니다");
+      break;
+    }
+    case "keep-theirs": {
+      const el = document.getElementById("saveAlert"); if(el) el.remove();
+      const raw = Store.read();
+      if(raw && raw.courses){ S = raw; dirty = false; migrate(); render(); toast("다른 탭 내용을 열었습니다"); }
+      break;
+    }
 
     /* PDF */
     case "pdf-note": closeLayer(); pdfNote(c, findLesson(c, lid)); break;
@@ -3146,6 +3673,9 @@ document.addEventListener("keydown", e=>{
    12. 시작
    ============================================================ */
 render();
+if(restoredFromBackup){
+  setTimeout(()=>toast("저장본이 손상되어 직전 저장 내용으로 되살렸습니다"), 400);
+}
 bootUpdateNotice();
 checkUpdate(false);
 setInterval(()=>checkUpdate(false), 1000*60*30);
