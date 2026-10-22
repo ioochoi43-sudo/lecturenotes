@@ -486,6 +486,11 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
 .emt-ctl .mini svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;
   stroke-linecap:round;stroke-linejoin:round}
 .emt-pv{font-size:17px;opacity:.5;padding-right:6px}
+.bu-row{grid-template-columns:68px 72px 1fr}
+.bu-depth{font-size:12.5px;font-weight:650;color:var(--ink-2)}
+.bu-sample{font-size:13px;color:var(--muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.bu-sample b{color:var(--ink);font-weight:600}
+@media(max-width:420px){.bu-row{grid-template-columns:54px 60px 1fr}}
 @media(max-width:420px){
   .emt-head,.emt-row{grid-template-columns:52px 1fr 100px;gap:6px}
   .emt-row{padding:6px 9px}
@@ -514,7 +519,18 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
 .md-view h3{font-size:15px;margin:12px 0 4px}
 .md-view h4{font-size:14px;margin:10px 0 3px}
 .md-view p{margin:0 0 7px}
-.md-view ul,.md-view ol{margin:0 0 7px;padding-left:20px}
+.md-view ol{margin:0 0 7px;padding-left:20px}
+.md-view ul{margin:0 0 7px;padding-left:0;list-style:none}
+.md-view ul > li{position:relative;padding-left:1.45em}
+.md-view ul > li::before{
+  content:var(--bu0,"•");position:absolute;left:0;top:0;
+  width:1.3em;color:var(--ink-2);font-variant-emoji:text
+}
+.md-view ul ul > li::before{content:var(--bu1,"◦")}
+.md-view ul ul ul > li::before{content:var(--bu2,"▪")}
+.md-view ul ul ul ul > li::before{content:var(--bu3,"‣")}
+.md-view ul ul ul ul ul > li::before{content:var(--bu4,"◦")}
+.md-view ul ul ul ul ul ul > li::before{content:var(--bu5,"▪")}
 .md-view li > ul,.md-view li > ol,.md-view ul ul,.md-view ul ol,.md-view ol ol,.md-view ol ul{margin:2px 0 2px}
 .md-view li{margin:2px 0}
 .md-view hr{border:0;border-top:1px solid #D9DDE3;margin:12px 0}
@@ -556,7 +572,12 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
 .pdf-pv .p-md h3{font-size:14px;margin:16px 0 4px}
 .pdf-pv .p-md h4{font-size:13px;margin:12px 0 3px}
 .pdf-pv .p-md p{margin:0 0 6px;font-size:13px;line-height:1.6;color:var(--ink-2)}
-.pdf-pv .p-md ul,.pdf-pv .p-md ol{margin:0 0 8px;padding-left:20px;font-size:13px;color:var(--ink-2)}
+.pdf-pv .p-md ol{margin:0 0 8px;padding-left:20px;font-size:13px;color:var(--ink-2)}
+.pdf-pv .p-md ul{margin:0 0 8px;padding-left:0;list-style:none;font-size:13px;color:var(--ink-2)}
+.pdf-pv .p-md ul > li{position:relative;padding-left:1.45em}
+.pdf-pv .p-md ul > li::before{content:var(--bu0,"•");position:absolute;left:0}
+.pdf-pv .p-md ul ul > li::before{content:var(--bu1,"◦")}
+.pdf-pv .p-md ul ul ul > li::before{content:var(--bu2,"▪")}
 .pdf-pv .p-md li{margin:2px 0}
 .pdf-pv .p-md hr{border:0;border-top:1px solid var(--ink);margin:14px 0}
 .pdf-pv .p-md blockquote{margin:6px 0;padding-left:12px;border-left:3px solid var(--line);color:var(--muted)}
@@ -684,7 +705,12 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
   .p-md h3{font-size:11.5pt;margin:7mm 0 1.5mm;page-break-after:avoid;break-after:avoid}
   .p-md h4{font-size:10pt;margin:5mm 0 1mm;page-break-after:avoid;break-after:avoid}
   .p-md p{margin:0 0 2mm}
-  .p-md ul,.p-md ol{margin:0 0 2.5mm;padding-left:6mm}
+  .p-md ol{margin:0 0 2.5mm;padding-left:6mm}
+  .p-md ul{margin:0 0 2.5mm;padding-left:0;list-style:none}
+  .p-md ul > li{position:relative;padding-left:5mm}
+  .p-md ul > li::before{content:var(--bu0,"•");position:absolute;left:0}
+  .p-md ul ul > li::before{content:var(--bu1,"◦")}
+  .p-md ul ul ul > li::before{content:var(--bu2,"▪")}
   .p-md li{margin:.6mm 0}
   .p-md hr{border:0;border-top:0.4mm solid #111;margin:5mm 0}
   .p-md blockquote{margin:2mm 0;padding-left:4mm;border-left:0.7mm solid #CCC;color:#555}
@@ -717,7 +743,15 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
   .p-field .val h2{font-size:11.5pt;margin:2.5mm 0 1.2mm}
   .p-field .val h3{font-size:10.5pt;margin:2.5mm 0 1mm}
   .p-field .val h4{font-size:10pt;margin:2mm 0 1mm}
-  .p-field .val ul,.p-field .val ol{margin:0 0 1.6mm;padding-left:5mm}
+  .p-field .val ol{margin:0 0 1.6mm;padding-left:5mm}
+  .p-field .val ul{margin:0 0 1.6mm;padding-left:0;list-style:none}
+  .p-field .val ul > li{position:relative;padding-left:4.6mm}
+  .p-field .val ul > li::before{content:var(--bu0,"•");position:absolute;left:0}
+  .p-field .val ul ul > li::before{content:var(--bu1,"◦")}
+  .p-field .val ul ul ul > li::before{content:var(--bu2,"▪")}
+  .p-field .val ul ul ul ul > li::before{content:var(--bu3,"‣")}
+  .p-field .val ul ul ul ul ul > li::before{content:var(--bu4,"◦")}
+  .p-field .val ul ul ul ul ul ul > li::before{content:var(--bu5,"▪")}
   .p-field .val ul ul,.p-field .val ul ol,.p-field .val ol ol,.p-field .val ol ul{margin:.4mm 0}
   .p-field .val li{margin:.5mm 0}
   .p-field .val hr{border:0;border-top:0.3mm solid #CCC;margin:2.5mm 0}
@@ -764,8 +798,21 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
 /* ============================================================
    0. 버전
    ============================================================ */
-const APP_VERSION = "1.16.0";
+const APP_VERSION = "1.17.0";
 const CHANGELOG = [
+  { v:"1.17.0", date:"2026-10-22", notes:[
+    "목록 구분점을 들여쓰기 단계별로 직접 정할 수 있습니다 (설정 → 노트 쓰기 → 목록 구분점)",
+    "노트에 쓰는 글자는 그대로 - 이고, 보여줄 때와 PDF에만 적용됩니다",
+    "번호 목록에서 Enter를 누를 때 커서가 번호 사이로 끼어들던 문제를 고쳤습니다",
+    "글상자를 고치는 방식을 바꿔, 아이폰에서 자동완성 글자가 되살아나는 일을 막았습니다",
+    "서식 버튼과 Enter 자동 이어쓰기도 이제 실행취소(Cmd+Z)로 되돌릴 수 있습니다"
+  ]},
+  { v:"1.16.1", date:"2026-10-22", notes:[
+    "노트마다 템플릿을 따로 지정했을 때 '이전 내용'에 알 수 없는 문자가 뜨던 문제를 고쳤습니다",
+    "앱이 쓰는 내부 번호를 노트 내용으로 잘못 보던 것이 원인이었습니다",
+    "그 때문에 어긋나던 노트 작성 개수·검색 결과·PDF 내용도 함께 바로잡았습니다",
+    "실제로 쓰신 '이전 내용'은 그대로 보존됩니다"
+  ]},
   { v:"1.16.0", date:"2026-10-20", notes:[
     "저장 안전장치를 크게 보강했습니다",
     "저장에 실패하면 '저장됨'으로 보이던 문제를 고쳤습니다 — 이제 실패를 알리고 5초마다 다시 시도합니다",
@@ -1183,8 +1230,27 @@ function builtinTemplate(){
     cols:DEFAULT_COLS, fields:DEFAULT_FIELDS.map(f=>Object.assign({},f)),
     createdAt:nowISO(), updatedAt:null };
 }
-const LESSON_META = { id:1, type:1, label:1, status:1, createdAt:1, updatedAt:1 };
+const LESSON_META = { id:1, type:1, templateId:1, label:1, status:1, createdAt:1, updatedAt:1 };
+/* 노트 칸의 키는 summary·body 같은 옛 이름이거나 "f_..." 형태다.
+   ...Id / ...At 로 끝나는 것은 앱이 쓰는 내부 항목이므로 내용으로 보지 않는다. */
+const isInternalKey = k => !!LESSON_META[k] || /(Id|At)$/.test(k);
 
+/* 목록 구분점 — 들여쓰기 깊이별로 사용자가 정한다.
+   마크다운 글자는 "-" 그대로 두고, 보여줄 때만 이 기호를 쓴다. */
+const BULLET_DEPTHS = 6;
+const DEFAULT_BULLETS = ["•","◦","▪","‣","◦","▪"];
+function bulletList(){
+  const v = S.settings.bullets;
+  const out = DEFAULT_BULLETS.slice();
+  if(Array.isArray(v)) v.forEach((x,i)=>{
+    if(i < BULLET_DEPTHS && typeof x === "string" && x.trim()) out[i] = x.trim().slice(0,4);
+  });
+  return out;
+}
+function applyBullets(){
+  const b = bulletList(), r = document.documentElement.style;
+  for(let i = 0; i < BULLET_DEPTHS; i++) r.setProperty("--bu" + i, JSON.stringify(b[i]));
+}
 const DEFAULT_EMOJIS = [
   { e:"⭐", n:"중요" }, { e:"✅", n:"완료" }, { e:"❓", n:"질문" },
   { e:"📌", n:"기억" }, { e:"⚠️", n:"주의" }, { e:"💡", n:"아이디어" },
@@ -1228,6 +1294,8 @@ function migrate(){
     if(t.cols > 1) t.fields.forEach(f=>{ if(f.col > t.cols) f.col = t.cols; });
   });
   if(!S.settings || typeof S.settings !== "object") S.settings = {};
+  if(!Array.isArray(S.settings.bullets)) S.settings.bullets = DEFAULT_BULLETS.slice();
+  S.settings.bullets = bulletList();
   if(!Array.isArray(S.settings.emojis))
     S.settings.emojis = DEFAULT_EMOJIS.map(x=>({ id:uid(), e:x.e, n:x.n }));
   S.settings.emojis = S.settings.emojis
@@ -1344,7 +1412,7 @@ function groupsOf(c){
 /* 현재 템플릿에 없지만 값이 남아 있는 칸 */
 function orphanKeys(c,l){
   const ks = {}; fieldsOf(c,l).forEach(f=>ks[f.k]=1);
-  return Object.keys(l).filter(k=>!LESSON_META[k] && !ks[k]
+  return Object.keys(l).filter(k=>!isInternalKey(k) && !ks[k]
     && typeof l[k]==="string" && l[k].trim() !== "");
 }
 function labelForKey(k){
@@ -1418,6 +1486,7 @@ function route(){
   if(parts[0]==="t" && parts[1]) return { name:"template", tid:parts[1] };
   if(parts[0]==="pdfdoc") return { name:"pdfdoc" };
   if(parts[0]==="emoji") return { name:"emoji" };
+  if(parts[0]==="bullet") return { name:"bullet" };
   if(parts[0]==="c" && parts[1]){
     if(parts[2]==="l" && parts[3]) return { name:"note", cid:parts[1], lid:parts[3] };
     return { name:"course", cid:parts[1] };
@@ -1446,6 +1515,7 @@ function render(){
   if(r.name==="settings") return renderSettings();
   if(r.name==="pdfdoc") return renderPdfDoc();
   if(r.name==="emoji") return renderEmoji();
+  if(r.name==="bullet") return renderBullet();
   if(r.name==="template"){
     const t = findTpl(r.tid);
     if(!t) return go("#/settings");
@@ -1804,14 +1874,12 @@ function autoContinueList(ta, e){
   e.preventDefault();
   if(!sp.body.trim()){
     /* 빈 항목에서 Enter → 표시를 지우고 목록을 끝낸다 */
-    ta.value = v.slice(0, start) + v.slice(pos);
-    ta.selectionStart = ta.selectionEnd = start;
+    editTA(ta, start, pos, "", start);
   }else{
     const m = /^(\d+)([.)])\s+/.exec(sp.marker);
     const next = m ? (parseInt(m[1],10) + 1) + m[2] + " " : sp.marker;
     const ins = "\n" + sp.indent + next;
-    ta.value = v.slice(0, pos) + ins + v.slice(pos);
-    ta.selectionStart = ta.selectionEnd = pos + ins.length;
+    editTA(ta, pos, pos, ins, pos + ins.length);
   }
   renumber(ta);
   ta.dispatchEvent(new Event("input", { bubbles:true }));
@@ -1827,8 +1895,7 @@ function noteEmojiInsert(ch){
   const v = ta.value, a = ta.selectionStart, b = ta.selectionEnd;
   const needSpace = a > 0 && !/\s$/.test(v.slice(0,a));
   const ins = (needSpace ? " " : "") + ch + " ";
-  ta.value = v.slice(0,a) + ins + v.slice(b);
-  ta.selectionStart = ta.selectionEnd = a + ins.length;
+  editTA(ta, a, b, ins, a + ins.length);
   ta.focus();
   ta.dispatchEvent(new Event("input", { bubbles:true }));
 }
@@ -2194,19 +2261,32 @@ function mdWrap(ta, mark){
      v.slice(a-2,a) === "**" || v.slice(b,b+2) === "**");
   if(!boldClash && sel.length >= 2*n && sel.slice(0,n) === mark && sel.slice(-n) === mark){
     const inner = sel.slice(n, -n);
-    ta.value = v.slice(0,a) + inner + v.slice(b);
-    ta.selectionStart = a; ta.selectionEnd = a + inner.length;
+    editTA(ta, a, b, inner, a, a + inner.length);
   } else if(!boldClash && v.slice(a-n, a) === mark && v.slice(b, b+n) === mark){
-    ta.value = v.slice(0, a-n) + sel + v.slice(b+n);
-    ta.selectionStart = a-n; ta.selectionEnd = b-n;
+    editTA(ta, a-n, b+n, sel, a-n, b-n);
   } else if(!boldClash && outerWrap(v, a, b, mark)){
     /* **==글==** 처럼 바깥 겹에 같은 표시가 있으면 그 겹만 벗긴다 */
     const o = outerWrap(v, a, b, mark);
-    ta.value = v.slice(0, o.s) + v.slice(o.s + n, o.e) + v.slice(o.e + n);
-    ta.selectionStart = a - n; ta.selectionEnd = b - n;
+    editTA(ta, o.e, o.e + n, "");
+    editTA(ta, o.s, o.s + n, "", a - n, b - n);
   } else {
-    ta.value = v.slice(0,a) + mark + sel + mark + v.slice(b);
-    ta.selectionStart = a+n; ta.selectionEnd = a+n+sel.length;
+    editTA(ta, a, b, mark + sel + mark, a+n, a+n+sel.length);
+  }
+}
+/* 글상자를 고칠 때는 setRangeText를 쓴다.
+   value를 통째로 바꾸면 실행취소가 끊기고,
+   아이폰에서 자동완성·예측 변환이 남아 이전 글자가 되살아난다. */
+function editTA(ta, start, end, text, selStart, selEnd){
+  if(typeof ta.setRangeText === "function"){
+    try{ ta.setRangeText(text, start, end, "preserve"); }
+    catch(e){ ta.value = ta.value.slice(0,start) + text + ta.value.slice(end); }
+  }else{
+    ta.value = ta.value.slice(0,start) + text + ta.value.slice(end);
+  }
+  if(selStart !== undefined){
+    const n = ta.value.length;
+    ta.selectionStart = Math.max(0, Math.min(selStart, n));
+    ta.selectionEnd = Math.max(ta.selectionStart, Math.min(selEnd === undefined ? selStart : selEnd, n));
   }
 }
 const MARKER_RE = /^(\s*)(#{1,4}\s+|[-*+]\s+|\d+[.)]\s+|>\s?)?/;
@@ -2258,12 +2338,11 @@ function mdLine(ta, prefix){
     return sp.indent + (isOl ? (n++) + ". " : prefix) + sp.body;
   });
   const txt = out.join("\n");
-  ta.value = v.slice(0,start) + txt + v.slice(end);
   if(only && !lines[0].trim()){
     /* 빈 줄이었다면 바로 이어 쓸 수 있게 커서를 끝에 둔다 */
-    ta.selectionStart = ta.selectionEnd = start + txt.length;
+    editTA(ta, start, end, txt, start + txt.length);
   }else{
-    ta.selectionStart = start; ta.selectionEnd = start + txt.length;
+    editTA(ta, start, end, txt, start, start + txt.length);
   }
 }
 /* 줄 앞 공백 두 칸을 넣고 뺀다. 번호 목록은 깊이에 맞춰 다시 매긴다. */
@@ -2280,19 +2359,23 @@ function mdIndent(ta, dir){
   });
   const txt = out.join("\n");
   const delta = txt.length - (end - start);
-  ta.value = v.slice(0, start) + txt + v.slice(end);
+  const cur = ta.selectionStart;
   if(lines.length === 1){
-    const pos = Math.max(start, ta.selectionStart + delta);
-    ta.selectionStart = ta.selectionEnd = Math.min(pos, start + txt.length);
+    const pos = Math.min(Math.max(start, cur + delta), start + txt.length);
+    editTA(ta, start, end, txt, pos);
   }else{
-    ta.selectionStart = start; ta.selectionEnd = start + txt.length;
+    editTA(ta, start, end, txt, start, start + txt.length);
   }
   renumber(ta);
 }
-/* 번호 목록 전체를 깊이별로 다시 매긴다 */
+/* 번호 목록을 깊이별로 다시 매긴다.
+   바뀐 줄만 고쳐서 커서와 자동완성이 흔들리지 않게 한다. */
 function renumber(ta){
-  const a = ta.selectionStart, b = ta.selectionEnd;
-  const lines = ta.value.split("\n");
+  const src = ta.value;
+  const lines = src.split("\n");
+  const starts = []; let p = 0;
+  lines.forEach(l=>{ starts.push(p); p += l.length + 1; });
+
   const counters = {};
   let prevIndent = null;
   const out = lines.map(l=>{
@@ -2301,7 +2384,7 @@ function renumber(ta){
     const d = sp.indent.length;
     const m = /^(\d+)([.)])\s+/.exec(sp.marker);
     if(!m){
-      if(!/^[-*+]\s+/.test(sp.marker)) { for(const k in counters) delete counters[k]; }
+      if(!/^[-*+]\s+/.test(sp.marker)){ for(const k in counters) delete counters[k]; }
       prevIndent = d;
       return l;
     }
@@ -2312,18 +2395,46 @@ function renumber(ta){
     prevIndent = d;
     return sp.indent + counters[d] + m[2] + " " + sp.body;
   });
-  const txt = out.join("\n");
-  if(txt === ta.value) return;
-  const grew = txt.length - ta.value.length;
-  ta.value = txt;
-  ta.selectionStart = Math.max(0, a + (a > 0 ? grew : 0));
-  ta.selectionEnd = Math.max(ta.selectionStart, b + (b > 0 ? grew : 0));
+
+  /* 바뀐 줄만 추려 뒤에서부터 고친다 (앞 줄 위치가 밀리지 않도록) */
+  const changed = [];
+  for(let i = 0; i < lines.length; i++){
+    if(out[i] !== lines[i]) changed.push(i);
+  }
+  if(!changed.length) return;
+
+  const a = ta.selectionStart, b = ta.selectionEnd;
+  /* 커서가 속한 줄과 그 줄 안에서의 위치를 기억해 둔다 */
+  const locate = pos => {
+    let i = 0;
+    while(i + 1 < lines.length && starts[i + 1] <= pos) i++;
+    return { line:i, off: pos - starts[i] };
+  };
+  const la = locate(a), lb = locate(b);
+
+  for(let k = changed.length - 1; k >= 0; k--){
+    const i = changed[k];
+    editTA(ta, starts[i], starts[i] + lines[i].length, out[i]);
+  }
+
+  /* 줄 안 위치를 마커 길이 변화만큼만 보정한다 */
+  const nStarts = []; let q = 0;
+  out.forEach(l=>{ nStarts.push(q); q += l.length + 1; });
+  const remap = loc => {
+    const i = loc.line;
+    const oldSp = splitLine(lines[i]), newSp = splitLine(out[i]);
+    const oldLen = oldSp.indent.length + oldSp.marker.length;
+    const newLen = newSp.indent.length + newSp.marker.length;
+    const off = loc.off <= oldLen ? newLen : loc.off + (newLen - oldLen);
+    return nStarts[i] + Math.max(0, Math.min(off, out[i].length));
+  };
+  ta.selectionStart = remap(la);
+  ta.selectionEnd = Math.max(ta.selectionStart, remap(lb));
 }
 function mdInsert(ta, text){
   const v = ta.value, a = ta.selectionStart;
   const ins = (a === 0 || v[a-1] === "\n" ? "" : "\n") + text;
-  ta.value = v.slice(0,a) + ins + v.slice(a);
-  ta.selectionStart = ta.selectionEnd = a + ins.length;
+  editTA(ta, a, a, ins, a + ins.length);
 }
 function applyMdTool(key, ta){
   ta = ta || document.getElementById("md-src");
@@ -2429,6 +2540,72 @@ function renderPdfDoc(){
   });
 }
 
+/* ---------- 목록 구분점 ---------- */
+const BULLET_PICKS = ["•","◦","▪","▫","‣","·","–","—","→","⇒","⇨","»","›","✓","✔","★","☆","◆","◇","○"];
+function renderBullet(){
+  setTab("settings");
+  const b = bulletList();
+  topbarIn.innerHTML = `
+    <button class="back" data-act="go-settings">${I.back}<span>설정</span></button>
+    <div class="h1-wrap" style="text-align:center">
+      <p class="eyebrow" style="margin:0">들여쓰기 단계별</p>
+      <div style="font-size:15px;font-weight:650">목록 구분점</div>
+    </div>
+    <button class="icon-btn" data-act="bu-reset" aria-label="기본값으로">${I.refresh}</button>`;
+
+  view.innerHTML = `<div class="narrow set">
+    <p class="muted-note" style="margin:16px 0 0">목록을 들여쓸 때마다 앞에 붙는 기호를 단계별로 정합니다.
+    노트에 쓰는 글자는 그대로 <b>-</b> 이고, 보여줄 때와 PDF에만 적용됩니다.</p>
+
+    <div class="sec" style="margin-top:18px">
+      <div class="sec-head"><h2>단계별 기호</h2><span class="aside">${BULLET_DEPTHS}단계</span></div>
+      <div class="emt">
+        <div class="emt-head"><span>단계</span><span>기호</span><span>미리보기</span></div>
+        ${b.map((ch,i)=>`
+          <div class="emt-row bu-row">
+            <span class="bu-depth">${i===0?"기본":i+"단계"}</span>
+            <input class="emt-e" type="text" maxlength="4" value="${esc(ch)}"
+              data-bu="${i}" aria-label="${i===0?"기본":i+"단계"} 기호">
+            <span class="bu-sample" style="padding-left:${i*14}px">
+              <b id="bu-pv-${i}">${esc(ch)}</b> 목록 항목</span>
+          </div>`).join("")}
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><h2>자주 쓰는 기호</h2>
+        <span class="aside">칸을 고른 뒤 누르세요</span></div>
+      <div class="chips">
+        ${BULLET_PICKS.map(ch=>`
+          <button class="chip sm" data-act="bu-pick" data-v="${esc(ch)}">${esc(ch)}</button>`).join("")}
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><h2>이렇게 보입니다</h2></div>
+      <div class="md-view" id="bu-demo">${mdToHtml(esc(
+        "- 1단계 항목\n  - 2단계 항목\n    - 3단계 항목\n      - 4단계 항목"), { br:true })}</div>
+    </div>
+
+    <div class="savebar" data-savestate><span class="dot"></span><span data-savetext></span></div>
+  </div>`;
+  paintSaveState();
+  applyBullets();
+
+  view.querySelectorAll("[data-bu]").forEach(inp=>{
+    inp.addEventListener("focus", ()=>{ buFocus = +inp.dataset.bu; });
+    inp.addEventListener("input", ()=>{
+      const i = +inp.dataset.bu;
+      const v = inp.value.trim().slice(0,4);
+      S.settings.bullets[i] = v || DEFAULT_BULLETS[i];
+      touch(); applyBullets();
+      const pv = document.getElementById("bu-pv-" + i);
+      if(pv) pv.textContent = S.settings.bullets[i];
+    });
+  });
+}
+let buFocus = 0;
+
 /* ---------- 자주 쓰는 이모지 ---------- */
 let emojiEdit = false;
 function renderEmoji(){
@@ -2517,6 +2694,8 @@ function renderSettings(){
       <div class="set-list">
         <button data-act="go-emoji">${I.note} 자주 쓰는 이모지
           <span class="val">${emojiList().length}개</span></button>
+        <button data-act="go-bullet">${I.list} 목록 구분점
+          <span class="val">${bulletList().slice(0,3).join(" ")}</span></button>
       </div>
     </div>
     <div class="set-group">
@@ -3185,6 +3364,23 @@ document.addEventListener("click", e=>{
     case "open-tpl": go("#/t/"+id); break;
     case "open-pdfdoc": go("#/pdfdoc"); break;
     case "go-emoji": closeLayer(); go("#/emoji"); break;
+    case "go-bullet": closeLayer(); go("#/bullet"); break;
+    case "bu-pick": {
+      const i = Math.max(0, Math.min(BULLET_DEPTHS-1, buFocus || 0));
+      S.settings.bullets[i] = t.dataset.v;
+      commit(); applyBullets(); render();
+      const inp = view.querySelector(`[data-bu="${i}"]`);
+      if(inp){ inp.focus(); buFocus = i; }
+      toast((i===0?"기본":i+"단계") + " 기호를 " + t.dataset.v + " 로 바꿨습니다");
+      break;
+    }
+    case "bu-reset":
+      confirmSheet("기본값으로 되돌릴까요?",
+        "단계별 기호가 모두 처음 상태로 돌아갑니다.", "되돌리기", ()=>{
+          S.settings.bullets = DEFAULT_BULLETS.slice();
+          commit(); applyBullets(); closeLayer(); render(); toast("되돌렸습니다");
+        }, true);
+      break;
     case "note-emoji": noteEmojiInsert(t.dataset.v); break;
     case "emoji-edit": if(dirty) commit(); emojiEdit = !emojiEdit; render(); break;
     case "em-add": {
@@ -3233,8 +3429,7 @@ document.addEventListener("click", e=>{
       if(!ta) return;
       const a0 = ta.selectionStart, a1 = ta.selectionEnd;
       const token = "{{" + t.dataset.v + "}}";
-      ta.value = ta.value.slice(0,a0) + token + ta.value.slice(a1);
-      ta.selectionStart = ta.selectionEnd = a0 + token.length;
+      editTA(ta, a0, a1, token, a0 + token.length);
       ta.focus();
       ta.dispatchEvent(new Event("input", { bubbles:true }));
       break;
@@ -3672,6 +3867,7 @@ document.addEventListener("keydown", e=>{
 /* ============================================================
    12. 시작
    ============================================================ */
+applyBullets();
 render();
 if(restoredFromBackup){
   setTimeout(()=>toast("저장본이 손상되어 직전 저장 내용으로 되살렸습니다"), 400);
