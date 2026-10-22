@@ -505,6 +505,32 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
 .emj:active{background:var(--surface-2)}
 .emj.add{font-size:16px;color:var(--accent);background:var(--accent-soft)}
 
+/* 제목 접기 */
+.md-view details.fold{margin:0}
+.md-view summary{
+  list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:7px;
+  border-radius:7px;margin-left:-4px;padding:1px 4px
+}
+.md-view summary::-webkit-details-marker{display:none}
+.md-view summary::marker{content:""}
+.md-view summary::before{
+  content:"▾";font-size:.72em;color:var(--muted);flex:none;line-height:1.9;
+  transition:transform .15s
+}
+.md-view details:not([open]) > summary::before{content:"▸"}
+.md-view summary:active{background:var(--surface-2)}
+.md-view summary > h1,.md-view summary > h2,
+.md-view summary > h3,.md-view summary > h4{margin:0;flex:1;min-width:0}
+/* 제목 아래 내용을 살짝 들여 세로선으로 묶는다 — 어디까지가 그 제목인지 보인다 */
+.md-view .fold-body{padding-left:13px;margin-left:5px;border-left:1.5px solid var(--line)}
+.md-view details.fold:not([open]) > .fold-body{border-left-color:transparent}
+.md-view details.fold + details.fold{margin-top:2px}
+.md-view details:not([open]) > summary{opacity:.72}
+/* 접힌 제목 뒤에 생략 표시 */
+.md-view details:not([open]) > summary::after{
+  content:"⋯";color:var(--muted);font-size:.9em;flex:none
+}
+
 /* 노트 칸 미리보기 */
 .fh-right{display:flex;align-items:center;gap:10px;min-width:0}
 .fv-toggle{font-size:11.5px;font-weight:650;color:var(--accent);padding:2px 0;flex:none}
@@ -520,7 +546,10 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
 .md-view h4{font-size:14px;margin:10px 0 3px}
 .md-view p{margin:0 0 7px}
 .md-view ol{margin:0 0 7px;padding-left:20px}
+.md-view ol ol,.md-view ul ol,.md-view ol ul{margin:2px 0}
 .md-view ul{margin:0 0 7px;padding-left:0;list-style:none}
+/* 안쪽 목록은 한 단계만큼 밀어 넣는다 (이게 빠지면 단계가 안 보인다) */
+.md-view ul ul{margin:2px 0;padding-left:1.45em}
 .md-view ul > li{position:relative;padding-left:1.45em}
 .md-view ul > li::before{
   content:var(--mk, var(--bu0,"-"));position:absolute;left:0;top:0;
@@ -575,6 +604,7 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
 .pdf-pv .p-md p{margin:0 0 6px;font-size:13px;line-height:1.6;color:var(--ink-2)}
 .pdf-pv .p-md ol{margin:0 0 8px;padding-left:20px;font-size:13px;color:var(--ink-2)}
 .pdf-pv .p-md ul{margin:0 0 8px;padding-left:0;list-style:none;font-size:13px;color:var(--ink-2)}
+.pdf-pv .p-md ul ul{margin:2px 0;padding-left:1.45em}
 .pdf-pv .p-md ul > li{position:relative;padding-left:1.45em}
 .pdf-pv .p-md ul > li::before{content:var(--mk, var(--bu0,"-"));position:absolute;left:0}
 .pdf-pv .p-md ul ul > li::before{content:var(--mk, var(--bu1,"+"))}
@@ -708,6 +738,7 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
   .p-md p{margin:0 0 2mm}
   .p-md ol{margin:0 0 2.5mm;padding-left:6mm}
   .p-md ul{margin:0 0 2.5mm;padding-left:0;list-style:none}
+  .p-md ul ul{margin:.5mm 0;padding-left:5mm}
   .p-md ul > li{position:relative;padding-left:5mm}
   .p-md ul > li::before{content:var(--mk, var(--bu0,"-"));position:absolute;left:0}
   .p-md ul ul > li::before{content:var(--mk, var(--bu1,"+"))}
@@ -746,6 +777,7 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
   .p-field .val h4{font-size:10pt;margin:2mm 0 1mm}
   .p-field .val ol{margin:0 0 1.6mm;padding-left:5mm}
   .p-field .val ul{margin:0 0 1.6mm;padding-left:0;list-style:none}
+  .p-field .val ul ul{margin:.4mm 0;padding-left:4.6mm}
   .p-field .val ul > li{position:relative;padding-left:4.6mm}
   .p-field .val ul > li::before{content:var(--mk, var(--bu0,"-"));position:absolute;left:0}
   .p-field .val ul ul > li::before{content:var(--mk, var(--bu1,"+"))}
@@ -799,8 +831,15 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
 /* ============================================================
    0. 버전
    ============================================================ */
-const APP_VERSION = "1.18.0";
+const APP_VERSION = "1.19.0";
 const CHANGELOG = [
+  { v:"1.19.0", date:"2026-10-22", notes:[
+    "미리보기에서 들여쓴 목록이 평평하게 나오던 문제를 고쳤습니다",
+    "제목을 눌러 접었다 펼 수 있습니다 — 대제목을 접으면 그 아래 중제목·소제목·본문이 함께 접힙니다",
+    "접어 둔 제목은 다른 화면을 다녀와도 그대로 접혀 있습니다",
+    "제목 아래 내용을 세로선으로 묶어 어디까지가 그 제목인지 보이게 했습니다",
+    "PDF는 접힌 것과 상관없이 늘 전부 들어갑니다"
+  ]},
   { v:"1.18.0", date:"2026-10-22", notes:[
     "한글을 치다가 Enter를 누르면 마지막 글자가 다음 줄로 딸려가던 문제를 고쳤습니다",
     "들여쓰기 단계가 글을 쓰는 중에도 기호로 보입니다 (기본 - + *, 설정에서 바꿀 수 있음)",
@@ -2029,7 +2068,7 @@ function renderNote(c, l){
         ${pv
           ? `<div class="md-view" data-act="field-view" ${ref}
               style="min-height:${boxHeight(rowsOf(f))}">${
-              val.trim() ? mdToHtml(esc(val), { br:true })
+              val.trim() ? mdToHtml(esc(val), { br:true, fold:l.id + "|" + f.k })
                          : `<span class="md-empty">비어 있음</span>`}</div>`
           : `<textarea id="f-${esc(f.k)}" data-note="${esc(f.k)}" rows="${rowsOf(f)}"
               autocorrect="on" autocapitalize="sentences" spellcheck="true"
@@ -2062,6 +2101,14 @@ function renderNote(c, l){
   mountNoteTools();
   paintSaveState();
 
+  /* 제목을 접거나 펼치면 기억해 둔다 */
+  view.addEventListener("toggle", e=>{
+    const el = e.target;
+    if(!el.classList || !el.classList.contains("fold")) return;
+    const fid = el.dataset.fid;
+    if(!fid) return;
+    if(el.open) delete foldClosed[fid]; else foldClosed[fid] = 1;
+  }, true);
   view.querySelectorAll("textarea").forEach(ta=>grow(ta, true));
   view.querySelectorAll("textarea[data-note]").forEach(ta=>{
     bindNoteField(ta);
@@ -3159,8 +3206,19 @@ function mdInline(t){
   out = pass(pass(out));
   return out.replace(/\u0001(\d+)\u0001/g, (m,i)=>'<code>' + codes[+i] + '</code>');
 }
+/* 접어 둔 제목을 기억한다 (칸마다 따로) */
+const foldClosed = Object.create(null);
 function mdToHtml(src, opts){
   const br = !!(opts && opts.br);
+  const foldKey = opts && opts.fold;   /* 값이 있으면 제목을 접을 수 있게 만든다 */
+  const heads = [];                    /* 열려 있는 제목 단계 */
+  let headNo = 0;
+  const closeHeads = lvl => {
+    while(heads.length && heads[heads.length - 1] >= lvl){
+      out.push("</div></details>");
+      heads.pop();
+    }
+  };
   const lines = String(src||"").replace(/\r\n?/g,"\n").split("\n");
   const out = []; let para = [];
   /* 들여쓰기 깊이만큼 목록을 겹쳐 연다 */
@@ -3191,7 +3249,17 @@ function mdToHtml(src, opts){
     if((m = /^(#{1,4})\s+(.*)$/.exec(t))){
       flushP(); flushL();
       const n = m[1].length;
-      out.push("<h"+n+">"+mdInline(m[2])+"</h"+n+">"); return;
+      if(!foldKey){
+        out.push("<h"+n+">"+mdInline(m[2])+"</h"+n+">"); return;
+      }
+      closeHeads(n);
+      const fid = foldKey + ":" + (headNo++);
+      const open = foldClosed[fid] ? "" : " open";
+      out.push('<details class="fold" data-fid="' + esc(fid) + '"' + open + '>'
+        + '<summary><h' + n + '>' + mdInline(m[2]) + '</h' + n + '></summary>'
+        + '<div class="fold-body">');
+      heads.push(n);
+      return;
     }
     if(/^(-{3,}|\*{3,}|_{3,})$/.test(t)){ flushP(); flushL(); out.push("<hr>"); return; }
     if((m = /^&gt;\s?(.*)$/.exec(t))){ flushP(); flushL(); out.push("<blockquote>"+mdInline(m[1])+"</blockquote>"); return; }
@@ -3210,6 +3278,7 @@ function mdToHtml(src, opts){
     flushL(); para.push(t);
   });
   flushP(); flushL();
+  if(foldKey) closeHeads(1);
   return out.join("\n");
 }
 function fillVars(tplText, vars){
@@ -3905,6 +3974,8 @@ document.addEventListener("click", e=>{
     }
     case "toggle-order": editOrder = !editOrder; render(); break;
     case "field-view": {
+      /* 제목을 접으려고 누른 것이면 편집으로 바꾸지 않는다 */
+      if(e.target.closest && e.target.closest("summary")) return;
       if(dirty) commit();
       const key = lid + "|" + t.dataset.k;
       fieldView[key] = !fieldView[key];
