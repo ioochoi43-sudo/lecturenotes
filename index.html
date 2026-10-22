@@ -523,14 +523,14 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
 .md-view ul{margin:0 0 7px;padding-left:0;list-style:none}
 .md-view ul > li{position:relative;padding-left:1.45em}
 .md-view ul > li::before{
-  content:var(--bu0,"•");position:absolute;left:0;top:0;
+  content:var(--mk, var(--bu0,"-"));position:absolute;left:0;top:0;
   width:1.3em;color:var(--ink-2);font-variant-emoji:text
 }
-.md-view ul ul > li::before{content:var(--bu1,"◦")}
-.md-view ul ul ul > li::before{content:var(--bu2,"▪")}
-.md-view ul ul ul ul > li::before{content:var(--bu3,"‣")}
-.md-view ul ul ul ul ul > li::before{content:var(--bu4,"◦")}
-.md-view ul ul ul ul ul ul > li::before{content:var(--bu5,"▪")}
+.md-view ul ul > li::before{content:var(--mk, var(--bu1,"+"))}
+.md-view ul ul ul > li::before{content:var(--mk, var(--bu2,"*"))}
+.md-view ul ul ul ul > li::before{content:var(--mk, var(--bu3,"-"))}
+.md-view ul ul ul ul ul > li::before{content:var(--mk, var(--bu4,"+"))}
+.md-view ul ul ul ul ul ul > li::before{content:var(--mk, var(--bu5,"*"))}
 .md-view li > ul,.md-view li > ol,.md-view ul ul,.md-view ul ol,.md-view ol ol,.md-view ol ul{margin:2px 0 2px}
 .md-view li{margin:2px 0}
 .md-view hr{border:0;border-top:1px solid #D9DDE3;margin:12px 0}
@@ -565,6 +565,7 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
 .mdt.s{text-decoration:line-through}
 .mdt.c{font-family:ui-monospace,Menlo,monospace;font-size:12px}
 .mdt.mk{background:#FFF08A;color:#6B5300}
+.mdt.hd{font-weight:800;letter-spacing:-.02em}
 .mdt.mk:active{background:#F2E07A}
 .pdf-pv{border:1px solid var(--line);border-radius:var(--r-md);padding:20px;background:#fff}
 .pdf-pv .p-md h1{font-size:23px;margin:0 0 8px;letter-spacing:-.02em;line-height:1.25}
@@ -575,9 +576,9 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
 .pdf-pv .p-md ol{margin:0 0 8px;padding-left:20px;font-size:13px;color:var(--ink-2)}
 .pdf-pv .p-md ul{margin:0 0 8px;padding-left:0;list-style:none;font-size:13px;color:var(--ink-2)}
 .pdf-pv .p-md ul > li{position:relative;padding-left:1.45em}
-.pdf-pv .p-md ul > li::before{content:var(--bu0,"•");position:absolute;left:0}
-.pdf-pv .p-md ul ul > li::before{content:var(--bu1,"◦")}
-.pdf-pv .p-md ul ul ul > li::before{content:var(--bu2,"▪")}
+.pdf-pv .p-md ul > li::before{content:var(--mk, var(--bu0,"-"));position:absolute;left:0}
+.pdf-pv .p-md ul ul > li::before{content:var(--mk, var(--bu1,"+"))}
+.pdf-pv .p-md ul ul ul > li::before{content:var(--mk, var(--bu2,"*"))}
 .pdf-pv .p-md li{margin:2px 0}
 .pdf-pv .p-md hr{border:0;border-top:1px solid var(--ink);margin:14px 0}
 .pdf-pv .p-md blockquote{margin:6px 0;padding-left:12px;border-left:3px solid var(--line);color:var(--muted)}
@@ -708,9 +709,9 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
   .p-md ol{margin:0 0 2.5mm;padding-left:6mm}
   .p-md ul{margin:0 0 2.5mm;padding-left:0;list-style:none}
   .p-md ul > li{position:relative;padding-left:5mm}
-  .p-md ul > li::before{content:var(--bu0,"•");position:absolute;left:0}
-  .p-md ul ul > li::before{content:var(--bu1,"◦")}
-  .p-md ul ul ul > li::before{content:var(--bu2,"▪")}
+  .p-md ul > li::before{content:var(--mk, var(--bu0,"-"));position:absolute;left:0}
+  .p-md ul ul > li::before{content:var(--mk, var(--bu1,"+"))}
+  .p-md ul ul ul > li::before{content:var(--mk, var(--bu2,"*"))}
   .p-md li{margin:.6mm 0}
   .p-md hr{border:0;border-top:0.4mm solid #111;margin:5mm 0}
   .p-md blockquote{margin:2mm 0;padding-left:4mm;border-left:0.7mm solid #CCC;color:#555}
@@ -746,12 +747,12 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
   .p-field .val ol{margin:0 0 1.6mm;padding-left:5mm}
   .p-field .val ul{margin:0 0 1.6mm;padding-left:0;list-style:none}
   .p-field .val ul > li{position:relative;padding-left:4.6mm}
-  .p-field .val ul > li::before{content:var(--bu0,"•");position:absolute;left:0}
-  .p-field .val ul ul > li::before{content:var(--bu1,"◦")}
-  .p-field .val ul ul ul > li::before{content:var(--bu2,"▪")}
-  .p-field .val ul ul ul ul > li::before{content:var(--bu3,"‣")}
-  .p-field .val ul ul ul ul ul > li::before{content:var(--bu4,"◦")}
-  .p-field .val ul ul ul ul ul ul > li::before{content:var(--bu5,"▪")}
+  .p-field .val ul > li::before{content:var(--mk, var(--bu0,"-"));position:absolute;left:0}
+  .p-field .val ul ul > li::before{content:var(--mk, var(--bu1,"+"))}
+  .p-field .val ul ul ul > li::before{content:var(--mk, var(--bu2,"*"))}
+  .p-field .val ul ul ul ul > li::before{content:var(--mk, var(--bu3,"-"))}
+  .p-field .val ul ul ul ul ul > li::before{content:var(--mk, var(--bu4,"+"))}
+  .p-field .val ul ul ul ul ul ul > li::before{content:var(--mk, var(--bu5,"*"))}
   .p-field .val ul ul,.p-field .val ul ol,.p-field .val ol ol,.p-field .val ol ul{margin:.4mm 0}
   .p-field .val li{margin:.5mm 0}
   .p-field .val hr{border:0;border-top:0.3mm solid #CCC;margin:2.5mm 0}
@@ -798,8 +799,15 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
 /* ============================================================
    0. 버전
    ============================================================ */
-const APP_VERSION = "1.17.0";
+const APP_VERSION = "1.18.0";
 const CHANGELOG = [
+  { v:"1.18.0", date:"2026-10-22", notes:[
+    "한글을 치다가 Enter를 누르면 마지막 글자가 다음 줄로 딸려가던 문제를 고쳤습니다",
+    "들여쓰기 단계가 글을 쓰는 중에도 기호로 보입니다 (기본 - + *, 설정에서 바꿀 수 있음)",
+    "제목 버튼 하나로 대제목 → 중제목 → 소제목 → 없음 순서로 바뀝니다",
+    "되돌리기(Cmd+Z)가 서식 버튼·Enter 이어쓰기에도 적용됩니다",
+    "Tab 키로 들여쓰기, Shift+Tab 으로 내어쓰기가 됩니다"
+  ]},
   { v:"1.17.0", date:"2026-10-22", notes:[
     "목록 구분점을 들여쓰기 단계별로 직접 정할 수 있습니다 (설정 → 노트 쓰기 → 목록 구분점)",
     "노트에 쓰는 글자는 그대로 - 이고, 보여줄 때와 PDF에만 적용됩니다",
@@ -1238,7 +1246,9 @@ const isInternalKey = k => !!LESSON_META[k] || /(Id|At)$/.test(k);
 /* 목록 구분점 — 들여쓰기 깊이별로 사용자가 정한다.
    마크다운 글자는 "-" 그대로 두고, 보여줄 때만 이 기호를 쓴다. */
 const BULLET_DEPTHS = 6;
-const DEFAULT_BULLETS = ["•","◦","▪","‣","◦","▪"];
+/* 기본값은 마크다운이 모두 목록으로 인정하는 -, +, * 를 번갈아 쓴다.
+   서로 달라서 단계가 눈에 보이고, 다른 앱에 붙여넣어도 목록으로 열린다. */
+const DEFAULT_BULLETS = ["-","+","*","-","+","*"];
 function bulletList(){
   const v = S.settings.bullets;
   const out = DEFAULT_BULLETS.slice();
@@ -1433,7 +1443,7 @@ const writtenCount = c => lessonsOf(c).filter(l=>hasText(c,l)).length;
 function stripMd(x){
   return x
     .replace(/^#{1,4}\s+/gm, "")
-    .replace(/^\s*[-*+]\s+/gm, "")
+    .replace(new RegExp("^\\s*(?:" + bulletMarks().map(reEsc).join("|") + ")\\s+", "gm"), "")
     .replace(/^\s*&gt;\s?/gm, "").replace(/^\s*>\s?/gm, "")
     .replace(/\*\*([^*]+)\*\*/g, "$1")
     .replace(/==([^=\n]+)==/g, "$1")
@@ -1863,24 +1873,59 @@ function showNoteTools(on){
   document.body.classList.toggle("tools-open", !!on);
 }
 /* Enter를 누르면 목록·인용을 이어 준다. 빈 항목에서 Enter면 목록을 끝낸다. */
+/* 한글·일본어처럼 글자를 조합해 넣는 중인지 본다.
+   아이폰에서는 isComposing이 false로 오는 일이 있어 keyCode 229와
+   compositionstart/end 로 직접 따라간 상태를 함께 본다. */
+let imeOn = false;
+const isComposingNow = e =>
+  imeOn || e.isComposing === true || e.keyCode === 229 || e.which === 229;
+
+/* 조합 중에는 Enter를 가로채면 안 된다.
+   가로채면 조합 중이던 글자가 확정되면서 새 줄로 딸려 들어간다.
+   그래서 줄바꿈은 브라우저에 맡기고, 끝난 뒤에 목록 기호만 붙인다. */
+function markerAfterEnter(ta, prefix){
+  let tries = 0;
+  const put = ()=>{
+    if(!ta.isConnected) return;
+    const pos = ta.selectionStart;
+    if(pos === ta.selectionEnd && pos > 0 && ta.value[pos-1] === "\n"){
+      editTA(ta, pos, pos, prefix, pos + prefix.length);
+      renumber(ta);
+      ta.dispatchEvent(new Event("input", { bubbles:true }));
+      return;
+    }
+    if(++tries < 6) setTimeout(put, 16);
+  };
+  setTimeout(put, 0);
+}
 function autoContinueList(ta, e){
-  if(e.key !== "Enter" || e.shiftKey || e.isComposing) return false;
+  if(e.key !== "Enter" || e.shiftKey) return false;
   const v = ta.value, pos = ta.selectionStart;
   if(pos !== ta.selectionEnd) return false;
   const start = v.lastIndexOf("\n", pos - 1) + 1;
   const line = v.slice(start, pos);
   const sp = splitLine(line);
   if(!sp.marker || /^#{1,4}\s+/.test(sp.marker)) return false;
-  e.preventDefault();
+
+  const composing = isComposingNow(e);
   if(!sp.body.trim()){
-    /* 빈 항목에서 Enter → 표시를 지우고 목록을 끝낸다 */
+    if(composing) return false;
+    e.preventDefault();
     editTA(ta, start, pos, "", start);
-  }else{
-    const m = /^(\d+)([.)])\s+/.exec(sp.marker);
-    const next = m ? (parseInt(m[1],10) + 1) + m[2] + " " : sp.marker;
-    const ins = "\n" + sp.indent + next;
-    editTA(ta, pos, pos, ins, pos + ins.length);
+    renumber(ta);
+    ta.dispatchEvent(new Event("input", { bubbles:true }));
+    return true;
   }
+
+  const m = /^(\d+)([.)])\s+/.exec(sp.marker);
+  const next = m ? (parseInt(m[1],10) + 1) + m[2] + " " : sp.marker;
+  if(composing){
+    markerAfterEnter(ta, sp.indent + next);
+    return false;          /* 줄바꿈은 브라우저가 한다 */
+  }
+  e.preventDefault();
+  const ins = "\n" + sp.indent + next;
+  editTA(ta, pos, pos, ins, pos + ins.length);
   renumber(ta);
   ta.dispatchEvent(new Event("input", { bubbles:true }));
   return true;
@@ -1899,6 +1944,13 @@ function noteEmojiInsert(ch){
   ta.focus();
   ta.dispatchEvent(new Event("input", { bubbles:true }));
 }
+function curLine(ta){
+  const v = ta.value;
+  const s0 = v.lastIndexOf("\n", ta.selectionStart - 1) + 1;
+  let e0 = v.indexOf("\n", ta.selectionStart);
+  if(e0 < 0) e0 = v.length;
+  return v.slice(s0, e0);
+}
 function noteMdApply(key){
   const ta = activeNoteTA;
   if(!ta || !ta.isConnected){
@@ -1908,10 +1960,15 @@ function noteMdApply(key){
   }
   applyMdTool(key, ta);
 }
+function bindIME(ta){
+  ta.addEventListener("compositionstart", ()=>{ imeOn = true; });
+  ta.addEventListener("compositionend", ()=>{ imeOn = false; });
+}
 function bindNoteField(ta){
+  bindIME(ta);
   ta.addEventListener("keydown", e=>{
     if(autoContinueList(ta, e)) return;
-    if(e.key === "Tab"){
+    if(e.key === "Tab" && !isComposingNow(e)){
       e.preventDefault();
       mdIndent(ta, e.shiftKey ? -1 : 1);
       ta.dispatchEvent(new Event("input", { bubbles:true }));
@@ -2277,23 +2334,53 @@ function mdWrap(ta, mark){
    value를 통째로 바꾸면 실행취소가 끊기고,
    아이폰에서 자동완성·예측 변환이 남아 이전 글자가 되살아난다. */
 function editTA(ta, start, end, text, selStart, selEnd){
-  if(typeof ta.setRangeText === "function"){
-    try{ ta.setRangeText(text, start, end, "preserve"); }
-    catch(e){ ta.value = ta.value.slice(0,start) + text + ta.value.slice(end); }
-  }else{
-    ta.value = ta.value.slice(0,start) + text + ta.value.slice(end);
+  let done = false;
+  /* 글자를 "직접 타이핑한 것처럼" 넣어야 되돌리기(Cmd+Z)가 작동한다.
+     execCommand는 오래된 방식이지만 사파리에서 되돌리기가 가장 확실하다. */
+  try{
+    if(document.activeElement === ta && typeof document.execCommand === "function"){
+      ta.setSelectionRange(start, end);
+      done = document.execCommand("insertText", false, text);
+    }
+  }catch(e){ done = false; }
+  if(!done && typeof ta.setRangeText === "function"){
+    try{ ta.setRangeText(text, start, end, "preserve"); done = true; }catch(e){}
   }
+  if(!done) ta.value = ta.value.slice(0,start) + text + ta.value.slice(end);
   if(selStart !== undefined){
     const n = ta.value.length;
     ta.selectionStart = Math.max(0, Math.min(selStart, n));
     ta.selectionEnd = Math.max(ta.selectionStart, Math.min(selEnd === undefined ? selStart : selEnd, n));
   }
 }
-const MARKER_RE = /^(\s*)(#{1,4}\s+|[-*+]\s+|\d+[.)]\s+|>\s?)?/;
 const INDENT = "  ";
+const reEsc = x => String(x).replace(/[.*+?^${}()|[\]\\-]/g, "\\$&");
+/* 목록 표시는 사용자가 정한 기호를 그대로 글자로 넣는다.
+   그래야 미리보기로 바꾸지 않아도 몇 단계인지 눈에 보인다.
+   기본 -, *, + 도 늘 함께 인식해 예전 노트가 그대로 열린다. */
+let _mkRe = null, _mkKey = "", _ulRe = null;
+function bulletMarks(){
+  return [...new Set(bulletList().concat(["-","*","+"]))].filter(Boolean);
+}
+function buildMarkerRe(){
+  const key = bulletMarks().join("\u0000");
+  if(_mkRe && _mkKey === key) return;
+  const alt = bulletMarks().map(reEsc).join("|");
+  _mkKey = key;
+  _mkRe = new RegExp("^(\\s*)(#{1,4}\\s+|(?:" + alt + ")\\s+|\\d+[.)]\\s+|>\\s?)?");
+  _ulRe = new RegExp("^(?:" + alt + ")\\s+(.*)$");
+}
+function markerRe(){ buildMarkerRe(); return _mkRe; }
+function ulRe(){ buildMarkerRe(); return _ulRe; }
+/* 깊이에 맞는 목록 기호 (공백 포함) */
+function bulletMark(depth){
+  const b = bulletList();
+  return b[Math.max(0, Math.min(b.length - 1, depth))] + " ";
+}
+const isBulletMarker = mk => !!mk && ulRe().test(mk + "x");
 /* 줄을 들여쓰기 / 표시 / 내용으로 쪼갠다 */
 function splitLine(l){
-  const m = MARKER_RE.exec(l) || [l, "", ""];
+  const m = markerRe().exec(l) || [l, "", ""];
   return { indent: m[1] || "", marker: m[2] || "", body: l.slice((m[0]||"").length) };
 }
 /* 같은 깊이에서 바로 위 번호 목록의 다음 번호 */
@@ -2322,12 +2409,17 @@ function mdLine(ta, prefix){
   if(end < 0) end = v.length;
   const lines = v.slice(start, end).split("\n");
   const isOl = prefix === "1. ";
+  const isUl = prefix === "- ";
   const re = isOl ? /^\d+[.)]\s+/
-    : new RegExp("^" + prefix.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+    : isUl ? ulRe()
+    : new RegExp("^" + reEsc(prefix));
   /* 글자가 없는 줄에서도 적용되어야 한다. 그래야 먼저 '# '를 넣고 이어서 쓸 수 있다. */
   const only = lines.length === 1;
-  const has = only ? re.test(splitLine(lines[0]).marker)
-                   : lines.every(l => !l.trim() || re.test(splitLine(l).marker));
+  const mkTest = l => {
+    const mk = splitLine(l).marker;
+    return isUl ? isBulletMarker(mk) : re.test(mk);
+  };
+  const has = only ? mkTest(lines[0]) : lines.every(l => !l.trim() || mkTest(l));
   /* 한 줄만 바꿀 때는 위 목록 번호를 이어받고, 여러 줄이면 1부터 매긴다 */
   const base = isOl && only ? nextNumber(v, start, splitLine(lines[0]).indent) : 1;
   let n = base;
@@ -2335,7 +2427,10 @@ function mdLine(ta, prefix){
     if(!l.trim() && !only) return l;
     const sp = splitLine(l);
     if(has) return sp.indent + sp.body;
-    return sp.indent + (isOl ? (n++) + ". " : prefix) + sp.body;
+    const mark = isOl ? (n++) + ". "
+      : isUl ? bulletMark(Math.floor(sp.indent.replace(/\t/g, INDENT).length / 2))
+      : prefix;
+    return sp.indent + mark + sp.body;
   });
   const txt = out.join("\n");
   if(only && !lines[0].trim()){
@@ -2354,8 +2449,14 @@ function mdIndent(ta, dir){
   const lines = v.slice(start, end).split("\n");
   const out = lines.map(l=>{
     if(!l.trim() && lines.length > 1) return l;
-    if(dir > 0) return INDENT + l;
-    return l.replace(/^(\t| {1,2})/, "");
+    const moved = dir > 0 ? INDENT + l : l.replace(/^(\t| {1,2})/, "");
+    /* 목록이면 새 깊이의 기호로 바꿔 단계가 바로 보이게 한다 */
+    const sp = splitLine(moved);
+    if(isBulletMarker(sp.marker)){
+      const depth = Math.floor(sp.indent.replace(/\t/g, INDENT).length / 2);
+      return sp.indent + bulletMark(depth) + sp.body;
+    }
+    return moved;
   });
   const txt = out.join("\n");
   const delta = txt.length - (end - start);
@@ -2431,6 +2532,28 @@ function renumber(ta){
   ta.selectionStart = remap(la);
   ta.selectionEnd = Math.max(ta.selectionStart, remap(lb));
 }
+/* 제목 단계를 한 버튼으로 돌린다: 없음 → # → ## → ### → 없음 */
+function mdHeading(ta){
+  const v = ta.value;
+  const start = v.lastIndexOf("\n", ta.selectionStart - 1) + 1;
+  let end = v.indexOf("\n", ta.selectionEnd);
+  if(end < 0) end = v.length;
+  const line = v.slice(start, end);
+  const sp = splitLine(line);
+  const m = /^(#{1,3})\s+/.exec(sp.marker);
+  const lvl = m ? m[1].length : 0;
+  const next = lvl >= 3 ? 0 : lvl + 1;
+  const mark = next ? "#".repeat(next) + " " : "";
+  const body = m ? sp.body : (sp.marker ? sp.marker + sp.body : sp.body);
+  const txt = sp.indent + mark + body;
+  const oldLen = sp.indent.length + (m ? sp.marker.length : 0);
+  const newLen = sp.indent.length + mark.length;
+  const cur = ta.selectionStart;
+  const off = cur - start;
+  const pos = start + (off <= oldLen ? newLen : off + (newLen - oldLen));
+  editTA(ta, start, end, txt, Math.min(Math.max(pos, start), start + txt.length));
+  return next;
+}
 function mdInsert(ta, text){
   const v = ta.value, a = ta.selectionStart;
   const ins = (a === 0 || v[a-1] === "\n" ? "" : "\n") + text;
@@ -2443,6 +2566,7 @@ function applyMdTool(key, ta){
   if(tool.t === "wrap") mdWrap(ta, tool.v);
   else if(tool.t === "line") mdLine(ta, tool.v);
   else if(tool.t === "indent") mdIndent(ta, tool.v);
+  else if(tool.t === "heading") mdHeading(ta);
   else mdInsert(ta, tool.v);
   ta.focus();
   ta.dispatchEvent(new Event("input", { bubbles:true }));
@@ -2514,13 +2638,14 @@ function renderPdfDoc(){
 
   const ta = document.getElementById("md-src");
   grow(ta, true);
+  bindIME(ta);
   /* 서식 버튼을 눌러도 편집칸 포커스와 선택이 유지되도록 */
   const tools = document.getElementById("mdTools");
   if(tools) tools.addEventListener("mousedown", e=>e.preventDefault());
   ta.addEventListener("blur", ()=>grow(ta, true));
   ta.addEventListener("keydown", e=>{
     if(autoContinueList(ta, e)) return;
-    if(e.key === "Tab"){
+    if(e.key === "Tab" && !isComposingNow(e)){
       e.preventDefault();
       mdIndent(ta, e.shiftKey ? -1 : 1);
       ta.dispatchEvent(new Event("input", { bubbles:true }));
@@ -2555,7 +2680,8 @@ function renderBullet(){
 
   view.innerHTML = `<div class="narrow set">
     <p class="muted-note" style="margin:16px 0 0">목록을 들여쓸 때마다 앞에 붙는 기호를 단계별로 정합니다.
-    노트에 쓰는 글자는 그대로 <b>-</b> 이고, 보여줄 때와 PDF에만 적용됩니다.</p>
+    글을 쓰는 중에도 이 기호가 그대로 보여서 지금 몇 단계인지 바로 알 수 있습니다.
+    기본값 <b>-</b> <b>+</b> <b>*</b> 는 다른 앱에 붙여넣어도 목록으로 열립니다.</p>
 
     <div class="sec" style="margin-top:18px">
       <div class="sec-head"><h2>단계별 기호</h2><span class="aside">${BULLET_DEPTHS}단계</span></div>
@@ -2584,7 +2710,8 @@ function renderBullet(){
     <div class="sec">
       <div class="sec-head"><h2>이렇게 보입니다</h2></div>
       <div class="md-view" id="bu-demo">${mdToHtml(esc(
-        "- 1단계 항목\n  - 2단계 항목\n    - 3단계 항목\n      - 4단계 항목"), { br:true })}</div>
+        b.slice(0,4).map((ch,i)=>"  ".repeat(i) + ch + " " + (i===0?"기본":i+"단계") + " 항목").join("\n")
+      ), { br:true })}</div>
     </div>
 
     <div class="savebar" data-savestate><span class="dot"></span><span data-savetext></span></div>
@@ -2992,9 +3119,7 @@ const PDF_VARS = {
   note: ["번호","회차명","상태","수정일","섹션명","강의명","템플릿명"]
 };
 const MD_TOOLS = [
-  { k:"h1",    n:"H1",  t:"line",   v:"# ",     title:"대제목" },
-  { k:"h2",    n:"H2",  t:"line",   v:"## ",    title:"중제목" },
-  { k:"h3",    n:"H3",  t:"line",   v:"### ",   title:"소제목" },
+  { k:"head",  n:"제목", t:"heading", v:0, cls:"hd", title:"제목 — 누를 때마다 대 → 중 → 소 → 없음" },
   { k:"b",     n:"B",   t:"wrap",   v:"**",     cls:"b",  title:"굵게" },
   { k:"i",     n:"I",   t:"wrap",   v:"*",      cls:"i",  title:"기울임" },
   { k:"mark",  n:"하이라이트", t:"wrap", v:"==", cls:"mk", title:"하이라이트" },
@@ -3072,9 +3197,11 @@ function mdToHtml(src, opts){
     if((m = /^&gt;\s?(.*)$/.exec(t))){ flushP(); flushL(); out.push("<blockquote>"+mdInline(m[1])+"</blockquote>"); return; }
     const ind = /^[ \t]*/.exec(raw)[0].replace(/\t/g, "  ").length;
     const depth = Math.min(Math.floor(ind / 2), 5);
-    if((m = /^[-*+]\s+(.*)$/.exec(t))){
+    if((m = ulRe().exec(t))){
       flushP(); openList("ul", depth);
-      out.push("<li>"+mdInline(m[1])+"</li>"); return;
+      /* 글자에 쓰인 기호를 그대로 쓴다. 설정을 바꿔도 예전 노트는 쓴 그대로 보인다. */
+      const mk = t.slice(0, t.length - m[1].length).trim();
+      out.push('<li style="--mk:' + esc(JSON.stringify(mk)) + '">' + mdInline(m[1]) + "</li>"); return;
     }
     if((m = /^\d+[.)]\s+(.*)$/.exec(t))){
       flushP(); openList("ol", depth);
@@ -3423,7 +3550,15 @@ document.addEventListener("click", e=>{
     case "md-block": if(dirty) commit(); mdBlockKey = t.dataset.v; render(); break;
     case "md-pane": if(dirty) commit(); mdPane = t.dataset.v; render(); break;
     case "md-tool": applyMdTool(t.dataset.v); break;
-    case "note-md": noteMdApply(t.dataset.v); break;
+    case "note-md": {
+      noteMdApply(t.dataset.v);
+      if(t.dataset.v === "head" && activeNoteTA){
+        const sp = splitLine(curLine(activeNoteTA));
+        const mm = /^(#{1,3})\s+/.exec(sp.marker);
+        toast(mm ? ["대제목","중제목","소제목"][mm[1].length - 1] : "제목 해제");
+      }
+      break;
+    }
     case "md-var": {
       const ta = document.getElementById("md-src");
       if(!ta) return;
