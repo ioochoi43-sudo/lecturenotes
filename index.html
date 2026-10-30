@@ -831,8 +831,13 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
 /* ============================================================
    0. 버전
    ============================================================ */
-const APP_VERSION = "1.19.0";
+const APP_VERSION = "1.19.1";
 const CHANGELOG = [
+  { v:"1.19.1", date:"2026-10-29", notes:[
+    "들여쓰기가 화면이 보여줄 수 있는 단계(5단계)를 넘어가지 않도록 막았습니다",
+    "그 전에는 더 깊이 들어가도 화면에는 같은 단계로 보여 글자와 화면이 어긋났습니다",
+    "기록 보존을 29가지 상황으로 다시 점검해 모두 통과했습니다"
+  ]},
   { v:"1.19.0", date:"2026-10-22", notes:[
     "미리보기에서 들여쓴 목록이 평평하게 나오던 문제를 고쳤습니다",
     "제목을 눌러 접었다 펼 수 있습니다 — 대제목을 접으면 그 아래 중제목·소제목·본문이 함께 접힙니다",
@@ -2494,8 +2499,12 @@ function mdIndent(ta, dir){
   let end = v.indexOf("\n", ta.selectionEnd);
   if(end < 0) end = v.length;
   const lines = v.slice(start, end).split("\n");
+  const maxIndent = (BULLET_DEPTHS - 1) * INDENT.length;
   const out = lines.map(l=>{
     if(!l.trim() && lines.length > 1) return l;
+    /* 화면이 보여줄 수 있는 단계까지만 들어간다 (더 들어가면 글자와 화면이 어긋난다) */
+    const now = (/^[ \t]*/.exec(l)[0] || "").replace(/\t/g, INDENT).length;
+    if(dir > 0 && now >= maxIndent) return l;
     const moved = dir > 0 ? INDENT + l : l.replace(/^(\t| {1,2})/, "");
     /* 목록이면 새 깊이의 기호로 바꿔 단계가 바로 보이게 한다 */
     const sp = splitLine(moved);
