@@ -102,7 +102,11 @@ h1{font-size:27px;font-weight:750;letter-spacing:-.02em;margin:0;line-height:1.2
 }
 .back:active{background:var(--accent-soft)}
 .back svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2.4;
-  stroke-linecap:round;stroke-linejoin:round}
+  stroke-linecap:round;stroke-linejoin:round;flex:none}
+/* 긴 이름은 글자 수로 자르지 않고 공간에 맞춰 줄인다 (넘치면 …) */
+.back span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;max-width:26vw}
+@media(min-width:700px){.back span{max-width:260px}}
+@media(min-width:1100px){.back span{max-width:360px}}
 
 /* 섹션 */
 .sec{margin-top:26px}
@@ -831,8 +835,12 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
 /* ============================================================
    0. 버전
    ============================================================ */
-const APP_VERSION = "1.19.1";
+const APP_VERSION = "1.19.2";
 const CHANGELOG = [
+  { v:"1.19.2", date:"2026-10-31", notes:[
+    "노트 화면 왼쪽 위 강의 이름이 10글자에서 잘리던 것을 고쳤습니다",
+    "이제 화면이 넓으면 이름이 다 보이고, 좁을 때만 … 로 줄입니다"
+  ]},
   { v:"1.19.1", date:"2026-10-29", notes:[
     "들여쓰기가 화면이 보여줄 수 있는 단계(5단계)를 넘어가지 않도록 막았습니다",
     "그 전에는 더 깊이 들어가도 화면에는 같은 단계로 보여 글자와 화면이 어긋났습니다",
@@ -2037,7 +2045,7 @@ function renderNote(c, l){
   const prev = ls[idx-1], next = ls[idx+1];
   const sec = sectionFor(c,l);
   topbarIn.innerHTML = `
-    <button class="back" data-act="open-course" data-id="${c.id}">${I.back}<span>${esc(c.title.slice(0,10))}</span></button>
+    <button class="back" data-act="open-course" data-id="${c.id}">${I.back}<span>${esc(c.title)}</span></button>
     <div class="h1-wrap" style="text-align:center">
       <p class="eyebrow" style="margin:0">${idx+1} / ${ls.length}</p>
       <div style="font-size:15px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(l.label)}</div>
