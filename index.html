@@ -631,7 +631,7 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
 .pdf-pv .p-cols.n2{grid-template-columns:1fr 1fr}
 .pdf-pv .p-cols.n3{grid-template-columns:1fr 1fr 1fr}
 .pdf-pv .p-col{min-width:0}
-.pdf-pv .p-field{border:1px solid #D6D6D6;border-radius:6px;padding:8px 9px;margin-bottom:8px}
+.pdf-pv .p-field{border:1px solid #D6D6D6;border-radius:6px;padding:8px 9px;margin-bottom:8px;text-align:left}
 .pdf-pv .p-field.empty{border-style:dashed;border-color:#E3E3E3}
 .pdf-pv .p-field .lab{font-size:9px;font-weight:700;letter-spacing:.09em;color:#8A8A8A;
   margin-bottom:4px}
@@ -639,6 +639,40 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
   font-size:12.5px;line-height:1.55;color:var(--ink)}
 .pdf-pv .p-kicker{font-size:11px;color:var(--muted);margin:0 0 10px}
 .pdf-pv .p-empty{color:#B0B0B0;font-style:italic;font-size:12.5px}
+
+/* PDF 상세 설정 — 왼쪽 설정, 오른쪽 쪽 미리보기 (좁으면 위아래) */
+.po-wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:0 28px;align-items:start}
+@media(min-width:760px){
+  .po-wrap{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  /* 설정을 내려도 미리보기는 보이게. 높이는 100vh 대신 실제 보이는 높이(--vvh) */
+  .po-pv{position:sticky;top:calc(env(safe-area-inset-top) + 64px);
+    max-height:calc(var(--vvh,100dvh) - env(safe-area-inset-top) - var(--tab-h) - 84px);
+    overflow:auto;-webkit-overflow-scrolling:touch}
+}
+.po-box{border:1px solid var(--line);border-radius:var(--r-md);padding:0 14px}
+.po-row{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:12px 0;border-bottom:1px solid var(--line)}
+.po-row:last-child{border-bottom:0}
+.po-row.stack{display:block}
+.po-row.stack .chips{margin-top:8px}
+.po-lab{font-size:14.5px;font-weight:600;min-width:0}
+.po-lab small{display:block;font-size:12px;font-weight:500;color:var(--muted);margin-top:2px;line-height:1.5}
+.stepper{display:inline-flex;align-items:center;gap:2px;background:var(--surface);
+  border-radius:12px;padding:3px;flex:none}
+.stepper button{width:40px;height:36px;border-radius:9px;font-size:20px;font-weight:600;
+  line-height:1;color:var(--ink);display:grid;place-items:center}
+.stepper button:active{background:#fff}
+.stepper button:disabled{opacity:.3}
+.stepper b{min-width:64px;text-align:center;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums}
+.po-pages{padding:4px 4px 8px}
+/* 용지를 실제 mm 크기로 그리고 zoom 으로 칸 폭에 맞춘다 (fitPoPreview) */
+.po-page{position:relative;overflow:hidden;background:#fff;border-radius:2px;margin:0 auto;
+  box-shadow:0 0 0 1px rgba(14,17,22,.07),0 6px 18px rgba(14,17,22,.09)}
+.po-page.more::after{content:"";position:absolute;left:0;right:0;bottom:0;height:24mm;
+  background:linear-gradient(rgba(255,255,255,0),#fff 85%)}
+.po-cap{font-size:11.5px;color:var(--muted);margin:7px 0 14px;text-align:center}
+.po-none{border:1px dashed var(--line);border-radius:var(--r-md);padding:28px 16px;
+  text-align:center;font-size:13px;color:var(--muted);line-height:1.6}
 
 /* 목차 섹션 */
 .sec-row{display:flex;align-items:center;gap:10px;padding:16px 2px 8px}
@@ -726,82 +760,96 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
 @media print{
   .topbar,.tabbar,.app,.scrim,.toast{display:none!important}
   #printRoot{display:block!important}
+  /* 기본값. 실제 용지·여백은 doPrint()가 PDF 상세 설정대로 #pageStyle 에 다시 쓴다 */
   @page{size:A4;margin:16mm 15mm}
   html,body{background:#fff}
-  #printRoot{color:#000;font-size:10.5pt;line-height:1.62;
-    -webkit-print-color-adjust:exact;print-color-adjust:exact}
-  #printRoot mark{background:#FFF08A;color:#000;padding:0 .6mm;border-radius:.8mm;
-    -webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .p-course.brk{page-break-before:always;break-before:page}
-  .p-kicker{font-size:8.5pt;color:#666;margin:0 0 4mm}
-  .p-md h1{font-size:22pt;margin:0 0 3mm;letter-spacing:-.02em;line-height:1.25}
-  .p-md h2{font-size:14pt;margin:9mm 0 2.5mm;letter-spacing:-.01em;
-    page-break-after:avoid;break-after:avoid}
-  .p-md h3{font-size:11.5pt;margin:7mm 0 1.5mm;page-break-after:avoid;break-after:avoid}
-  .p-md h4{font-size:10pt;margin:5mm 0 1mm;page-break-after:avoid;break-after:avoid}
-  .p-md p{margin:0 0 2mm}
-  .p-md ol{margin:0 0 2.5mm;padding-left:6mm}
-  .p-md ul{margin:0 0 2.5mm;padding-left:0;list-style:none}
-  .p-md ul ul{margin:.5mm 0;padding-left:5mm}
-  .p-md ul > li{position:relative;padding-left:5mm}
-  .p-md ul > li::before{content:var(--mk, var(--bu0,"-"));position:absolute;left:0}
-  .p-md ul ul > li::before{content:var(--mk, var(--bu1,"+"))}
-  .p-md ul ul ul > li::before{content:var(--mk, var(--bu2,"*"))}
-  .p-md li{margin:.6mm 0}
-  .p-md hr{border:0;border-top:0.4mm solid #111;margin:5mm 0}
-  .p-md blockquote{margin:2mm 0;padding-left:4mm;border-left:0.7mm solid #CCC;color:#555}
-  .p-md code{font-family:ui-monospace,Menlo,monospace;font-size:9pt;
-    background:#F1F1F1;padding:0 1mm;border-radius:1mm}
-  .p-md del{color:#888}
-  .p-md > :first-child{margin-top:0}
-  .p-toc{border-top:1px solid #000;border-bottom:1px solid #000;padding:4mm 0;margin-bottom:10mm}
-  .p-toc div{display:flex;justify-content:space-between;gap:6mm;font-size:9.5pt;padding:1mm 0}
-  .p-toc-s{font-weight:700;padding-top:2mm!important}
-  .p-sec{font-size:15pt;margin:10mm 0 4mm;padding-bottom:2mm;border-bottom:1.5px solid #000;
-    page-break-after:avoid;break-after:avoid}
-  .p-toc span{color:#666}
-  .p-note{margin-bottom:9mm;padding-bottom:6mm;border-bottom:1px solid #DDD}
-  .p-note h2{page-break-after:avoid;break-after:avoid}
-  .p-cols{display:grid;gap:0 5mm;align-items:start}
-  .p-cols.n2{grid-template-columns:1fr 1fr}
-  .p-cols.n3{grid-template-columns:1fr 1fr 1fr}
-  .p-col{min-width:0}
-  .p-field{border:0.3mm solid #C4C4C4;border-radius:1.5mm;padding:2mm 2.5mm 2.4mm;
-    margin-bottom:3mm;page-break-inside:avoid;break-inside:avoid}
-  .p-field.long{page-break-inside:auto;break-inside:auto}
-  .p-field .lab{font-size:7pt;font-weight:700;letter-spacing:.09em;color:#777;
-    margin-bottom:1.4mm}
-  .p-field .val{margin:0;word-break:break-word}
-  .p-field .val > :first-child{margin-top:0}
-  .p-field .val > :last-child{margin-bottom:0}
-  .p-field .val p{margin:0 0 1.6mm}
-  .p-field .val h1{font-size:12.5pt;margin:0 0 1.6mm}
-  .p-field .val h2{font-size:11.5pt;margin:2.5mm 0 1.2mm}
-  .p-field .val h3{font-size:10.5pt;margin:2.5mm 0 1mm}
-  .p-field .val h4{font-size:10pt;margin:2mm 0 1mm}
-  .p-field .val ol{margin:0 0 1.6mm;padding-left:5mm}
-  .p-field .val ul{margin:0 0 1.6mm;padding-left:0;list-style:none}
-  .p-field .val ul ul{margin:.4mm 0;padding-left:4.6mm}
-  .p-field .val ul > li{position:relative;padding-left:4.6mm}
-  .p-field .val ul > li::before{content:var(--mk, var(--bu0,"-"));position:absolute;left:0}
-  .p-field .val ul ul > li::before{content:var(--mk, var(--bu1,"+"))}
-  .p-field .val ul ul ul > li::before{content:var(--mk, var(--bu2,"*"))}
-  .p-field .val ul ul ul ul > li::before{content:var(--mk, var(--bu3,"-"))}
-  .p-field .val ul ul ul ul ul > li::before{content:var(--mk, var(--bu4,"+"))}
-  .p-field .val ul ul ul ul ul ul > li::before{content:var(--mk, var(--bu5,"*"))}
-  .p-field .val ul ul,.p-field .val ul ol,.p-field .val ol ol,.p-field .val ol ul{margin:.4mm 0}
-  .p-field .val li{margin:.5mm 0}
-  .p-field .val hr{border:0;border-top:0.3mm solid #CCC;margin:2.5mm 0}
-  .p-field .val blockquote{margin:1.5mm 0;padding-left:3mm;border-left:0.5mm solid #CCC;color:#555}
-  .p-field.empty{border-style:dashed;border-color:#D8D8D8}
-  .p-note.brk{page-break-before:always;break-before:page}
-  .p-note h2{font-size:14pt;margin:0 0 1mm;letter-spacing:-.01em}
-  .p-note .meta{font-size:8.5pt;color:#666;margin-bottom:4mm}
-  .p-note h3{font-size:8pt;letter-spacing:.12em;text-transform:uppercase;color:#666;
-    margin:5mm 0 1.5mm;font-weight:700}
-  .p-note p{margin:0;white-space:pre-wrap;word-break:break-word}
-  .p-empty{color:#999;font-style:italic}
 }
+/* 인쇄 문서 — 실제 인쇄(#printRoot)와 PDF 상세 설정의 쪽 미리보기가 같은 규칙을 쓴다.
+   그래서 @media print 밖에 두고 .pdoc 아래로만 한정한다 (화면 UI에는 닿지 않는다).
+   글자 크기는 전부 본문 크기 --pfs 에 대한 비율로 적는다. "22 / 10.5" = 본문 10.5pt일 때 22pt.
+   기본값(10.5pt · 줄 간격 1.62 · 제목 ×1)에서는 예전 고정값과 똑같이 나온다.
+   제목류에는 제목 크기 배율 --phs 를 한 번 더 곱한다. */
+.pdoc{--pfs:10.5pt;--plh:1.62;--phs:1;
+  color:#000;font-size:var(--pfs);line-height:var(--plh);
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pdoc mark{background:#FFF08A;color:#000;padding:0 .6mm;border-radius:.8mm;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pdoc .p-course.brk{page-break-before:always;break-before:page}
+/* '회차마다 새 쪽에서 시작' */
+.pdoc .p-brk{page-break-before:always;break-before:page}
+.pdoc .p-kicker{font-size:calc(var(--pfs) * 8.5 / 10.5);color:#666;margin:0 0 4mm}
+.pdoc .p-md h1{font-size:calc(var(--pfs) * 22 / 10.5 * var(--phs));margin:0 0 3mm;letter-spacing:-.02em;line-height:1.25}
+.pdoc .p-md h2{font-size:calc(var(--pfs) * 14 / 10.5 * var(--phs));margin:9mm 0 2.5mm;letter-spacing:-.01em;
+  page-break-after:avoid;break-after:avoid}
+.pdoc .p-md h3{font-size:calc(var(--pfs) * 11.5 / 10.5 * var(--phs));margin:7mm 0 1.5mm;page-break-after:avoid;break-after:avoid}
+.pdoc .p-md h4{font-size:calc(var(--pfs) * 10 / 10.5 * var(--phs));margin:5mm 0 1mm;page-break-after:avoid;break-after:avoid}
+.pdoc .p-md p{margin:0 0 2mm}
+.pdoc .p-md ol{margin:0 0 2.5mm;padding-left:6mm}
+.pdoc .p-md ul{margin:0 0 2.5mm;padding-left:0;list-style:none}
+.pdoc .p-md ul ul{margin:.5mm 0;padding-left:5mm}
+.pdoc .p-md ul > li{position:relative;padding-left:5mm}
+.pdoc .p-md ul > li::before{content:var(--mk, var(--bu0,"-"));position:absolute;left:0}
+.pdoc .p-md ul ul > li::before{content:var(--mk, var(--bu1,"+"))}
+.pdoc .p-md ul ul ul > li::before{content:var(--mk, var(--bu2,"*"))}
+.pdoc .p-md li{margin:.6mm 0}
+.pdoc .p-md hr{border:0;border-top:0.4mm solid #111;margin:5mm 0}
+.pdoc .p-md blockquote{margin:2mm 0;padding-left:4mm;border-left:0.7mm solid #CCC;color:#555}
+.pdoc .p-md code{font-family:ui-monospace,Menlo,monospace;font-size:calc(var(--pfs) * 9 / 10.5);
+  background:#F1F1F1;padding:0 1mm;border-radius:1mm}
+.pdoc .p-md del{color:#888}
+.pdoc .p-md > :first-child{margin-top:0}
+.pdoc .p-toc{border-top:1px solid #000;border-bottom:1px solid #000;padding:4mm 0;margin-bottom:10mm}
+.pdoc .p-toc div{display:flex;justify-content:space-between;gap:6mm;font-size:calc(var(--pfs) * 9.5 / 10.5);padding:1mm 0}
+.pdoc .p-toc-s{font-weight:700;padding-top:2mm!important}
+.pdoc .p-sec{font-size:calc(var(--pfs) * 15 / 10.5 * var(--phs));margin:10mm 0 4mm;padding-bottom:2mm;border-bottom:1.5px solid #000;
+  page-break-after:avoid;break-after:avoid}
+.pdoc .p-toc span{color:#666}
+.pdoc .p-note{margin-bottom:9mm;padding-bottom:6mm;border-bottom:1px solid #DDD}
+.pdoc .p-note h2{page-break-after:avoid;break-after:avoid}
+.pdoc .p-cols{display:grid;gap:0 5mm;align-items:start}
+.pdoc .p-cols.n2{grid-template-columns:1fr 1fr}
+.pdoc .p-cols.n3{grid-template-columns:1fr 1fr 1fr}
+.pdoc .p-col{min-width:0}
+/* text-align:start — 빈 칸에 붙는 .empty 가 홈 화면의 빈 상태 규칙(가운데 정렬)과 이름이 겹친다 */
+.pdoc .p-field{border:0.3mm solid #C4C4C4;border-radius:1.5mm;padding:2mm 2.5mm 2.4mm;
+  margin-bottom:3mm;page-break-inside:avoid;break-inside:avoid;text-align:start}
+.pdoc .p-field.long{page-break-inside:auto;break-inside:auto}
+.pdoc .p-field .lab{font-size:calc(var(--pfs) * 7 / 10.5);font-weight:700;letter-spacing:.09em;color:#777;
+  margin-bottom:1.4mm}
+/* 칸 안의 본문. '내용만' 모양은 칸 상자 없이 .p-note 바로 아래 .val 에 같은 본문을 넣으므로 같은 규칙을 함께 쓴다
+   (예전에는 빠져 있어서 # 제목이 화면용 27px로, 목록이 기본 글머리표로 찍혔다). */
+.pdoc .p-field .val,.pdoc .p-note > .val{margin:0;word-break:break-word}
+.pdoc .p-field .val > :first-child,.pdoc .p-note > .val > :first-child{margin-top:0}
+.pdoc .p-field .val > :last-child,.pdoc .p-note > .val > :last-child{margin-bottom:0}
+.pdoc .p-field .val p,.pdoc .p-note > .val p{margin:0 0 1.6mm}
+.pdoc .p-field .val h1,.pdoc .p-note > .val h1{font-size:calc(var(--pfs) * 12.5 / 10.5 * var(--phs));margin:0 0 1.6mm}
+.pdoc .p-field .val h2,.pdoc .p-note > .val h2{font-size:calc(var(--pfs) * 11.5 / 10.5 * var(--phs));margin:2.5mm 0 1.2mm}
+.pdoc .p-field .val h3,.pdoc .p-note > .val h3{font-size:calc(var(--pfs) * 10.5 / 10.5 * var(--phs));margin:2.5mm 0 1mm}
+.pdoc .p-field .val h4,.pdoc .p-note > .val h4{font-size:calc(var(--pfs) * 10 / 10.5 * var(--phs));margin:2mm 0 1mm}
+.pdoc .p-field .val ol,.pdoc .p-note > .val ol{margin:0 0 1.6mm;padding-left:5mm}
+.pdoc .p-field .val ul,.pdoc .p-note > .val ul{margin:0 0 1.6mm;padding-left:0;list-style:none}
+.pdoc .p-field .val ul ul,.pdoc .p-note > .val ul ul{margin:.4mm 0;padding-left:4.6mm}
+.pdoc .p-field .val ul > li,.pdoc .p-note > .val ul > li{position:relative;padding-left:4.6mm}
+.pdoc .p-field .val ul > li::before,.pdoc .p-note > .val ul > li::before{content:var(--mk, var(--bu0,"-"));position:absolute;left:0}
+.pdoc .p-field .val ul ul > li::before,.pdoc .p-note > .val ul ul > li::before{content:var(--mk, var(--bu1,"+"))}
+.pdoc .p-field .val ul ul ul > li::before,.pdoc .p-note > .val ul ul ul > li::before{content:var(--mk, var(--bu2,"*"))}
+.pdoc .p-field .val ul ul ul ul > li::before,.pdoc .p-note > .val ul ul ul ul > li::before{content:var(--mk, var(--bu3,"-"))}
+.pdoc .p-field .val ul ul ul ul ul > li::before,.pdoc .p-note > .val ul ul ul ul ul > li::before{content:var(--mk, var(--bu4,"+"))}
+.pdoc .p-field .val ul ul ul ul ul ul > li::before,.pdoc .p-note > .val ul ul ul ul ul ul > li::before{content:var(--mk, var(--bu5,"*"))}
+.pdoc .p-field .val ul ul,.pdoc .p-field .val ul ol,.pdoc .p-field .val ol ol,.pdoc .p-field .val ol ul,.pdoc .p-note > .val ul ul,.pdoc .p-note > .val ul ol,.pdoc .p-note > .val ol ol,.pdoc .p-note > .val ol ul{margin:.4mm 0}
+.pdoc .p-field .val li,.pdoc .p-note > .val li{margin:.5mm 0}
+.pdoc .p-field .val hr,.pdoc .p-note > .val hr{border:0;border-top:0.3mm solid #CCC;margin:2.5mm 0}
+.pdoc .p-field .val blockquote,.pdoc .p-note > .val blockquote{margin:1.5mm 0;padding-left:3mm;border-left:0.5mm solid #CCC;color:#555}
+.pdoc .p-field.empty{border-style:dashed;border-color:#D8D8D8}
+.pdoc .p-note.brk{page-break-before:always;break-before:page}
+.pdoc .p-note h2{font-size:calc(var(--pfs) * 14 / 10.5 * var(--phs));margin:0 0 1mm;letter-spacing:-.01em}
+.pdoc .p-note .meta{font-size:calc(var(--pfs) * 8.5 / 10.5);color:#666;margin-bottom:4mm}
+/* '내용만' 모드의 칸 이름. 바로 아래 자식(>)만 잡는다 —
+   예전에는 '.p-note h3'이라 회차 머리말의 ### 제목까지 8pt 회색 대문자로 찍혔다. */
+.pdoc .p-note > h3{font-size:calc(var(--pfs) * 8 / 10.5);letter-spacing:.12em;text-transform:uppercase;color:#666;
+  margin:5mm 0 1.5mm;font-weight:700}
+.pdoc .p-note p{margin:0;white-space:pre-wrap;word-break:break-word}
+.pdoc .p-empty{color:#999;font-style:italic}
 </style>
 </head>
 <body>
@@ -827,7 +875,7 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
 </nav>
 
 <div id="layer"></div>
-<div id="printRoot"></div>
+<div id="printRoot" class="pdoc"></div>
 <input type="file" id="fileInput" accept=".json,application/json" style="display:none">
 
 <script>
@@ -835,8 +883,18 @@ body.tools-open .app{padding-bottom:calc(var(--tab-h) + 86px + env(safe-area-ins
 /* ============================================================
    0. 버전
    ============================================================ */
-const APP_VERSION = "1.19.2";
+const APP_VERSION = "1.20.0";
 const CHANGELOG = [
+  { v:"1.20.0", date:"2026-11-07", notes:[
+    "PDF 상세 설정이 생겼습니다 — 설정 → PDF 모양 → 상세 설정, 또는 강의·노트 화면의 'PDF 설정'",
+    "글자 크기(8~16pt), 제목 크기, 줄 간격을 바꿀 수 있습니다",
+    "용지 크기(A4·B5·A5·Letter)와 방향(세로·가로), 여백을 고를 수 있습니다",
+    "표지·목차 빼기, 회차마다 새 쪽에서 시작, 작성하지 않은 회차 빼기를 고를 수 있습니다",
+    "바꾸는 대로 실제 용지 비율의 미리보기에 바로 보입니다",
+    "PDF에서 회차 제목과 노트 속 소제목이 본문보다 작은 회색 글씨로 나오던 문제를 고쳤습니다",
+    "'내용만' 모양에서 노트 속 제목·목록 서식이 들쭉날쭉하던 것과, 빈 칸 상자의 칸 이름이 가운데로 쏠리던 것도 바로잡았습니다",
+    "설정을 바꾸지 않으면 PDF는 예전과 같은 크기로 나옵니다. 쓰신 노트 내용은 그대로입니다"
+  ]},
   { v:"1.19.2", date:"2026-10-31", notes:[
     "노트 화면 왼쪽 위 강의 이름이 10글자에서 잘리던 것을 고쳤습니다",
     "이제 화면이 넓으면 이름이 다 보이고, 좁을 때만 … 로 줄입니다"
@@ -1323,6 +1381,52 @@ function emojiList(){
   if(!Array.isArray(v)) return DEFAULT_EMOJIS.map(x=>Object.assign({ id:uid() }, x));
   return v;
 }
+/* PDF 상세 설정 — 글자 크기·줄 간격·용지·여백·구성.
+   migrate()가 시작할 때 이 값을 쓰므로 migrate 정의보다 앞에 둔다 (const 초기화 순서).
+   기본값은 v1.19 까지의 고정값과 같다. 설정을 안 건드리면 PDF가 예전과 똑같이 나온다. */
+const PDF_OPT_DEFAULT = { fontSize:10.5, headScale:1, lineHeight:1.62,
+  paper:"A4", orient:"portrait", margin:"normal",
+  cover:true, noteBreak:false, skipEmpty:false };
+const PDF_FONT_MIN = 8, PDF_FONT_MAX = 16, PDF_FONT_STEP = 0.5;
+const PDF_HEADS = [ { v:0.85, n:"작게" }, { v:1, n:"보통" }, { v:1.2, n:"크게" }, { v:1.4, n:"아주 크게" } ];
+const PDF_LINES = [ { v:1.4, n:"좁게" }, { v:1.62, n:"보통" }, { v:1.85, n:"넓게" }, { v:2.1, n:"아주 넓게" } ];
+/* 용지는 이름 대신 mm로 지정한다 — 브라우저마다 이름(B5 등)을 다르게 해석한다 */
+const PDF_PAPERS = [
+  { k:"A4", n:"A4", w:210, h:297 }, { k:"B5", n:"B5", w:182, h:257 },
+  { k:"A5", n:"A5", w:148, h:210 }, { k:"Letter", n:"Letter", w:215.9, h:279.4 } ];
+const PDF_MARGINS = [
+  { k:"narrow", n:"좁게", v:10, h:10 }, { k:"normal", n:"보통", v:16, h:15 }, { k:"wide", n:"넓게", v:22, h:20 } ];
+/* 읽을 때마다 범위를 검사해 채운다. 깨진 백업이 들어와도 기본값으로 나간다. */
+function pdfOpt(){
+  const raw = S.settings && S.settings.pdfOpt;
+  const d = raw && typeof raw === "object" ? raw : {};
+  const D = PDF_OPT_DEFAULT;
+  const fs = typeof d.fontSize === "number" && isFinite(d.fontSize)
+    ? Math.min(PDF_FONT_MAX, Math.max(PDF_FONT_MIN, Math.round(d.fontSize / PDF_FONT_STEP) * PDF_FONT_STEP))
+    : D.fontSize;
+  const inList = (v, list, key) => list.some(x=>x[key] === v);
+  const bool = (v, dflt) => typeof v === "boolean" ? v : dflt;
+  return {
+    fontSize: fs,
+    headScale: inList(d.headScale, PDF_HEADS, "v") ? d.headScale : D.headScale,
+    lineHeight: inList(d.lineHeight, PDF_LINES, "v") ? d.lineHeight : D.lineHeight,
+    paper: inList(d.paper, PDF_PAPERS, "k") ? d.paper : D.paper,
+    orient: d.orient === "landscape" ? "landscape" : "portrait",
+    margin: inList(d.margin, PDF_MARGINS, "k") ? d.margin : D.margin,
+    cover: bool(d.cover, D.cover),
+    noteBreak: bool(d.noteBreak, D.noteBreak),
+    skipEmpty: bool(d.skipEmpty, D.skipEmpty)
+  };
+}
+/* 실제 용지 크기(방향 반영)와 여백, mm */
+function pdfPage(o){
+  const p = PDF_PAPERS.find(x=>x.k === o.paper) || PDF_PAPERS[0];
+  const m = PDF_MARGINS.find(x=>x.k === o.margin) || PDF_MARGINS[1];
+  const land = o.orient === "landscape";
+  return { w: land ? p.h : p.w, h: land ? p.w : p.h, mv: m.v, mh: m.h };
+}
+/* .pdoc 에 넣는 글자 변수 (인쇄 CSS가 이 값의 비율로 크기를 정한다) */
+const pdfVars = o => `--pfs:${o.fontSize}pt;--plh:${o.lineHeight};--phs:${o.headScale}`;
 function migrate(){
   if(!Array.isArray(S.templates) || !S.templates.length) S.templates = [builtinTemplate()];
   S.templates.forEach(t=>{
@@ -1366,6 +1470,7 @@ function migrate(){
                n:typeof x.n === "string" ? x.n.slice(0,20) : "" }))
     .slice(0, 40);
   if(S.settings.pdfStyle !== "text") S.settings.pdfStyle = "template";
+  S.settings.pdfOpt = pdfOpt();   /* 없거나 깨진 값은 기본값으로 */
   /* pdfDoc()은 읽을 때마다 기본값으로 채우므로 여기서 손대지 않는다 (초기화 순서 문제) */
   if(!S.settings.defaultTemplateId || !S.templates.some(t=>t.id===S.settings.defaultTemplateId))
     S.settings.defaultTemplateId = S.templates[0].id;
@@ -1547,6 +1652,8 @@ function route(){
   if(parts[0]==="settings") return { name:"settings" };
   if(parts[0]==="t" && parts[1]) return { name:"template", tid:parts[1] };
   if(parts[0]==="pdfdoc") return { name:"pdfdoc" };
+  if(parts[0]==="pdfopt") return { name:"pdfopt",
+    cid: parts[1]==="c" ? parts[2] : null, lid: parts[3]==="l" ? parts[4] : null };
   if(parts[0]==="emoji") return { name:"emoji" };
   if(parts[0]==="bullet") return { name:"bullet" };
   if(parts[0]==="c" && parts[1]){
@@ -1576,6 +1683,7 @@ function render(){
   if(r.name==="all") return renderAll();
   if(r.name==="settings") return renderSettings();
   if(r.name==="pdfdoc") return renderPdfDoc();
+  if(r.name==="pdfopt") return renderPdfOpt(r);
   if(r.name==="emoji") return renderEmoji();
   if(r.name==="bullet") return renderBullet();
   if(r.name==="template"){
@@ -1813,6 +1921,7 @@ function renderCourse(c){
         <button class="btn" data-act="add-section" data-id="${c.id}">${I.folder} 섹션 추가</button>
         <button class="btn" data-act="bulk-lesson" data-id="${c.id}">${I.list} 목차 한 번에 만들기</button>
         <button class="btn" data-act="pdf-course" data-id="${c.id}">${I.pdf} PDF</button>
+        <button class="btn" data-act="go-pdfopt" data-id="${c.id}">${I.gear} PDF 설정</button>
       </div>
     </div>
 
@@ -2103,6 +2212,7 @@ function renderNote(c, l){
       <button class="btn ghost" data-act="save-now">저장</button>
       <button class="btn ghost" data-act="pdf-note" data-cid="${c.id}" data-lid="${l.id}">${I.pdf} 이 노트 PDF</button>
       <button class="btn ghost" data-act="pdf-course" data-id="${c.id}">${I.pdf} 강의 전체 PDF</button>
+      <button class="btn ghost" data-act="go-pdfopt" data-cid="${c.id}" data-lid="${l.id}">${I.gear} PDF 설정</button>
     </div>
     <div class="pager">
       <button ${prev?`data-act="open-note" data-cid="${c.id}" data-lid="${prev.id}"`:"disabled"}>
@@ -2729,6 +2839,176 @@ function renderPdfDoc(){
   });
 }
 
+/* ---------- PDF 상세 설정 ---------- */
+/* 어디서 열었는지에 따라 미리보기와 내보내기 대상이 달라진다.
+   #/pdfopt → 전체 · #/pdfopt/c/{강의} → 그 강의 · #/pdfopt/c/{강의}/l/{회차} → 그 노트 */
+function pdfOptTarget(r){
+  const c = r.cid ? findCourse(r.cid) : null;
+  const l = c && r.lid ? findLesson(c, r.lid) : null;
+  if(c && l && !isSection(l)) return { kind:"note", c, l };
+  if(c) return { kind:"course", c };
+  return { kind:"all" };
+}
+/* 전체 PDF 미리보기에 쓸 강의 — 작성한 노트가 있는 강의를 먼저. 강의가 없으면 예시. */
+function pdfOptCourse(tg, o){
+  if(tg.kind === "course") return tg.c;
+  if(!S.courses.length) return pdfSample().c;
+  return S.courses.find(c=>courseHasPdf(c, o) && writtenCount(c) > 0)
+    || S.courses.find(c=>courseHasPdf(c, o)) || null;
+}
+/* 미리보기로 그릴 쪽들. 실제 인쇄와 같은 조각(coursePieces)을 쓰고,
+   강제로 쪽을 넘기는 자리에서만 나눠 앞의 두 쪽까지 그린다.
+   자연스러운 쪽 넘김은 흉내 내지 않는다 — 넘치면 아래를 흐리게 하고 '다음 쪽으로 이어짐'을 적는다. */
+function pdfOptPages(tg, o){
+  if(tg.kind === "note") return [ noteDocHTML(tg.c, tg.l) ];
+  const c = pdfOptCourse(tg, o);
+  if(!c || !courseHasPdf(c, o)) return [];
+  const p = coursePieces(c);
+  const pages = [ p.cover ];
+  let n = 0;
+  p.items.forEach(x=>{
+    if(x.brk) pages.push("");
+    /* 한 쪽을 넘길 만큼만 붙인다. 나머지는 어차피 잘려서 안 보인다. */
+    if(pages.length <= 2 && n++ < 20) pages[pages.length - 1] += x.html;
+  });
+  return pages.filter(Boolean).slice(0, 2).map(h=>`<div class="p-course">${h}</div>`);
+}
+function pdfOptSummary(){
+  const o = pdfOpt();
+  const p = PDF_PAPERS.find(x=>x.k === o.paper) || PDF_PAPERS[0];
+  return `${p.n}${o.orient === "landscape" ? " 가로" : ""} · ${o.fontSize}pt`;
+}
+function renderPdfOpt(r){
+  const tg = pdfOptTarget(r), o = pdfOpt(), pg = pdfPage(o);
+  setTab(tg.kind === "all" ? "settings" : "all");
+  const back = tg.kind === "note"
+    ? `<button class="back" data-act="open-note" data-cid="${tg.c.id}" data-lid="${tg.l.id}">${I.back}<span>${esc(tg.l.label)}</span></button>`
+    : tg.kind === "course"
+    ? `<button class="back" data-act="open-course" data-id="${tg.c.id}">${I.back}<span>${esc(tg.c.title)}</span></button>`
+    : `<button class="back" data-act="go-settings">${I.back}<span>설정</span></button>`;
+  topbarIn.innerHTML = `${back}
+    <div class="h1-wrap" style="text-align:center">
+      <p class="eyebrow" style="margin:0">PDF</p>
+      <div style="font-size:15px;font-weight:650">상세 설정</div>
+    </div>
+    <button class="icon-btn" data-act="po-reset" aria-label="기본값으로">${I.refresh}</button>`;
+
+  const chip = (k, v, label, on) =>
+    `<button class="chip" data-act="po-set" data-k="${k}" data-v="${esc(String(v))}" aria-pressed="${on}">${esc(label)}</button>`;
+  const row = (label, sub, body) => `<div class="po-row stack">
+      <div class="po-lab">${label}${sub ? `<small>${sub}</small>` : ""}</div>
+      <div class="chips">${body}</div></div>`;
+  const paper = PDF_PAPERS.find(x=>x.k === o.paper) || PDF_PAPERS[0];
+
+  const controls = `
+    <div class="set-group" style="margin-top:16px">
+      <h2>글자</h2>
+      <div class="po-box">
+        <div class="po-row">
+          <div class="po-lab">본문 크기<small>기본 ${PDF_OPT_DEFAULT.fontSize}pt · 제목도 같은 비율로</small></div>
+          <div class="stepper">
+            <button type="button" data-act="po-font" data-v="-1" aria-label="글자 작게"
+              ${o.fontSize <= PDF_FONT_MIN ? "disabled" : ""}>−</button>
+            <b>${o.fontSize}pt</b>
+            <button type="button" data-act="po-font" data-v="1" aria-label="글자 크게"
+              ${o.fontSize >= PDF_FONT_MAX ? "disabled" : ""}>+</button>
+          </div>
+        </div>
+        ${row("제목 크기", "대제목·중제목·소제목과 회차 제목",
+          PDF_HEADS.map(x=>chip("headScale", x.v, x.n, o.headScale === x.v)).join(""))}
+        ${row("줄 간격", "",
+          PDF_LINES.map(x=>chip("lineHeight", x.v, x.n, o.lineHeight === x.v)).join(""))}
+      </div>
+    </div>
+    <div class="set-group">
+      <h2>용지</h2>
+      <div class="po-box">
+        ${row("크기", "", PDF_PAPERS.map(x=>chip("paper", x.k, x.n, o.paper === x.k)).join(""))}
+        ${row("방향", "3단 템플릿은 가로가 넉넉합니다",
+          chip("orient", "portrait", "세로", o.orient === "portrait")
+          + chip("orient", "landscape", "가로", o.orient === "landscape"))}
+        ${row("여백", "", PDF_MARGINS.map(x=>chip("margin", x.k, x.n + " · " + x.h + "mm", o.margin === x.k)).join(""))}
+      </div>
+      <p class="muted-note">용지 크기와 방향은 인쇄 창에서 고른 용지가 우선할 수 있습니다.
+      다르게 나오면 인쇄 창의 용지 설정도 같게 맞춰 주세요.</p>
+    </div>
+    <div class="set-group">
+      <h2>구성</h2>
+      <div class="po-box">
+        ${row("모양", "템플릿 그대로는 빈 칸도 점선 상자로 남깁니다", `
+          <button class="chip" data-act="pdf-style" data-v="template"
+            aria-pressed="${S.settings.pdfStyle!=="text"}">템플릿 그대로</button>
+          <button class="chip" data-act="pdf-style" data-v="text"
+            aria-pressed="${S.settings.pdfStyle==="text"}">내용만</button>`)}
+        ${row("표지·목차", "강의마다 맨 앞에 한 번",
+          chip("cover", 1, "넣기", o.cover) + chip("cover", 0, "빼기", !o.cover))}
+        ${row("회차 시작 위치", "",
+          chip("noteBreak", 0, "이어서", !o.noteBreak) + chip("noteBreak", 1, "회차마다 새 쪽에서", o.noteBreak))}
+        ${row("작성하지 않은 회차", "빼도 목차에는 모든 회차가 그대로 나옵니다",
+          chip("skipEmpty", 0, "넣기", !o.skipEmpty) + chip("skipEmpty", 1, "빼기", o.skipEmpty))}
+      </div>
+      ${tg.kind === "note" ? `<p class="muted-note">노트 하나만 내보낼 때는 표지·회차 시작 위치·작성하지 않은 회차 설정을 쓰지 않습니다.</p>` : ""}
+      <div class="set-list" style="margin-top:12px">
+        <button data-act="open-pdfdoc">${I.list} 표지·제목 문구 편집
+          <span class="val">문서 서식</span></button>
+      </div>
+    </div>`;
+
+  const exportBtns = tg.kind === "note"
+    ? `<button class="btn primary" data-act="pdf-note" data-cid="${tg.c.id}" data-lid="${tg.l.id}">${I.pdf} 이 노트 PDF</button>
+       <button class="btn ghost" data-act="pdf-course" data-id="${tg.c.id}">${I.pdf} 강의 전체 PDF</button>`
+    : tg.kind === "course"
+    ? `<button class="btn primary" data-act="pdf-course" data-id="${tg.c.id}">${I.pdf} 이 강의 PDF로 내보내기</button>`
+    : `<button class="btn primary" data-act="pdf-all">${I.pdf} 전체 PDF로 내보내기</button>`;
+
+  const pages = pdfOptPages(tg, o);
+  const preview = `
+    <div class="po-pv">
+      <div class="sec-head" style="margin:22px 0 10px"><h2>미리보기</h2>
+        <span class="aside">${paper.n} · ${o.orient === "landscape" ? "가로" : "세로"}${pages.length > 1 ? " · 앞 2쪽" : ""}</span></div>
+      ${pages.length ? `<div class="po-pages" id="po-pages">${pages.map((h,i)=>`
+        <div class="po-page" data-w="${pg.w}"
+          style="width:${pg.w}mm;height:${pg.h}mm;padding:${pg.mv}mm ${pg.mh}mm">
+          <div class="pdoc" style="${pdfVars(o)}">${h}</div>
+        </div>
+        <p class="po-cap" data-base="${i === 0 ? "첫 쪽" : "회차 새 쪽"}">${i === 0 ? "첫 쪽" : "회차 새 쪽"}</p>`).join("")}
+      </div>`
+      : `<div class="po-none">내보낼 내용이 없습니다.<br>표지를 넣거나, 작성하지 않은 회차를 넣으면 나옵니다.</div>`}
+      <div class="btn-row" style="justify-content:center;margin-top:${pages.length ? 0 : 14}px">${exportBtns}</div>
+      <p class="muted-note">글자와 여백은 실제 비율 그대로입니다. 쪽이 넘어가는 자리는 인쇄할 때 정해집니다.</p>
+    </div>`;
+
+  view.innerHTML = `<div class="narrow">
+    <div class="po-wrap">
+      <div class="po-set">
+        ${controls}
+        <div class="savebar" data-savestate><span class="dot"></span><span data-savetext></span></div>
+      </div>
+      ${preview}
+    </div>
+  </div>`;
+  paintSaveState();
+  fitPoPreview();
+  /* 웹폰트가 늦게 오면 줄바꿈이 달라지므로 한 번 더 잰다 */
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(fitPoPreview);
+}
+/* 용지를 실제 mm 크기로 그린 뒤 칸 폭에 맞춰 줄인다.
+   transform 과 달리 zoom 은 레이아웃까지 줄여서 아래에 빈 자리가 남지 않는다. */
+function fitPoPreview(){
+  const box = document.getElementById("po-pages");
+  if(!box) return;
+  const avail = box.clientWidth - 8;
+  box.querySelectorAll(".po-page").forEach(pg=>{
+    const px = parseFloat(pg.dataset.w) * 96 / 25.4;
+    pg.style.zoom = String(Math.max(0.2, Math.min(1, avail / px)));
+    const more = pg.scrollHeight > pg.clientHeight + 2;
+    pg.classList.toggle("more", more);
+    const cap = pg.nextElementSibling;
+    if(cap && cap.dataset.base) cap.textContent = cap.dataset.base + (more ? " · 다음 쪽으로 이어집니다" : "");
+  });
+}
+addEventListener("resize", ()=>{ if(document.getElementById("po-pages")) fitPoPreview(); });
+
 /* ---------- 목록 구분점 ---------- */
 const BULLET_PICKS = ["•","◦","▪","▫","‣","·","–","—","→","⇒","⇨","»","›","✓","✔","★","☆","◆","◇","○"];
 function renderBullet(){
@@ -2910,6 +3190,8 @@ function renderSettings(){
       <p class="muted-note">템플릿 그대로는 칸 테두리와 단 배치를 화면과 같게 유지하고, 비어 있는 칸도 그대로 남깁니다.
       내용만은 채워 넣은 칸만 제목과 본문으로 이어 붙입니다.</p>
       <div class="set-list" style="margin-top:12px">
+        <button data-act="go-pdfopt">${I.gear} 상세 설정 (글자 크기·용지·여백)
+          <span class="val">${esc(pdfOptSummary())}</span></button>
         <button data-act="open-pdfdoc">${I.list} 문서 서식 편집 (마크다운)
           <span class="val">표지 · 제목</span></button>
       </div>
@@ -3304,11 +3586,11 @@ function fillVars(tplText, vars){
     return v === undefined ? m : esc(v);
   });
 }
-function mdBlock(tplText, vars, tocHTML){
+function mdBlock(tplText, vars, tocHTML, cls){
   let html = mdToHtml(fillVars(tplText, vars));
   if(tocHTML !== undefined)
     html = html.replace(/<p>\s*\{\{목차\}\}\s*<\/p>|\{\{목차\}\}/g, tocHTML);
-  return `<div class="p-md">${html}</div>`;
+  return `<div class="p-md${cls ? " " + cls : ""}">${html}</div>`;
 }
 function courseVars(c){
   const now = new Date();
@@ -3343,7 +3625,8 @@ function pField(label, rows, val){
   /* 한 페이지를 넘길 만한 칸은 쪼개질 수 있게 둔다.
      통째로 유지하려 들면 넘치는 부분이 잘려 사라진다. */
   const long = v.length > 300 || v.split("\n").length > 6;
-  return `<div class="p-field${v?"":" empty"}${long?" long":""}" style="min-height:calc(${lines} * 1.62em)">
+  /* 높이는 줄 간격 설정(--plh)을 따른다. 변수가 없는 화면 미리보기에서는 1.62 */
+  return `<div class="p-field${v?"":" empty"}${long?" long":""}" style="min-height:calc(${lines} * var(--plh,1.62) * 1em)">
     <div class="lab">${esc(label)}</div>
     <div class="val">${v ? mdToHtml(esc(v), { br:true }) : ""}</div>
   </div>`;
@@ -3365,29 +3648,89 @@ function noteFieldsHTML(c, l){
       { wrap:"p-cols", col:"p-col" })
     + orphans.map(k=>pField(labelForKey(k), 2, l[k])).join("");
 }
+/* 강의 PDF에 넣을 항목. '작성하지 않은 회차 빼기'가 켜져 있으면 빈 회차를 빼고,
+   남은 회차가 하나도 없는 섹션 제목도 뺀다. 저장된 데이터는 건드리지 않는다. */
+function pdfItems(c, o){
+  if(!o.skipEmpty) return c.lessons.slice();
+  const out = [];
+  let sec = null;
+  c.lessons.forEach(x=>{
+    if(isSection(x)){ sec = x; return; }
+    if(!hasText(c, x)) return;
+    if(sec){ out.push(sec); sec = null; }
+    out.push(x);
+  });
+  return out;
+}
+/* 강의 PDF를 조각으로 — 표지와, 항목마다 { html, brk(이 앞에서 쪽을 넘기는지) }.
+   '회차마다 새 쪽에서 시작'이면 섹션 제목과 회차 앞에서 쪽을 넘긴다.
+   단, 섹션 제목 바로 뒤의 회차는 넘기지 않는다 — 제목만 앞 쪽 끝에 홀로 남지 않게.
+   표지가 없으면 첫 항목은 이미 쪽 맨 위라서 넘기지 않는다. */
+function coursePieces(c){
+  const doc = pdfDoc(), o = pdfOpt();
+  let atTop = !o.cover, afterSec = false;
+  const items = pdfItems(c, o).map(x=>{
+    const sec = isSection(x);
+    const brk = o.noteBreak && !atTop && !(afterSec && !sec);
+    atTop = false; afterSec = sec;
+    const html = sec
+      ? mdBlock(doc.section, { "섹션명":x.label, "강의명":c.title }, undefined, brk ? "p-brk" : "")
+      : `<section class="p-note${brk?" p-brk":""}">${mdBlock(doc.note, noteVars(c,x))}${noteFieldsHTML(c,x)}</section>`;
+    return { html, brk };
+  });
+  return { cover: o.cover ? mdBlock(doc.cover, courseVars(c), tocHTML(c)) : "", items };
+}
 function courseBody(c, brk){
-  const doc = pdfDoc();
+  const p = coursePieces(c);
   return `<div class="p-course${brk?" brk":""}">
-    ${mdBlock(doc.cover, courseVars(c), tocHTML(c))}
-    ${c.lessons.map(x=> isSection(x)
-      ? mdBlock(doc.section, { "섹션명":x.label, "강의명":c.title })
-      : `<section class="p-note">${mdBlock(doc.note, noteVars(c,x))}${noteFieldsHTML(c,x)}</section>`
-    ).join("")}
+    ${p.cover}
+    ${p.items.map(x=>x.html).join("")}
   </div>`;
 }
+/* 표지도 없고 넣을 회차도 없으면 그 강의는 건너뛴다 (빈 쪽이 생기지 않게) */
+const courseHasPdf = (c, o) => o.cover || pdfItems(c, o).length > 0;
+/* 노트 하나 PDF — 표지·쪽 넘김·빈 회차 설정은 쓰지 않는다 */
+function noteDocHTML(c, l){
+  return `<div class="p-course">
+    <p class="p-kicker">${esc(c.title)} · 내보낸 날짜 ${fmtFull(nowISO())}</p>
+    <section class="p-note">${mdBlock(pdfDoc().note, noteVars(c,l))}${noteFieldsHTML(c,l)}</section>
+  </div>`;
+}
+/* 인쇄 직전에 PDF 상세 설정을 입힌다 — 글자는 #printRoot 의 변수로, 용지·여백은 @page 로.
+   @page 에는 CSS 변수를 쓸 수 없어서 규칙 자체를 다시 쓴다. */
+function applyPrintOpt(){
+  const o = pdfOpt(), pg = pdfPage(o);
+  let st = document.getElementById("pageStyle");
+  if(!st){
+    st = document.createElement("style");
+    st.id = "pageStyle";
+    document.head.appendChild(st);
+  }
+  st.textContent = `@media print{@page{size:${pg.w}mm ${pg.h}mm;margin:${pg.mv}mm ${pg.mh}mm}}`;
+  printRoot.setAttribute("style", pdfVars(o));
+}
 function doPrint(html){
+  applyPrintOpt();
   printRoot.innerHTML = html;
   toast("인쇄 화면에서 ‘PDF로 저장’을 선택하세요");
   setTimeout(()=>window.print(), 400);
 }
-function pdfNote(c,l){
-  doPrint(`<div class="p-course">
-    <p class="p-kicker">${esc(c.title)} · 내보낸 날짜 ${fmtFull(nowISO())}</p>
-    <section class="p-note">${mdBlock(pdfDoc().note, noteVars(c,l))}${noteFieldsHTML(c,l)}</section>
-  </div>`);
+function noPdfToast(o){
+  toast(o.skipEmpty ? "내보낼 노트가 없습니다 (작성하지 않은 회차 빼기가 켜져 있습니다)"
+    : "내보낼 회차가 없습니다");
 }
-function pdfCourse(c){ doPrint(courseBody(c, false)); }
-function pdfAll(){ doPrint(S.courses.map((c,i)=>courseBody(c, i>0)).join("")); }
+function pdfNote(c,l){ doPrint(noteDocHTML(c, l)); }
+function pdfCourse(c){
+  const o = pdfOpt();
+  if(!courseHasPdf(c, o)) return noPdfToast(o);
+  doPrint(courseBody(c, false));
+}
+function pdfAll(){
+  const o = pdfOpt();
+  const cs = S.courses.filter(c=>courseHasPdf(c, o));
+  if(!cs.length) return noPdfToast(o);
+  doPrint(cs.map((c,i)=>courseBody(c, i>0)).join(""));
+}
 
 /* ============================================================
    9. 백업 / 가져오기
@@ -3576,6 +3919,11 @@ document.addEventListener("click", e=>{
     case "go-settings": closeLayer(); go("#/settings"); break;
     case "open-tpl": go("#/t/"+id); break;
     case "open-pdfdoc": go("#/pdfdoc"); break;
+    case "go-pdfopt":
+      closeLayer();
+      go(cid && lid ? "#/pdfopt/c/" + cid + "/l/" + lid
+        : (id || cid) ? "#/pdfopt/c/" + (id || cid) : "#/pdfopt");
+      break;
     case "go-emoji": closeLayer(); go("#/emoji"); break;
     case "go-bullet": closeLayer(); go("#/bullet"); break;
     case "bu-pick": {
@@ -3797,6 +4145,7 @@ document.addEventListener("click", e=>{
         <button data-act="bulk-lesson" data-id="${c.id}">${I.list} 여러 회차 만들기</button>
         <button data-act="edit-course" data-id="${c.id}">${I.pen} 강의 정보 수정</button>
         <button data-act="pdf-course" data-id="${c.id}">${I.pdf} 이 강의 PDF</button>
+        <button data-act="go-pdfopt" data-id="${c.id}">${I.gear} PDF 상세 설정</button>
         <hr>
         <button class="warn" data-act="del-course" data-id="${c.id}">${I.trash} 강의 삭제</button>
       </div>`);
@@ -3837,6 +4186,7 @@ document.addEventListener("click", e=>{
         <button data-act="ren-lesson" data-cid="${c.id}" data-lid="${l.id}">${I.pen} 회차 이름 변경</button>
         <button data-act="pdf-note" data-cid="${c.id}" data-lid="${l.id}">${I.pdf} 이 노트 PDF</button>
         <button data-act="pdf-course" data-id="${c.id}">${I.pdf} 강의 전체 PDF</button>
+        <button data-act="go-pdfopt" data-cid="${c.id}" data-lid="${l.id}">${I.gear} PDF 상세 설정</button>
         <hr>
         <button class="warn" data-act="del-lesson" data-cid="${c.id}" data-lid="${l.id}">${I.trash} 회차 삭제</button>
       </div>`);
@@ -4059,6 +4409,35 @@ document.addEventListener("click", e=>{
       if(raw && raw.courses){ S = raw; dirty = false; migrate(); render(); toast("다른 탭 내용을 열었습니다"); }
       break;
     }
+
+    /* PDF 상세 설정 */
+    case "po-font": {
+      const o = pdfOpt();
+      o.fontSize = Math.min(PDF_FONT_MAX, Math.max(PDF_FONT_MIN,
+        o.fontSize + PDF_FONT_STEP * (parseInt(t.dataset.v, 10) || 0)));
+      S.settings.pdfOpt = o;
+      commit(); render();
+      break;
+    }
+    case "po-set": {
+      const k = t.dataset.k, v = t.dataset.v;
+      if(!Object.prototype.hasOwnProperty.call(PDF_OPT_DEFAULT, k)) return;
+      const D = PDF_OPT_DEFAULT[k];
+      const o = pdfOpt();
+      o[k] = typeof D === "boolean" ? v === "1" : typeof D === "number" ? parseFloat(v) : v;
+      S.settings.pdfOpt = o;
+      S.settings.pdfOpt = pdfOpt();   /* 목록에 없는 값이면 기본값으로 */
+      commit(); render();
+      break;
+    }
+    case "po-reset":
+      confirmSheet("PDF 설정을 기본값으로 되돌릴까요?",
+        "글자 크기·줄 간격·용지·여백·구성이 처음 상태로 돌아갑니다. 노트 내용은 그대로입니다.",
+        "되돌리기", ()=>{
+          S.settings.pdfOpt = Object.assign({}, PDF_OPT_DEFAULT);
+          commit(); closeLayer(); render(); toast("기본값으로 되돌렸습니다");
+        }, true);
+      break;
 
     /* PDF */
     case "pdf-note": closeLayer(); pdfNote(c, findLesson(c, lid)); break;
